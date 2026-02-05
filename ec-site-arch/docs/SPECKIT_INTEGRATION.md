@@ -1,111 +1,95 @@
 # Speckit連携ガイド
 
-このアーキテクチャテンプレートをspeckitプロジェクトで使用する方法を説明します。
+このアーキテクチャテンプレートをspeckitで使用する方法を説明します。
 
 ## 関連ドキュメント
 
+- [GETTING_STARTED.md](./GETTING_STARTED.md) - セットアップ手順
 - [constitution-example.md](./examples/constitution-example.md) - `/speckit.constitution` の入力例
-- [spec-template.md](./examples/spec-template.md) - 機能仕様（spec/plan/tasks）のテンプレート例
+- [spec-template.md](./examples/spec-template.md) - 機能仕様のテンプレート例
 
 ---
 
-## 1. プロジェクト構成
+## 1. セットアップフロー
 
 ```
-your-ec-project/
-├── specs/                    # speckit仕様（機能仕様）
-│   └── 001-feature-name/
-│       ├── spec.md
-│       ├── plan.md
-│       └── tasks.md
+1. speckit init my-ec-project --ai claude  # プロジェクトディレクトリと設定が作成される
+2. cd my-ec-project                        # プロジェクトディレクトリに移動
+3. ec-site-arch.zip 解凍                    # アーキテクチャコードを展開
+4. /speckit.constitution                   # プロジェクト憲法を作成（セットアップ手順を含む）
+5. 開発開始
+```
+
+### ディレクトリ構成
+
+```
+my-ec-project/
+├── .claude/
+│   └── commands/           ← speckit init で作成（スキル定義）
+│       ├── speckit.specify.md
+│       ├── speckit.plan.md
+│       ├── speckit.tasks.md
+│       ├── speckit.implement.md
+│       └── ...
 │
-├── ec-site-arch/             # アプリケーションコード（speckit実行）
-│   ├── .specify/             # speckit設定
-│   │   ├── memory/
-│   │   │   └── constitution.md  # 憲法（ここに保存）
-│   │   └── templates/
-│   ├── src/
-│   │   ├── foundation/       # 共通基盤
-│   │   ├── templates/        # 再利用テンプレート
-│   │   ├── samples/          # サンプル実装（参考）
-│   │   └── domains/          # 本番ドメイン実装
-│   └── ...
+├── .specify/               ← speckit init で作成
+│   ├── memory/
+│   │   └── constitution.md ← /speckit.constitution で作成
+│   └── templates/
 │
-└── README.md
+├── src/                    ← zip から展開
+│   ├── foundation/         # 共通基盤
+│   ├── templates/          # 再利用テンプレート
+│   ├── samples/            # サンプル実装（参考）
+│   ├── domains/            # 本番ドメイン実装
+│   └── app/                # Next.js App Router
+│
+├── tests/                  ← zip から展開
+├── docs/                   ← zip から展開
+└── package.json            ← zip から展開
 ```
 
 ---
 
-## 2. speckit仕様の書き方
+## 2. 開発ワークフロー
 
-### 2.1 新機能の spec.md テンプレート
+### 新機能を追加する場合
+
+```bash
+# 1. 機能仕様を作成
+/speckit.specify "ユーザープロフィール機能を追加"
+
+# 2. 実装計画を作成
+/speckit.plan
+
+# 3. タスクを生成
+/speckit.tasks
+
+# 4. 実装を開始
+/speckit.implement
+```
+
+### 機能仕様の例
+
+`/speckit.specify` を実行すると、以下のような仕様書が生成されます：
 
 ```markdown
-# Feature: [機能名]
+# Feature: ユーザープロフィール
 
 ## 概要
-[機能の概要を1-2文で]
+ユーザーが自分のプロフィール情報を閲覧・編集できる機能
 
 ## ユーザーストーリー
-- As a [ユーザー種別], I want to [目的], so that [理由]
+- As a buyer, I want to view my profile, so that I can check my information
+- As a buyer, I want to edit my profile, so that I can update my information
 
 ## 機能要件
 
-### FR-001: [要件名]
-- 説明: [詳細]
-- 優先度: Must/Should/Could
-- 関連UI: `src/domains/[domain]/ui/`
-- 関連API: `src/domains/[domain]/api/`
-
-## UI要件
-
-### 画面一覧
-| 画面ID | 画面名 | パス | テンプレート |
-|--------|--------|------|-------------|
-| UI-001 | [画面名] | /path | ListPageTemplate |
-
-### UIコンポーネント
-- テンプレート: `@/templates/ui/pages/list`
-- レイアウト: `@/templates/ui/layouts/BuyerLayout`
-
-## API要件
-
-### エンドポイント一覧
-| メソッド | パス | 説明 |
-|---------|------|------|
-| GET | /api/[resource] | 一覧取得 |
-| POST | /api/[resource] | 新規作成 |
-
-### 認可
-- buyer: 自分のリソースのみ
-- admin: 全リソース
-
-## テスト要件
-
-### 単体テスト
-- ユースケースの正常系・異常系
-- UIコンポーネントの状態表示
-
-### E2Eテスト
-- 主要導線（一覧→詳細→操作→完了）
-
-## 実装ガイド
-
-### 使用テンプレート
-\`\`\`typescript
-import { ListPageTemplate } from '@/templates/ui/pages/list';
-import { createUseCase } from '@/templates/api/usecase';
-import { createHmrSafeStore } from '@/templates/infrastructure/repository';
-\`\`\`
-
-### ディレクトリ構成
-\`\`\`
-src/domains/[domain]/
-├── api/usecases.ts
-├── ui/[Component].tsx
-├── types/index.ts
-└── tests/unit/
-\`\`\`
+### FR-001: プロフィール表示
+- 説明: ログインユーザーが自分のプロフィールを閲覧できる
+- 優先度: Must
+- 関連UI: `src/domains/profile/ui/ProfileView.tsx`
+- 関連API: `GET /api/profile`
 ```
 
 ---
@@ -138,28 +122,27 @@ src/domains/[domain]/
 
 ## 4. タスク生成の指針
 
-### tasks.md テンプレート
+`/speckit.tasks` で生成されるタスクは以下の構成になります：
 
 ```markdown
-# Tasks: [機能名]
+# Tasks: ユーザープロフィール
 
 ## フェーズ1: ドメイン実装
 
-### Task 1-1: [Domain]ドメイン実装
-- [ ] T001 型定義を実装する `src/domains/[domain]/types/index.ts`
-- [ ] T002 [P] UIコンポーネントを実装する `src/domains/[domain]/ui/`
-- [ ] T003 [P] APIユースケースを実装する `src/domains/[domain]/api/usecases.ts`
-- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/[domain].ts`
+### Task 1-1: Profileドメイン実装
+- [ ] T001 型定義を実装する `src/domains/profile/types/index.ts`
+- [ ] T002 [P] UIコンポーネントを実装する `src/domains/profile/ui/`
+- [ ] T003 [P] APIユースケースを実装する `src/domains/profile/api/usecases.ts`
+- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/profile.ts`
 
 ### Task 1-2: ページ実装
-- [ ] T005 一覧ページを実装する `src/app/(buyer)/[path]/page.tsx`
-- [ ] T006 詳細ページを実装する `src/app/(buyer)/[path]/[id]/page.tsx`
-- [ ] T007 [P] APIルートを実装する `src/app/api/[path]/route.ts`
+- [ ] T005 プロフィールページを実装する `src/app/(buyer)/profile/page.tsx`
+- [ ] T006 編集ページを実装する `src/app/(buyer)/profile/edit/page.tsx`
+- [ ] T007 [P] APIルートを実装する `src/app/api/profile/route.ts`
 
 ### Task 1-3: テスト実装
-- [ ] T008 [P] 単体テストを実装する `tests/unit/domains/[domain]/`
-- [ ] T009 [P] 統合テストを実装する `tests/integration/domains/[domain]/`
-- [ ] T010 E2Eテストを実装する `tests/e2e/[domain].spec.ts`
+- [ ] T008 [P] 単体テストを実装する `tests/unit/domains/profile/`
+- [ ] T009 E2Eテストを実装する `tests/e2e/profile.spec.ts`
 
 ## 依存関係
 - T001 → T002, T003, T004
@@ -170,6 +153,8 @@ src/domains/[domain]/
 ---
 
 ## 5. サンプル実装の参照
+
+speckitで実装する際は、サンプル実装を参考にしてください：
 
 ### Catalogドメイン（商品管理）
 - 一覧・詳細表示
@@ -196,10 +181,7 @@ src/domains/[domain]/
 
 ## 6. 品質基準
 
-speckit仕様に以下の品質基準を含めてください：
-
-```markdown
-## 品質要件
+speckit仕様に以下の品質基準が適用されます：
 
 ### テスト
 - 単体テストカバレッジ: 80%以上
@@ -212,4 +194,22 @@ speckit仕様に以下の品質基準を含めてください：
 ### パフォーマンス
 - 一覧ページ: 初回ロード 3秒以内
 - API応答: 500ms以内
-```
+
+---
+
+## 7. 憲法（constitution.md）について
+
+`/speckit.constitution` を実行すると、プロジェクト固有の憲法が作成されます。
+
+憲法には以下が含まれます：
+- プロジェクト概要・技術スタック
+- **アーキテクチャのセットアップ手順**（依存関係インストール、プロジェクト情報更新）
+- アーキテクチャ原則
+- 品質基準・テストコマンド
+- ディレクトリ構成・命名規約
+- 認証・認可パターン
+
+憲法はspeckitの各コマンド（specify, plan, tasks, implement）で参照され、
+一貫した実装を保証します。
+
+入力例は `docs/examples/constitution-example.md` を参照してください。

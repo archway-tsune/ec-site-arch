@@ -1,6 +1,7 @@
 # EC Site Architecture Template
 
 ECサイト開発のためのアーキテクチャ基盤テンプレートです。
+speckitと組み合わせてAI駆動開発を行うことを想定しています。
 
 ## 特徴
 
@@ -9,6 +10,7 @@ ECサイト開発のためのアーキテクチャ基盤テンプレートです
 - **APIテンプレート**: ユースケース、ハンドラー、DTO
 - **テストテンプレート**: 単体・統合・E2Eテスト
 - **品質ゲート**: TypeScript strict、ESLint、カバレッジ80%
+- **speckit連携**: AI駆動開発のためのテンプレートと設定
 
 ## 技術スタック
 
@@ -24,33 +26,22 @@ ECサイト開発のためのアーキテクチャ基盤テンプレートです
 
 ## クイックスタート
 
-### 1. テンプレートから新規プロジェクト作成
-
-GitHubで「**Use this template**」ボタンをクリック
-
-### 2. セットアップ
-
 ```bash
-# リポジトリをクローン
-git clone https://github.com/YOUR_ORG/YOUR_PROJECT.git
-cd YOUR_PROJECT
+# 1. speckit初期化
+speckit init my-ec-project --ai claude
+cd my-ec-project
 
-# 依存関係をインストール
-pnpm install
+# 2. アーキテクチャコードの展開
+unzip ec-site-arch.zip -d .
 
-# 開発サーバー起動
-pnpm dev
+# 3. プロジェクト憲法の作成（Claude Codeで実行）
+/speckit.constitution
 ```
 
-### 3. プロジェクトをカスタマイズ
+`/speckit.constitution` でプロジェクト固有の情報を入力すると、
+セットアップ手順やアーキテクチャの使い方を含む憲法が作成されます。
 
-```bash
-# package.jsonの名前を変更
-# - "name": "ec-site-arch" → "your-project-name"
-
-# samples/ディレクトリを確認（実装の参考に）
-# domains/ディレクトリに本番実装を開始
-```
+詳細は `docs/examples/constitution-example.md` を参照してください。
 
 ---
 
@@ -59,116 +50,38 @@ pnpm dev
 ```
 src/
 ├── foundation/          # 共通基盤（認証・エラー・ログ・バリデーション）
-│   ├── auth/           # 認証・認可・CSRF
-│   ├── errors/         # エラーハンドリング
-│   ├── logging/        # ログ・監査
-│   └── validation/     # ランタイムバリデーション
-│
-├── templates/           # 再利用テンプレート
-│   ├── api/            # APIテンプレート（usecase, handler, dto）
-│   ├── ui/             # UIテンプレート（layouts, pages, components）
-│   ├── infrastructure/ # インフラテンプレート（repository, session）
-│   └── tests/          # テストテンプレート
-│
-├── samples/             # サンプル実装（参考用）
-│   └── domains/        # Catalog, Cart, Ordersのサンプル
-│
+├── templates/           # 再利用テンプレート（UI・API・インフラ・テスト）
+├── samples/             # サンプル実装（Catalog, Cart, Orders）
 ├── domains/             # 本番ドメイン実装（ここに実装）
-│
 ├── infrastructure/      # インフラ層実装
-│
 └── app/                 # Next.js App Router
-    ├── (buyer)/        # 購入者向け画面
-    ├── admin/          # 管理者向け画面
-    └── api/            # APIルート
 ```
 
 ---
 
-## 展開後の作業
-
-### Step 1: プロジェクト情報の更新
-
-```json
-// package.json
-{
-  "name": "your-project-name",
-  "description": "Your project description"
-}
-```
-
-### Step 2: サンプル実装の確認
-
-`src/samples/domains/` に以下のサンプル実装があります：
-
-- **Catalog**: 商品一覧・詳細
-- **Cart**: カート操作
-- **Orders**: 注文管理
-
-これらを参考に、`src/domains/` に本番実装を作成してください。
-
-### Step 3: 新規ドメインの実装
+## 開発ワークフロー（speckit連携）
 
 ```bash
-# 例: Paymentドメインを追加
-src/domains/payment/
-├── api/
-│   └── usecases.ts      # APIユースケース
-├── ui/
-│   └── PaymentForm.tsx  # UI コンポーネント
-└── tests/
-    └── unit/            # 単体テスト
-```
+# 機能仕様を作成
+/speckit.specify "ユーザー管理機能を追加"
 
-### Step 4: テストの実行
+# 実装計画を作成
+/speckit.plan
 
-```bash
-# 単体テスト
-pnpm test:unit
+# タスクを生成
+/speckit.tasks
 
-# 統合テスト
-pnpm test:integration
-
-# E2Eテスト
-pnpm test:e2e
-
-# カバレッジ
-pnpm test:coverage
+# 実装を開始
+/speckit.implement
 ```
 
 ---
 
-## デモユーザー
+## ドキュメント
 
-| ロール | メール | パスワード |
-|-------|--------|-----------|
-| 購入者 | buyer@example.com | demo |
-| 管理者 | admin@example.com | demo |
-
----
-
-## スクリプト
-
-| コマンド | 説明 |
-|---------|------|
-| `pnpm dev` | 開発サーバー起動 |
-| `pnpm build` | プロダクションビルド |
-| `pnpm test` | テスト実行（watch mode） |
-| `pnpm test:unit` | 単体テスト |
-| `pnpm test:integration` | 統合テスト |
-| `pnpm test:e2e` | E2Eテスト |
-| `pnpm test:coverage` | カバレッジレポート |
-| `pnpm lint` | ESLint実行 |
-| `pnpm typecheck` | TypeScript型チェック |
-
----
-
-## 品質基準
-
-- TypeScript: strictモード、エラー0件
-- ESLint: エラー0件
-- テストカバレッジ: 80%以上
-- E2Eテスト: 全シナリオ成功
+- [GETTING_STARTED.md](docs/GETTING_STARTED.md) - セットアップガイド
+- [SPECKIT_INTEGRATION.md](docs/SPECKIT_INTEGRATION.md) - speckit連携ガイド
+- [constitution-example.md](docs/examples/constitution-example.md) - 憲法の入力例
 
 ---
 

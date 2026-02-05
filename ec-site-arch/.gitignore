@@ -44,3 +44,6 @@ playwright/.cache/
 # Lock files (use pnpm-lock.yaml)
 package-lock.json
 yarn.lock
+
+# Distribution
+*.zip

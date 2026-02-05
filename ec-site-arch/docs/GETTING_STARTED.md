@@ -1,303 +1,99 @@
-# Getting Started - テンプレート展開ガイド
+# Getting Started - セットアップガイド
 
-このドキュメントは、EC Site Architecture Templateから新規プロジェクトを作成した後の手順を説明します。
-
----
-
-## プロジェクト構成
-
-```
-your-project/              ← リポジトリルート
-├── ec-site-arch/          ← アプリケーションコード（speckit実行）
-│   ├── .specify/          ← speckit設定
-│   │   └── memory/
-│   │       └── constitution.md  ← 憲法
-│   ├── src/
-│   ├── tests/
-│   └── package.json
-├── specs/                 ← speckit仕様（機能仕様）
-│   └── 001-feature/
-└── README.md
-```
+EC Site Architecture Templateを使って新規プロジェクトを開始する手順です。
 
 ---
 
-## 1. 初期セットアップ
+## 前提条件
 
-### 1.1 依存関係のインストール
+- Node.js 18以上
+- pnpm
+- Claude Code（speckitコマンド実行用）
+
+---
+
+## セットアップ手順
+
+### Step 1: speckit初期化
 
 ```bash
-# アプリケーションディレクトリに移動
-cd ec-site-arch
-pnpm install
+speckit init my-ec-project --ai claude
+cd my-ec-project
 ```
 
-### 1.2 Playwrightブラウザのインストール（E2Eテスト用）
+これにより以下が作成されます：
+- `my-ec-project/` - プロジェクトディレクトリ
+- `.claude/commands/` - speckitスキル定義
+- `.specify/` - speckit設定とテンプレート
+
+### Step 2: アーキテクチャコードの展開
 
 ```bash
-npx playwright install
+unzip ec-site-arch.zip -d .
 ```
 
-### 1.3 動作確認
+### Step 3: プロジェクト憲法の作成
 
-```bash
-# 開発サーバー起動
-pnpm dev
+Claude Codeで以下を実行：
 
-# ブラウザで確認
-# http://localhost:3000/catalog  （購入者画面）
-# http://localhost:3000/admin    （管理者画面）
-
-# テスト実行
-pnpm test:unit
-pnpm test:e2e
 ```
-
-### 1.4 speckit憲法の作成
-
-```bash
-# ec-site-arch ディレクトリで実行
 /speckit.constitution
-# → .specify/memory/constitution.md が上書きされる
 ```
 
-**注意**: テンプレートに含まれる `constitution.md` はアーキテクチャ基盤用です。
-必ず `/speckit.constitution` を実行して、プロジェクト固有の内容に上書きしてください。
+対話形式でプロジェクト情報を入力すると、以下を含む憲法が作成されます：
+- 依存関係のインストール手順
+- プロジェクト情報の更新方法
+- アーキテクチャの使い方
+- 品質基準とテストコマンド
 
-入力例は `docs/examples/constitution-example.md` を参照
+入力例は `docs/examples/constitution-example.md` を参照してください。
 
 ---
 
-## 2. プロジェクト情報の更新
+## 開発ワークフロー
 
-### 2.1 package.json
-
-```json
-{
-  "name": "your-project-name",
-  "description": "Your project description",
-  "version": "0.1.0"
-}
-```
-
-### 2.2 README.md
-
-プロジェクト固有の内容に更新してください。
-
-### 2.3 tailwind.config.js（オプション）
-
-ブランドカラーを変更する場合：
-
-```javascript
-theme: {
-  extend: {
-    colors: {
-      base: {
-        50: '#your-color',
-        // ...
-      },
-      accent: '#your-accent-color',
-    },
-  },
-},
-```
-
----
-
-## 3. サンプル実装の扱い
-
-### 3.1 参照として残す場合
-
-`src/samples/` ディレクトリは参考実装として残しておけます。
-本番実装は `src/domains/` に作成してください。
-
-### 3.2 サンプルを削除する場合
+### 新機能の追加
 
 ```bash
-# サンプル実装を削除
-rm -rf src/samples/
+# 1. 機能仕様を作成
+/speckit.specify "決済機能を追加"
 
-# サンプル関連のテストを削除
-rm -rf tests/unit/samples/
-rm -rf tests/integration/samples/
+# 2. 実装計画を作成
+/speckit.plan
 
-# tsconfig.jsonからパスエイリアスを削除
-# "@/samples/*": ["./src/samples/*"]  ← この行を削除
+# 3. タスクを生成
+/speckit.tasks
+
+# 4. 実装を開始
+/speckit.implement
 ```
 
-### 3.3 サンプルを本番実装のベースにする場合
+---
+
+## サンプル実装
+
+`src/samples/domains/` に以下のサンプル実装があります：
+
+| ドメイン | 機能 |
+|---------|------|
+| Catalog | 商品一覧・詳細、検索・フィルタ |
+| Cart | 商品追加・削除、数量変更 |
+| Orders | 注文作成、注文履歴 |
+
+これらを参考に、`src/domains/` に本番実装を作成してください。
+
+### サンプルの扱い
 
 ```bash
-# サンプルをdomainsにコピー
-cp -r src/samples/domains/catalog src/domains/
-cp -r src/samples/domains/cart src/domains/
-cp -r src/samples/domains/orders src/domains/
-
-# インポートパスを更新
-# @/samples/domains/xxx → @/domains/xxx
+# 参照として残す → そのまま
+# 削除する → rm -rf src/samples/
+# 本番実装のベースにする → cp -r src/samples/domains/* src/domains/
 ```
 
 ---
 
-## 4. 新規ドメインの追加
+## 関連ドキュメント
 
-### 4.1 ディレクトリ構成
-
-```
-src/domains/your-domain/
-├── api/
-│   └── usecases.ts      # APIユースケース
-├── ui/
-│   ├── YourList.tsx     # 一覧コンポーネント
-│   ├── YourDetail.tsx   # 詳細コンポーネント
-│   └── YourForm.tsx     # フォームコンポーネント
-├── types/
-│   └── index.ts         # 型定義
-└── tests/
-    └── unit/
-        └── usecases.test.ts
-```
-
-### 4.2 テンプレートの利用
-
-```typescript
-// UIテンプレートの利用例
-import { ListPageTemplate } from '@/templates/ui/pages/list';
-import { DetailPageTemplate } from '@/templates/ui/pages/detail';
-import { FormPageTemplate } from '@/templates/ui/pages/form';
-
-// APIテンプレートの利用例
-import { createUseCase } from '@/templates/api/usecase';
-
-// インフラテンプレートの利用例
-import { createHmrSafeStore } from '@/templates/infrastructure/repository';
-```
-
-### 4.3 ページの追加
-
-```
-src/app/(buyer)/your-domain/
-├── page.tsx             # 一覧ページ
-└── [id]/
-    └── page.tsx         # 詳細ページ
-
-src/app/admin/your-domain/
-├── page.tsx             # 管理一覧
-├── new/
-│   └── page.tsx         # 新規登録
-└── [id]/
-    └── edit/
-        └── page.tsx     # 編集
-```
-
----
-
-## 5. 認証・認可の設定
-
-### 5.1 ロールの追加（必要な場合）
-
-```typescript
-// src/foundation/auth/session.ts
-export type UserRole = 'buyer' | 'admin' | 'staff';  // staffを追加
-```
-
-### 5.2 認可チェック
-
-```typescript
-import { requireRole } from '@/foundation/auth/authorize';
-
-// APIでの認可
-const session = await requireRole(request, 'admin');
-
-// UIでの認可（レイアウト）
-import { AdminLayout } from '@/templates/ui/layouts/AdminLayout';
-```
-
-### 5.3 デモユーザーの変更
-
-```typescript
-// src/infrastructure/auth/demo-users.ts
-export const DEMO_USERS = [
-  { email: 'buyer@example.com', password: 'demo', role: 'buyer', name: '購入者テスト' },
-  { email: 'admin@example.com', password: 'demo', role: 'admin', name: '管理者テスト' },
-  // 追加のユーザー
-];
-```
-
----
-
-## 6. テストの追加
-
-### 6.1 単体テスト
-
-```typescript
-// tests/unit/domains/your-domain/usecases.test.ts
-import { describe, it, expect } from 'vitest';
-
-describe('YourDomain Usecases', () => {
-  describe('GetYourItems', () => {
-    it('Given 正常なリクエスト, When 実行, Then アイテム一覧が返される', async () => {
-      // テスト実装
-    });
-  });
-});
-```
-
-### 6.2 E2Eテスト
-
-```typescript
-// tests/e2e/your-domain.spec.ts
-import { test, expect } from '@playwright/test';
-
-test.describe('Your Domain', () => {
-  test('一覧ページが表示される', async ({ page }) => {
-    await page.goto('/your-domain');
-    await expect(page.locator('h1')).toContainText('Your Domain');
-  });
-});
-```
-
----
-
-## 7. 本番デプロイの準備
-
-### 7.1 環境変数
-
-```bash
-# .env.local（ローカル開発用）
-# .env.production（本番用）
-
-DATABASE_URL=your-database-url
-SESSION_SECRET=your-secret-key
-```
-
-### 7.2 データベース接続
-
-インメモリリポジトリを本番用リポジトリに置き換え：
-
-```typescript
-// src/infrastructure/repositories/your-domain.ts
-// createHmrSafeStore() → データベースクライアント
-```
-
-### 7.3 ビルド確認
-
-```bash
-pnpm build
-pnpm start
-```
-
----
-
-## 8. チェックリスト
-
-- [ ] package.jsonのプロジェクト情報を更新
-- [ ] README.mdを更新
-- [ ] 開発サーバーで動作確認
-- [ ] サンプル実装の扱いを決定
-- [ ] 必要なドメインを `src/domains/` に追加
-- [ ] テストを追加してカバレッジ80%以上を維持
-- [ ] E2Eテストで主要導線を検証
-- [ ] 本番用リポジトリ（DB接続）を実装
-- [ ] 環境変数を設定
-- [ ] ビルドが成功することを確認
+- [SPECKIT_INTEGRATION.md](./SPECKIT_INTEGRATION.md) - speckit連携の詳細
+- [constitution-example.md](./examples/constitution-example.md) - 憲法の入力例
+- [spec-template.md](./examples/spec-template.md) - 機能仕様のテンプレート

@@ -4,11 +4,28 @@
 
 ---
 
+## プロジェクト構成
+
+```
+your-project/              ← リポジトリルート（speckit実行）
+├── ec-site-arch/          ← アプリケーションコード
+│   ├── src/
+│   ├── tests/
+│   └── package.json
+├── specs/                 ← speckit仕様
+│   └── constitution.md
+└── README.md
+```
+
+---
+
 ## 1. 初期セットアップ
 
 ### 1.1 依存関係のインストール
 
 ```bash
+# アプリケーションディレクトリに移動
+cd ec-site-arch
 pnpm install
 ```
 
@@ -32,6 +49,19 @@ pnpm dev
 pnpm test:unit
 pnpm test:e2e
 ```
+
+### 1.4 speckit憲法の作成
+
+```bash
+# リポジトリルートに戻る
+cd ..
+
+# speckit.constitution を実行
+/speckit.constitution
+# → specs/constitution.md が生成される
+```
+
+入力例は `ec-site-arch/docs/examples/constitution-example.md` を参照
 
 ---
 

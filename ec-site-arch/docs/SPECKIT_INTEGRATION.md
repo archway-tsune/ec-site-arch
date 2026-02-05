@@ -2,6 +2,11 @@
 
 このアーキテクチャテンプレートをspeckitプロジェクトで使用する方法を説明します。
 
+## 関連ドキュメント
+
+- [constitution-example.md](./examples/constitution-example.md) - `/speckit.constitution` の入力例
+- [spec-template.md](./examples/spec-template.md) - 機能仕様（spec/plan/tasks）のテンプレート例
+
 ---
 
 ## 1. プロジェクト構成

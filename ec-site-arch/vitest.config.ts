@@ -13,7 +13,29 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['src/**/*.{ts,tsx}'],
-      exclude: ['src/**/*.test.{ts,tsx}', 'src/**/*.d.ts'],
+      exclude: [
+        'src/**/*.test.{ts,tsx}',
+        'src/**/*.d.ts',
+        // App pages are E2E tested
+        'src/app/**',
+        // Infrastructure repositories are integration/E2E tested
+        'src/infrastructure/**',
+        // Index files (re-exports only)
+        'src/**/index.ts',
+        // Template layouts (Client Components, E2E tested)
+        'src/templates/ui/layouts/**',
+        // Template auth pages (Client Components, E2E tested)
+        'src/templates/ui/pages/login.tsx',
+        'src/templates/ui/pages/logout.tsx',
+        // Template API auth handlers (integration tested)
+        'src/templates/api/auth/**',
+        // Template infrastructure (integration tested)
+        'src/templates/infrastructure/**',
+        // Template events (browser-only, E2E tested)
+        'src/templates/ui/utils/events.ts',
+        // Contract types (no logic)
+        'src/contracts/**',
+      ],
       thresholds: {
         lines: 80,
         functions: 80,

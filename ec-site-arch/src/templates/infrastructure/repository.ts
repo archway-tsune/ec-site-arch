@@ -12,6 +12,12 @@
  *
  * 本番環境では、このテンプレートを参考にして
  * データベースを使用したリポジトリに置き換えてください。
+ *
+ * 注意: 開発環境でのHMR（Hot Module Replacement）対策
+ * Next.js開発環境ではHMRによりモジュールが再読み込みされ、
+ * インメモリストアがリセットされます。これを防ぐには
+ * globalThisパターンを使用してください。
+ * 詳細は createHmrSafeStore() を参照。
  */
 
 // ─────────────────────────────────────────────────────────────────
@@ -37,11 +43,70 @@ export interface FilterParams<T> extends PaginationParams {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// HMR対策用ストアファクトリ
+// ─────────────────────────────────────────────────────────────────
+
+/**
+ * HMR（Hot Module Replacement）に対応したストアを生成
+ *
+ * Next.js開発環境ではHMRによりモジュールが再読み込みされ、
+ * 通常のMapはリセットされてしまいます。globalThisを使用することで
+ * HMR後もデータを維持できます。
+ *
+ * @param globalKey グローバル変数のキー名（一意である必要があります）
+ * @param initialData 初期データ
+ * @returns HMR対応のストア
+ *
+ * @example
+ * ```typescript
+ * // 商品ストア（HMR対応）
+ * const productStore = createHmrSafeStore<Product>('__productStore', sampleProducts);
+ *
+ * // カートストア（HMR対応、ユーザーIDベース）
+ * const cartStore = createHmrSafeUserStore<Cart>('__cartStore');
+ * ```
+ */
+export function createHmrSafeStore<T extends BaseEntity>(
+  globalKey: string,
+  initialData: T[] = []
+): Map<string, T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const globalAny = globalThis as any;
+
+  if (!globalAny[globalKey]) {
+    globalAny[globalKey] = new Map<string, T>(initialData.map((item) => [item.id, item]));
+  }
+
+  return globalAny[globalKey];
+}
+
+/**
+ * HMR対応のユーザーIDベースストアを生成
+ *
+ * @param globalKey グローバル変数のキー名
+ * @returns HMR対応のユーザーIDベースストア
+ */
+export function createHmrSafeUserStore<T>(globalKey: string): Map<string, T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const globalAny = globalThis as any;
+
+  if (!globalAny[globalKey]) {
+    globalAny[globalKey] = new Map<string, T>();
+  }
+
+  return globalAny[globalKey];
+}
+
+// ─────────────────────────────────────────────────────────────────
 // インメモリストアファクトリ
 // ─────────────────────────────────────────────────────────────────
 
 /**
  * インメモリストアを生成
+ *
+ * 注意: 開発環境でHMRによるデータリセットを防ぎたい場合は
+ * createHmrSafeStore() を使用してください。
+ *
  * @param initialData 初期データ
  * @returns ストア操作関数
  */
@@ -115,6 +180,9 @@ export function createInMemoryStore<T extends BaseEntity>(initialData: T[] = [])
 /**
  * ユーザーIDをキーとするインメモリストアを生成
  * カートや注文など、ユーザーごとのデータ管理に使用
+ *
+ * 注意: 開発環境でHMRによるデータリセットを防ぎたい場合は
+ * createHmrSafeUserStore() を使用してください。
  */
 export function createUserBasedStore<T>() {
   const store = new Map<string, T>();

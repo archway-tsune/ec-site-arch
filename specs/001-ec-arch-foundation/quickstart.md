@@ -7,6 +7,32 @@
 
 本ドキュメントは、ECサイト向けアーキテクチャ基盤を利用して新規ドメインを立ち上げる手順を説明する。
 
+### 1.1 ディレクトリ構成
+
+```
+src/
+├── foundation/       # 共通基盤（認証・エラー・ログ等）
+├── templates/        # 再利用可能なテンプレート
+├── samples/          # サンプル実装（参照用）
+│   └── domains/      # Catalog, Cart, Orders のサンプル
+├── domains/          # 本番ドメイン実装（ここに実装）
+├── contracts/        # 型定義・契約
+├── infrastructure/   # インフラ層（リポジトリ等）
+└── app/              # Next.js App Router
+```
+
+### 1.2 サンプル実装
+
+`src/samples/domains/` にはアーキテクチャの検証用サンプルが含まれています:
+
+| ドメイン | 説明 | パス |
+|---------|------|------|
+| **Catalog** | 商品カタログ（一覧・詳細・CRUD） | `src/samples/domains/catalog/` |
+| **Cart** | ショッピングカート（追加・更新・削除） | `src/samples/domains/cart/` |
+| **Orders** | 注文管理（作成・一覧・ステータス更新） | `src/samples/domains/orders/` |
+
+新規ドメインを実装する際は、これらのサンプルを参考にしてください。
+
 ## 2. 前提条件
 
 - Node.js 20.x 以上

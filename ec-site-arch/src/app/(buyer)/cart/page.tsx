@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { CartView } from '@/domains/cart/ui/CartView';
+import { CartView } from '@/samples/domains/cart/ui/CartView';
 import type { Cart } from '@/contracts/cart';
 
 interface CartResponse {

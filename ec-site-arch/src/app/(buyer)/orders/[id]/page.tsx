@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams, useParams } from 'next/navigation';
-import { OrderDetail } from '@/domains/orders/ui/OrderDetail';
+import { OrderDetail } from '@/samples/domains/orders/ui/OrderDetail';
 import type { Order } from '@/contracts/orders';
 
 interface OrderResponse {

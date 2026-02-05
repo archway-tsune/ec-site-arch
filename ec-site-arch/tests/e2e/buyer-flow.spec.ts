@@ -4,14 +4,22 @@
  */
 import { test, expect } from '@playwright/test';
 
+// ログインヘルパー
+async function loginAsBuyer(page: import('@playwright/test').Page) {
+  await page.goto('/login');
+  await page.locator('#email').fill('buyer@example.com');
+  await page.locator('#password').fill('demo');
+  await page.getByRole('button', { name: /ログイン/i }).click();
+  await page.waitForURL(/\/catalog/);
+  await page.waitForLoadState('networkidle');
+}
+
 test.describe('購入者導線', () => {
   test.beforeEach(async ({ page, request }) => {
     // テスト前に状態をリセット
     await request.post('/api/test/reset');
-    // ホームページにアクセス（自動ログインをトリガー）
-    await page.goto('/');
-    // 認証完了を待つ
-    await page.waitForLoadState('networkidle');
+    // 購入者としてログイン
+    await loginAsBuyer(page);
   });
 
   test.describe('商品一覧', () => {
@@ -127,6 +135,8 @@ test.describe('購入者導線', () => {
       // カートへ
       await page.goto('/cart');
       await expect(page.locator('h1')).toContainText('カート');
+      // カートに商品があることを確認
+      await expect(page.locator('[data-testid="cart-subtotal"]')).toBeVisible({ timeout: 10000 });
 
       // 注文手続きへ
       await page.getByRole('button', { name: /注文手続きへ/i }).click();
@@ -165,6 +175,8 @@ test.describe('購入者導線', () => {
       // カートへ
       await page.goto('/cart');
       await expect(page.locator('h1')).toContainText('カート');
+      // カートに商品があることを確認
+      await expect(page.locator('[data-testid="cart-subtotal"]')).toBeVisible({ timeout: 10000 });
 
       // 注文手続きへ
       await page.getByRole('button', { name: /注文手続きへ/i }).click();
@@ -207,6 +219,8 @@ test.describe('購入者導線', () => {
       // 4. カートへ
       await page.goto('/cart');
       await expect(page.locator('h1')).toContainText('カート');
+      // カートに商品があることを確認
+      await expect(page.locator('[data-testid="cart-subtotal"]')).toBeVisible({ timeout: 10000 });
 
       // 5. 注文手続きへ
       await page.getByRole('button', { name: /注文手続きへ/i }).click();
@@ -217,6 +231,25 @@ test.describe('購入者導線', () => {
 
       // 7. 注文完了
       await expect(page.locator('text=ご注文ありがとうございます')).toBeVisible();
+    });
+  });
+
+  test.describe('未ログイン時の動作', () => {
+    test('未ログインでカート追加するとログインページにリダイレクトされる', async ({ browser }) => {
+      // 新しいコンテキストで未ログイン状態
+      const newContext = await browser.newContext();
+      const page = await newContext.newPage();
+
+      // 商品詳細ページへ
+      await page.goto('/catalog/550e8400-e29b-41d4-a716-446655440000');
+
+      // カートに追加
+      await page.getByRole('button', { name: /カートに追加/i }).click();
+
+      // ログインページにリダイレクト
+      await expect(page).toHaveURL(/\/login/);
+
+      await newContext.close();
     });
   });
 });

@@ -4,21 +4,34 @@
  */
 import { test, expect } from '@playwright/test';
 
+// 管理者ログインヘルパー
+async function loginAsAdmin(page: import('@playwright/test').Page) {
+  await page.goto('/admin/login');
+  await page.waitForLoadState('networkidle');
+  await page.locator('#email').fill('admin@example.com');
+  await page.locator('#password').fill('demo');
+  await page.getByRole('button', { name: /ログイン/i }).click();
+  await page.waitForURL(/\/admin(?!\/login)/);
+  await page.waitForLoadState('networkidle');
+}
+
+// 購入者ログインヘルパー
+async function loginAsBuyer(page: import('@playwright/test').Page) {
+  await page.goto('/login');
+  await page.locator('#email').fill('buyer@example.com');
+  await page.locator('#password').fill('demo');
+  await page.getByRole('button', { name: /ログイン/i }).click();
+  await page.waitForURL(/\/catalog/);
+  await page.waitForLoadState('networkidle');
+}
+
 test.describe('管理者導線', () => {
   test.beforeEach(async ({ page, request }) => {
     // テスト前に状態をリセット
     await request.post('/api/test/reset');
 
     // 管理者としてログイン
-    await page.goto('/admin/login');
-    await page.waitForLoadState('networkidle');
-    await page.locator('#email').fill('admin@example.com');
-    await page.locator('#password').fill('password');
-    await page.getByRole('button', { name: /ログイン/i }).click();
-
-    // ダッシュボードに遷移を待つ
-    await page.waitForURL(/\/admin(?!\/login)/);
-    await page.waitForLoadState('networkidle');
+    await loginAsAdmin(page);
   });
 
   test.describe('商品管理', () => {
@@ -73,6 +86,12 @@ test.describe('管理者導線', () => {
     test('商品を削除できる', async ({ page }) => {
       await page.goto('/admin/products');
 
+      // 商品一覧が読み込まれるのを待つ
+      await expect(page.locator('[data-testid="product-row"]').first()).toBeVisible({ timeout: 10000 });
+
+      // 削除前の商品数を取得
+      const initialCount = await page.locator('[data-testid="product-row"]').count();
+
       // 削除ボタンをクリック
       await page.locator('[data-testid="delete-button"]').first().click();
 
@@ -80,17 +99,20 @@ test.describe('管理者導線', () => {
       await page.getByRole('button', { name: /削除する/i }).click();
 
       // 商品が削除される（一覧から消える）
-      await expect(page.locator('[data-testid="product-row"]')).toHaveCount(await page.locator('[data-testid="product-row"]').count() - 1);
+      await expect(page.locator('[data-testid="product-row"]')).toHaveCount(initialCount - 1, { timeout: 10000 });
     });
 
     test('商品ステータスを変更できる', async ({ page }) => {
       await page.goto('/admin/products');
 
+      // 商品一覧が読み込まれるのを待つ
+      await expect(page.locator('[data-testid="product-row"]').first()).toBeVisible({ timeout: 10000 });
+
       // ステータス変更
       await page.locator('[data-testid="status-select"]').first().selectOption('published');
 
-      // 変更が反映される
-      await expect(page.locator('[data-testid="status-badge"]').first()).toContainText('公開中');
+      // 変更が反映される（APIコール完了を待つ）
+      await expect(page.locator('[data-testid="status-badge"]').first()).toContainText('公開中', { timeout: 10000 });
     });
   });
 
@@ -98,10 +120,9 @@ test.describe('管理者導線', () => {
     // 注文が存在する状態を作るためのヘルパー
     async function createOrderAsBuyer(page: import('@playwright/test').Page) {
       // buyerとしてログイン
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
+      await loginAsBuyer(page);
 
-      // 商品をカートに追加して注文（商品詳細ページに直接移動）
+      // 商品をカートに追加して注文
       await page.goto('/catalog');
       await expect(page.locator('h1')).toContainText('商品');
       await page.locator('[data-testid="product-card"]').first().click();
@@ -110,6 +131,8 @@ test.describe('管理者導線', () => {
       await expect(page.locator('[data-testid="cart-count"]')).toBeVisible();
       await page.goto('/cart');
       await expect(page.locator('h1')).toContainText('カート');
+      // カートに商品があることを確認
+      await expect(page.locator('[data-testid="cart-subtotal"]')).toBeVisible({ timeout: 10000 });
       await page.getByRole('button', { name: /注文手続きへ/i }).click();
       await expect(page).toHaveURL(/\/checkout/);
       await page.getByRole('button', { name: /注文を確定/i }).click();
@@ -121,11 +144,7 @@ test.describe('管理者導線', () => {
       await createOrderAsBuyer(page);
 
       // 再度adminとしてログイン
-      await page.goto('/admin/login');
-      await page.locator('#email').fill('admin@example.com');
-      await page.locator('#password').fill('password');
-      await page.getByRole('button', { name: /ログイン/i }).click();
-      await page.waitForURL(/\/admin(?!\/login)/);
+      await loginAsAdmin(page);
 
       await page.goto('/admin/orders');
 
@@ -139,11 +158,7 @@ test.describe('管理者導線', () => {
       await createOrderAsBuyer(page);
 
       // 再度adminとしてログイン
-      await page.goto('/admin/login');
-      await page.locator('#email').fill('admin@example.com');
-      await page.locator('#password').fill('password');
-      await page.getByRole('button', { name: /ログイン/i }).click();
-      await page.waitForURL(/\/admin(?!\/login)/);
+      await loginAsAdmin(page);
 
       await page.goto('/admin/orders');
 
@@ -165,11 +180,7 @@ test.describe('管理者導線', () => {
       await createOrderAsBuyer(page);
 
       // 再度adminとしてログイン
-      await page.goto('/admin/login');
-      await page.locator('#email').fill('admin@example.com');
-      await page.locator('#password').fill('password');
-      await page.getByRole('button', { name: /ログイン/i }).click();
-      await page.waitForURL(/\/admin(?!\/login)/);
+      await loginAsAdmin(page);
 
       await page.goto('/admin/orders');
 
@@ -191,11 +202,7 @@ test.describe('管理者導線', () => {
       await createOrderAsBuyer(page);
 
       // 再度adminとしてログイン
-      await page.goto('/admin/login');
-      await page.locator('#email').fill('admin@example.com');
-      await page.locator('#password').fill('password');
-      await page.getByRole('button', { name: /ログイン/i }).click();
-      await page.waitForURL(/\/admin(?!\/login)/);
+      await loginAsAdmin(page);
 
       await page.goto('/admin/orders');
 
@@ -249,9 +256,9 @@ test.describe('管理者導線', () => {
       const buyerContext = await browser.newContext();
       const page = await buyerContext.newPage();
 
-      // buyerとしてログイン（カタログページでauto-loginをトリガーし、ログイン完了を待つ）
-      await page.goto('/catalog');
-      await page.waitForLoadState('networkidle');
+      // buyerとしてログイン
+      await loginAsBuyer(page);
+
       // buyerとしてログインが完了していることを確認（ユーザー名が表示される）
       await expect(page.locator('text=購入者テスト')).toBeVisible({ timeout: 10000 });
 

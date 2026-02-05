@@ -1,14 +1,27 @@
 /**
  * インメモリ注文リポジトリ
  * デモ・テスト用
+ *
+ * 注意: Next.js開発モードではHMRによりモジュールが再読み込みされるため、
+ * グローバル変数を使用してデータを保持しています。
  */
 import type { Order, OrderStatus } from '@/contracts/orders';
 import type { Cart } from '@/contracts/cart';
-import type { OrderRepository, CartFetcher } from '@/domains/orders/api/usecases';
+import type { OrderRepository, CartFetcher } from '@/samples/domains/orders/api/usecases';
 import { cartRepository, clearCart } from './cart';
 
+// グローバル変数の型定義（HMR対策）
+declare global {
+  // eslint-disable-next-line no-var
+  var __orderStore: Map<string, Order> | undefined;
+}
+
 // インメモリストア
-const orders = new Map<string, Order>();
+// HMR対策：グローバル変数を使用してデータを保持
+const orders = globalThis.__orderStore ?? new Map<string, Order>();
+if (!globalThis.__orderStore) {
+  globalThis.__orderStore = orders;
+}
 
 function generateId(): string {
   return crypto.randomUUID();

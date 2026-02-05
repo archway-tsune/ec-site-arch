@@ -2,7 +2,7 @@
  * 注文一覧・作成API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrders, createOrder, EmptyCartError } from '@/domains/orders/api';
+import { getOrders, createOrder, EmptyCartError } from '@/samples/domains/orders/api';
 import { orderRepository, cartFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

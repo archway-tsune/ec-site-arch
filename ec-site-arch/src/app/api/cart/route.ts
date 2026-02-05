@@ -2,7 +2,7 @@
  * カート取得API
  */
 import { NextResponse } from 'next/server';
-import { getCart } from '@/domains/cart/api';
+import { getCart } from '@/samples/domains/cart/api';
 import { cartRepository, productFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

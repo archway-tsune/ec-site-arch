@@ -1,11 +1,18 @@
 /**
  * ログアウトAPI
  */
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { destroyServerSession } from '@/infrastructure/auth';
-import { success } from '@/foundation/errors/response';
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   await destroyServerSession();
-  return NextResponse.json(success({ message: 'ログアウトしました' }));
+  const url = new URL('/catalog', request.url);
+  return NextResponse.redirect(url);
+}
+
+// GETリクエストへの対応（リダイレクト）
+export async function GET(request: NextRequest) {
+  await destroyServerSession();
+  const url = new URL('/catalog', request.url);
+  return NextResponse.redirect(url);
 }

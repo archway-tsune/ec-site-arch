@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import { Layout } from '@/templates/ui/components/layout/Layout';
 
 interface SessionData {
@@ -14,10 +15,10 @@ export default function BuyerLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [session, setSession] = useState<SessionData | null>(null);
   const [cartCount, setCartCount] = useState(0);
   const [isReady, setIsReady] = useState(false);
-  const initRef = useRef(false);
 
   const fetchSession = useCallback(async (): Promise<SessionData | null> => {
     try {
@@ -25,33 +26,11 @@ export default function BuyerLayout({
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
-          setSession(data.data);
           return data.data;
         }
       }
     } catch {
       // セッションなし
-    }
-    return null;
-  }, []);
-
-  const autoLogin = useCallback(async () => {
-    // デモ用：自動でbuyer としてログイン
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: 'buyer@example.com', password: 'demo' }),
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          setSession(data.data);
-          return data.data;
-        }
-      }
-    } catch {
-      // ログイン失敗
     }
     return null;
   }, []);
@@ -70,31 +49,29 @@ export default function BuyerLayout({
     }
   }, []);
 
+  // 初回読み込みとルート変更時にセッションを確認
   useEffect(() => {
-    const init = async () => {
-      if (initRef.current) return;
-      initRef.current = true;
-
-      let currentSession = await fetchSession();
-      if (!currentSession) {
-        // 未認証の場合、デモ用に自動ログイン
-        currentSession = await autoLogin();
-      }
+    const checkSession = async () => {
+      const currentSession = await fetchSession();
+      setSession(currentSession);
       if (currentSession) {
         await fetchCartCount();
+      } else {
+        setCartCount(0);
       }
       setIsReady(true);
     };
-    init();
+    checkSession();
+  }, [pathname, fetchSession, fetchCartCount]);
 
-    // カスタムイベントでカート更新を監視
+  // カスタムイベントでカート更新を監視
+  useEffect(() => {
     const handleCartUpdate = () => fetchCartCount();
     window.addEventListener('cart-updated', handleCartUpdate);
-
     return () => {
       window.removeEventListener('cart-updated', handleCartUpdate);
     };
-  }, [fetchSession, autoLogin, fetchCartCount]);
+  }, [fetchCartCount]);
 
   const navLinks = [
     { href: '/catalog', label: '商品一覧' },

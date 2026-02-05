@@ -49,6 +49,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
       '@/foundation': path.resolve(__dirname, './src/foundation'),
       '@/templates': path.resolve(__dirname, './src/templates'),
+      '@/samples': path.resolve(__dirname, './src/samples'),
       '@/domains': path.resolve(__dirname, './src/domains'),
       '@/test-utils': path.resolve(__dirname, './tests/utils/index.ts'),
     },

@@ -93,7 +93,7 @@ export function BuyerLayout({
   loginPath = '/login',
   logoutPath = '/api/auth/logout',
   autoLogin = {
-    enabled: true,
+    enabled: false,
     email: 'buyer@example.com',
     password: 'demo',
   },

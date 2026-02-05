@@ -22,6 +22,7 @@
       "@/*": ["./src/*"],
       "@/foundation/*": ["./src/foundation/*"],
       "@/templates/*": ["./src/templates/*"],
+      "@/samples/*": ["./src/samples/*"],
       "@/domains/*": ["./src/domains/*"],
       "@/test-utils": ["./tests/utils/index.ts"]
     },

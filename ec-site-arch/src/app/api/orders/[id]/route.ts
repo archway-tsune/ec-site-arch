@@ -2,7 +2,7 @@
  * 注文詳細・ステータス更新API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrderById, updateOrderStatus, NotFoundError, InvalidStatusTransitionError } from '@/domains/orders/api';
+import { getOrderById, updateOrderStatus, NotFoundError, InvalidStatusTransitionError } from '@/samples/domains/orders/api';
 import { orderRepository, cartFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

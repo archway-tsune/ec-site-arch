@@ -2,7 +2,7 @@
  * カート更新・削除API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { updateCartItem, removeFromCart, CartItemNotFoundError } from '@/domains/cart/api';
+import { updateCartItem, removeFromCart, CartItemNotFoundError } from '@/samples/domains/cart/api';
 import { cartRepository, productFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

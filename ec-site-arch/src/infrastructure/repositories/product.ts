@@ -1,9 +1,12 @@
 /**
  * インメモリ商品リポジトリ
  * デモ・テスト用
+ *
+ * 注意: Next.js開発モードではHMRによりモジュールが再読み込みされるため、
+ * グローバル変数を使用してデータを保持しています。
  */
 import type { Product } from '@/contracts/catalog';
-import type { ProductRepository } from '@/domains/catalog/api/usecases';
+import type { ProductRepository } from '@/samples/domains/catalog/api/usecases';
 
 // サンプル商品データ
 const sampleProducts: Product[] = [
@@ -69,10 +72,24 @@ const sampleProducts: Product[] = [
   },
 ];
 
+// グローバル変数の型定義（HMR対策）
+declare global {
+  // eslint-disable-next-line no-var
+  var __productStore: Map<string, Product> | undefined;
+}
+
 // インメモリストア
-const products = new Map<string, Product>(
-  sampleProducts.map((p) => [p.id, p])
-);
+// HMR対策：グローバル変数を使用してデータを保持
+function initializeProductStore(): Map<string, Product> {
+  if (globalThis.__productStore) {
+    return globalThis.__productStore;
+  }
+  const store = new Map<string, Product>(sampleProducts.map((p) => [p.id, p]));
+  globalThis.__productStore = store;
+  return store;
+}
+
+const products = initializeProductStore();
 
 function generateId(): string {
   return crypto.randomUUID();
@@ -140,3 +157,9 @@ export const productRepository: ProductRepository = {
     return items.length;
   },
 };
+
+// テスト用：商品ストアをリセット（サンプルデータを再投入）
+export function resetProductStore(): void {
+  products.clear();
+  sampleProducts.forEach((p) => products.set(p.id, { ...p }));
+}

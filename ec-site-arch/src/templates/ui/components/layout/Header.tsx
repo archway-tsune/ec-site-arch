@@ -30,6 +30,8 @@ export interface HeaderProps {
   loginHref?: string;
   /** ログアウトリンク */
   logoutHref?: string;
+  /** ログインボタンクリック時のコールバック（デモ用） */
+  onLogin?: () => void;
 }
 
 /**
@@ -46,6 +48,7 @@ export function Header({
   loginUrl = '/login',
   loginHref,
   logoutHref,
+  onLogin,
 }: HeaderProps) {
   const effectiveLoginUrl = loginHref || loginUrl;
   return (
@@ -113,14 +116,24 @@ export function Header({
                   {userName}
                 </span>
                 {logoutHref && (
-                  <a
-                    href={logoutHref}
-                    className="text-sm font-medium text-base-900/70 hover:text-base-900"
-                  >
-                    ログアウト
-                  </a>
+                  <form action={logoutHref} method="post" className="inline">
+                    <button
+                      type="submit"
+                      className="text-sm font-medium text-base-900/70 hover:text-base-900"
+                    >
+                      ログアウト
+                    </button>
+                  </form>
                 )}
               </div>
+            ) : onLogin ? (
+              <button
+                type="button"
+                onClick={onLogin}
+                className="text-sm font-medium text-base-900/70 hover:text-base-900"
+              >
+                ログイン
+              </button>
             ) : (
               <a
                 href={effectiveLoginUrl}

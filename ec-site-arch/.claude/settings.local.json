@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install:*)",
+      "Bash(pnpm test:unit:*)",
+      "Bash(npx vitest:*)",
+      "Bash(pnpm vitest run:*)",
+      "Bash(pnpm tsc:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(npx playwright install chromium)",
+      "Bash(pnpm test:e2e:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(curl:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm test:*)"
+    ]
+  }
+}

@@ -6,10 +6,13 @@ ECサイト開発のためのアーキテクチャ基盤テンプレートです
 
 ```
 your-project/
-├── ec-site-arch/     # アプリケーションコード（Next.js）
-├── specs/            # speckit仕様
-│   └── constitution.md
-└── README.md         # このファイル
+├── ec-site-arch/           # アプリケーションコード（speckit実行）
+│   ├── .specify/memory/
+│   │   └── constitution.md # 憲法（ここに保存）
+│   └── src/
+├── specs/                  # speckit仕様（機能仕様）
+│   └── 001-feature/
+└── README.md
 ```
 
 ## クイックスタート
@@ -36,19 +39,20 @@ pnpm dev
 ### 3. speckit憲法の作成
 
 ```bash
-# リポジトリルートに戻る
-cd ..
-
-# speckit.constitution を実行
-# → specs/constitution.md が生成される
+# ec-site-arch ディレクトリで実行（移動不要）
+/speckit.constitution
+# → .specify/memory/constitution.md が上書きされる
 ```
+
+**注意**: テンプレートの `constitution.md` はアーキテクチャ基盤用です。
+必ず実行して、プロジェクト固有の内容に上書きしてください。
 
 入力例は `ec-site-arch/docs/examples/constitution-example.md` を参照
 
 ### 4. 機能開発
 
 ```bash
-# リポジトリルートで実行
+# ec-site-arch ディレクトリで実行
 /speckit.specify "新機能の説明"
 /speckit.plan
 /speckit.tasks
@@ -79,12 +83,13 @@ ec-site-arch/
 
 ```
 specs/
-├── constitution.md           # プロジェクト憲法
 └── 001-feature-name/         # 機能仕様
     ├── spec.md
     ├── plan.md
     └── tasks.md
 ```
+
+**注意**: 憲法（constitution）は `ec-site-arch/.specify/memory/constitution.md` に保存されます。
 
 ---
 

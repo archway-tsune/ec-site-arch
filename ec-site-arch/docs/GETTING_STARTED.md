@@ -7,13 +7,16 @@
 ## プロジェクト構成
 
 ```
-your-project/              ← リポジトリルート（speckit実行）
-├── ec-site-arch/          ← アプリケーションコード
+your-project/              ← リポジトリルート
+├── ec-site-arch/          ← アプリケーションコード（speckit実行）
+│   ├── .specify/          ← speckit設定
+│   │   └── memory/
+│   │       └── constitution.md  ← 憲法
 │   ├── src/
 │   ├── tests/
 │   └── package.json
-├── specs/                 ← speckit仕様
-│   └── constitution.md
+├── specs/                 ← speckit仕様（機能仕様）
+│   └── 001-feature/
 └── README.md
 ```
 
@@ -53,15 +56,15 @@ pnpm test:e2e
 ### 1.4 speckit憲法の作成
 
 ```bash
-# リポジトリルートに戻る
-cd ..
-
-# speckit.constitution を実行
+# ec-site-arch ディレクトリで実行
 /speckit.constitution
-# → specs/constitution.md が生成される
+# → .specify/memory/constitution.md が上書きされる
 ```
 
-入力例は `ec-site-arch/docs/examples/constitution-example.md` を参照
+**注意**: テンプレートに含まれる `constitution.md` はアーキテクチャ基盤用です。
+必ず `/speckit.constitution` を実行して、プロジェクト固有の内容に上書きしてください。
+
+入力例は `docs/examples/constitution-example.md` を参照
 
 ---
 

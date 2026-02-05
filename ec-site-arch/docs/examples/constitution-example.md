@@ -8,12 +8,15 @@
 ## 実行ディレクトリ
 
 ```bash
-# リポジトリルートで実行（ec-site-arch/ の親ディレクトリ）
-cd /path/to/your-project
+# アプリケーションディレクトリで実行
+cd /path/to/your-project/ec-site-arch
 /speckit.constitution
 
-# 出力先: specs/constitution.md
+# 上書きされるファイル: .specify/memory/constitution.md
 ```
+
+**注意**: テンプレートに含まれる `constitution.md` はアーキテクチャ基盤用です。
+新規プロジェクトでは `/speckit.constitution` を実行して、プロジェクト固有の内容に上書きしてください。
 
 ---
 

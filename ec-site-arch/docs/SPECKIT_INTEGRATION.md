@@ -13,14 +13,17 @@
 
 ```
 your-ec-project/
-├── specs/                    # speckit仕様ディレクトリ
-│   ├── constitution.md       # プロジェクト憲法
-│   └── 001-feature-name/     # 機能仕様
+├── specs/                    # speckit仕様（機能仕様）
+│   └── 001-feature-name/
 │       ├── spec.md
 │       ├── plan.md
 │       └── tasks.md
 │
-├── ec-site-arch/             # アーキテクチャ（このテンプレート）
+├── ec-site-arch/             # アプリケーションコード（speckit実行）
+│   ├── .specify/             # speckit設定
+│   │   ├── memory/
+│   │   │   └── constitution.md  # 憲法（ここに保存）
+│   │   └── templates/
 │   ├── src/
 │   │   ├── foundation/       # 共通基盤
 │   │   ├── templates/        # 再利用テンプレート

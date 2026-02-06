@@ -35,6 +35,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `.claude/` | speckit initで作成 |
 | `.specify/` | speckit initで作成 |
 | `scripts/` | 開発者向けツール（このディレクトリ） |
+| `specs/` | アーキテクチャ用の仕様 |
 | `*.tsbuildinfo` | TypeScriptビルドキャッシュ |
 | `pnpm-lock.yaml` | ロックファイル（サイズ大） |
 | `*.zip` | 既存のZIPファイル |

@@ -21,7 +21,8 @@ $excludeDirs = @(
     '.git',
     '.claude',
     '.specify',
-    'scripts'
+    'scripts',
+    'specs'
 )
 
 $excludeFiles = @(

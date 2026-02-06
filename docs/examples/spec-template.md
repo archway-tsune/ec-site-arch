@@ -142,6 +142,7 @@ src/domains/catalog/
 ### アーキテクチャ
 - `src/domains/catalog/` に実装
 - templates/ のListPageTemplate、DetailPageTemplateを使用
+- サンプル用のE2Eテストは実行から除外する
 
 ### データアクセス
 - インメモリリポジトリ（開発用）

@@ -113,11 +113,8 @@ src/domains/catalog/
 │   ├── ProductList.tsx
 │   ├── ProductCard.tsx
 │   └── ProductDetail.tsx
-├── types/
-│   └── index.ts
-└── tests/
-    └── unit/
-        └── usecases.test.ts
+└── types/
+    └── index.ts
 \`\`\`
 
 ## テスト要件

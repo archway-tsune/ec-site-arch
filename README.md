@@ -55,6 +55,17 @@ src/
 ├── domains/             # 本番ドメイン実装（ここに実装）
 ├── infrastructure/      # インフラ層実装
 └── app/                 # Next.js App Router
+
+tests/
+├── e2e/                 # E2Eテスト（Playwright）
+├── integration/         # 統合テスト
+│   ├── domains/         # ドメイン実装の統合テスト
+│   ├── foundation/      # 共通基盤の統合テスト
+│   └── templates/       # テンプレートの統合テスト
+└── unit/                # 単体テスト
+    ├── domains/         # ドメイン実装の単体テスト
+    ├── foundation/      # 共通基盤の単体テスト
+    └── templates/       # テンプレートの単体テスト
 ```
 
 ---

@@ -176,34 +176,30 @@ src/domains/catalog/
 
 ## フェーズ1: 基盤実装
 
-### Task 1-1: 型定義・リポジトリ
-- [ ] T001 Product型定義を実装する `src/domains/catalog/types/index.ts`
-- [ ] T002 Productリポジトリを実装する `src/infrastructure/repositories/product.ts`
+### 型定義・リポジトリ
+- Product型定義を実装する
+- Productリポジトリを実装する
 
-### Task 1-2: APIユースケース
-- [ ] T003 GetProductsユースケースを実装する `src/domains/catalog/api/usecases.ts`
-- [ ] T004 GetProductByIdユースケースを実装する `src/domains/catalog/api/usecases.ts`
-- [ ] T005 [P] ユースケースの単体テストを実装する
+### APIユースケース
+- ユースケースの単体テストを作成する（Red）
+- GetProducts・GetProductByIdユースケースを実装する（Green）
+- APIエクスポートを定義する
 
 ## フェーズ2: UI実装
 
-### Task 2-1: コンポーネント
-- [ ] T006 [P] ProductCardコンポーネントを実装する `src/domains/catalog/ui/ProductCard.tsx`
-- [ ] T007 ProductListコンポーネントを実装する `src/domains/catalog/ui/ProductList.tsx`
-- [ ] T008 ProductDetailコンポーネントを実装する `src/domains/catalog/ui/ProductDetail.tsx`
+### コンポーネント
+- ProductCardの単体テスト・実装
+- ProductListの単体テスト・実装
+- ProductDetailの単体テスト・実装
 
-### Task 2-2: ページ・API
-- [ ] T009 商品一覧ページを実装する `src/app/(buyer)/catalog/page.tsx`
-- [ ] T010 商品詳細ページを実装する `src/app/(buyer)/catalog/[id]/page.tsx`
-- [ ] T011 [P] APIルートを実装する `src/app/api/catalog/products/route.ts`
+### ページ・APIルート
+- 商品一覧ページを実装する
+- 商品詳細ページを実装する
+- APIルートを実装する
 
 ## フェーズ3: テスト
 
-### Task 3-1: E2Eテスト
-- [ ] T012 カタログ機能E2Eテストを実装する `tests/e2e/catalog.spec.ts`
-
-## 依存関係
-- T001 → T002, T003, T004
-- T003, T004 → T007, T008, T009, T010, T011
-- T006 → T007
+- API統合テストを作成する
+- E2Eテストを作成する
+- 品質ゲート全項目を確認する
 ```

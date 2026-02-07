@@ -95,38 +95,56 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-  # アーキテクチャ基盤自体のE2Eテスト（main/develop への push 時のみ実行）
+  # アーキテクチャ基盤自体のE2Eテスト
+  # playwright.arch.config.ts が存在する場合のみ実行（ZIP展開プロジェクトには含まれない）
   e2e-arch:
     runs-on: ubuntu-latest
     needs: quality
-    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check if architecture E2E tests exist
+        id: check-arch
+        run: |
+          if [ -f "playwright.arch.config.ts" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Setup Node.js
+        if: steps.check-arch.outputs.exists == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
       - name: Setup pnpm
+        if: steps.check-arch.outputs.exists == 'true'
         uses: pnpm/action-setup@v3
         with:
           version: 8
 
       - name: Install dependencies
+        if: steps.check-arch.outputs.exists == 'true'
         run: pnpm install
 
       - name: Install Playwright browsers
+        if: steps.check-arch.outputs.exists == 'true'
         run: pnpm exec playwright install --with-deps
 
       - name: Run Architecture E2E tests
+        if: steps.check-arch.outputs.exists == 'true'
         run: pnpm test:e2e:arch
 
       - name: Upload Architecture E2E test results
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && steps.check-arch.outputs.exists == 'true'
         with:
           name: playwright-report-arch
           path: playwright-report/
           retention-days: 7
+
+      - name: Skip (architecture E2E not found)
+        if: steps.check-arch.outputs.exists == 'false'
+        run: echo "playwright.arch.config.ts not found — skipping architecture E2E tests"

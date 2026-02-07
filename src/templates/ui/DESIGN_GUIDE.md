@@ -201,26 +201,173 @@ import { ConfirmDialog } from '@/templates/ui/components/dialog';
 - Escapeキーまたはオーバーレイクリックで閉じる
 - キャンセルボタンに自動フォーカス
 
+## ナビゲーション
+
+### ページネーション
+
+```tsx
+import { Pagination } from '@/templates/ui/components/navigation';
+
+// 一覧画面のページネーション
+<Pagination
+  page={1}
+  limit={10}
+  total={50}
+  totalPages={5}
+  onPageChange={(page) => setCurrentPage(page)}
+/>
+// → 「全50件中 1〜10件を表示」+ 前へ/次へボタン
+// → total=0 または totalPages=1 の場合は非表示
+```
+
+- `aria-label="ページネーション"` でナビゲーションロールを提供
+- 1ページ目では「前へ」ボタンが無効化
+- 最終ページでは「次へ」ボタンが無効化
+
+## データ表示
+
+### ステータスバッジ
+
+```tsx
+import { StatusBadge } from '@/templates/ui/components/data-display';
+
+// ドメインごとにステータス色とラベルを定義
+const statusColors: Record<string, string> = {
+  pending: 'bg-yellow-100 text-yellow-800',
+  confirmed: 'bg-blue-100 text-blue-800',
+  shipped: 'bg-green-100 text-green-800',
+};
+
+const statusLabels: Record<string, string> = {
+  pending: '保留中',
+  confirmed: '確認済み',
+  shipped: '発送済み',
+};
+
+<StatusBadge
+  status={order.status}
+  statusColors={statusColors}
+  statusLabels={statusLabels}
+/>
+// → 未定義ステータスは bg-base-100 text-base-900 でそのまま表示
+```
+
+- `role="status"` で支援技術に通知
+- `rounded-full` のピル型バッジ
+
+### 画像プレースホルダー
+
+```tsx
+import { ImagePlaceholder } from '@/templates/ui/components/data-display';
+
+// 画像URLがある場合は画像を表示、ない場合はSVGプレースホルダー
+<ImagePlaceholder
+  src={product.imageUrl}
+  alt={product.name}
+  size="md"
+/>
+```
+
+| サイズ | Tailwind クラス | ピクセル |
+|--------|-----------------|---------|
+| `sm` | `w-16 h-16` | 64px |
+| `md` | `w-24 h-24` | 96px（デフォルト） |
+| `lg` | `w-64 h-64` | 256px |
+
+## フォーム（拡張）
+
+### 検索バー
+
+```tsx
+import { SearchBar } from '@/templates/ui/components/form';
+
+<SearchBar
+  onSearch={(query) => handleSearch(query)}
+  defaultValue={currentQuery}
+  placeholder="商品名で検索..."
+/>
+// → Enter キーで検索実行
+// → クリアボタンで入力をリセットし onSearch('') を呼び出し
+```
+
+- `role="search"` で検索ランドマークを提供
+- クリアボタンは入力値がある場合のみ表示
+
+### 数量セレクター
+
+```tsx
+import { QuantitySelector } from '@/templates/ui/components/form';
+
+<QuantitySelector
+  value={item.quantity}
+  min={1}
+  max={item.stock}
+  onChange={(qty) => updateQuantity(item.id, qty)}
+  disabled={isUpdating}
+/>
+// → -/+ ボタンで数量変更
+// → min/max でボタン無効化
+// → min > max の場合は全コントロール無効化
+```
+
+- `aria-live="polite"` で数値変更を支援技術に通知
+- 各ボタンに `aria-label` 設定
+
+## ユーティリティ関数
+
+### 価格フォーマット
+
+```tsx
+import { formatPrice } from '@/templates/ui/utils';
+
+formatPrice(1000);   // → '¥1,000'
+formatPrice(0);      // → '無料'
+formatPrice(15800);  // → '¥15,800'
+formatPrice(-500);   // → '-¥500'
+```
+
+### 日時フォーマット
+
+```tsx
+import { formatDateTime } from '@/templates/ui/utils';
+
+formatDateTime('2026-02-07T14:30:00');  // → '2026/2/7 14:30'
+formatDateTime(new Date());              // → '2026/2/7 10:00'
+formatDateTime('invalid');               // → '-'
+```
+
 ## ファイル構成
 
 ```
 src/templates/ui/
 ├── components/
-│   ├── layout/      # レイアウト関連
+│   ├── layout/         # レイアウト関連
 │   │   ├── Header.tsx
 │   │   ├── Footer.tsx
 │   │   └── Layout.tsx
-│   ├── status/      # 状態表示
+│   ├── status/         # 状態表示
 │   │   ├── Loading.tsx
 │   │   ├── Error.tsx
 │   │   └── Empty.tsx
-│   ├── dialog/      # ダイアログ
+│   ├── dialog/         # ダイアログ
 │   │   └── ConfirmDialog.tsx
-│   └── auth/        # 認証関連
-│       └── Forbidden.tsx
-├── pages/           # 画面テンプレート
+│   ├── auth/           # 認証関連
+│   │   └── Forbidden.tsx
+│   ├── navigation/     # ナビゲーション
+│   │   └── Pagination.tsx
+│   ├── data-display/   # データ表示
+│   │   ├── StatusBadge.tsx
+│   │   └── ImagePlaceholder.tsx
+│   └── form/           # フォーム
+│       ├── FormField.tsx
+│       ├── SearchBar.tsx
+│       └── QuantitySelector.tsx
+├── utils/
+│   ├── events.ts       # カスタムイベント
+│   └── format.ts       # 価格・日時フォーマット
+├── pages/              # 画面テンプレート
 │   ├── list.tsx
 │   ├── detail.tsx
 │   └── form.tsx
-└── DESIGN_GUIDE.md  # 本ファイル
+└── DESIGN_GUIDE.md     # 本ファイル
 ```

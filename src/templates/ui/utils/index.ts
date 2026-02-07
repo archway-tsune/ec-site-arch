@@ -18,3 +18,4 @@ export type {
   CartUpdatedPayload,
   OrderCompletedPayload,
 } from './events';
+export { formatPrice, formatDateTime } from './format';

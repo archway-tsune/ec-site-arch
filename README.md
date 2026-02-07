@@ -58,6 +58,7 @@ src/
 
 tests/
 ├── e2e/                 # E2Eテスト（Playwright）
+│   └── arch/            # アーキテクチャ基盤のE2E（開発時は自動除外）
 ├── integration/         # 統合テスト
 │   ├── domains/         # ドメイン実装の統合テスト
 │   ├── foundation/      # 共通基盤の統合テスト

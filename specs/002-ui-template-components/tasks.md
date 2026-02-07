@@ -19,9 +19,9 @@
 
 **目的**: ディレクトリ構造の作成とエクスポート基盤の整備
 
-- [ ] T001 navigation/ ディレクトリと index.ts を作成する: `src/templates/ui/components/navigation/index.ts`
-- [ ] T002 [P] data-display/ ディレクトリと index.ts を作成する: `src/templates/ui/components/data-display/index.ts`
-- [ ] T003 [P] テストディレクトリ構造を確認・作成する: `tests/unit/templates/ui/components/`, `tests/unit/templates/ui/utils/`
+- [x] T001 navigation/ ディレクトリと index.ts を作成する: `src/templates/ui/components/navigation/index.ts`
+- [x] T002 [P] data-display/ ディレクトリと index.ts を作成する: `src/templates/ui/components/data-display/index.ts`
+- [x] T003 [P] テストディレクトリ構造を確認・作成する: `tests/unit/templates/ui/components/`, `tests/unit/templates/ui/utils/`
 
 ---
 
@@ -35,14 +35,14 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T004 formatPrice の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/utils/format.test.ts` — 正の数（¥1,000）、0（無料）、負の数（-¥500）、大きな数（¥1,000,000）のテストケースを含む
-- [ ] T005 [P] formatDateTime の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/utils/format.test.ts` — 有効なISO文字列、Dateオブジェクト、無効な日時（フォールバック '-'）のテストケースを含む
+- [x] T004 formatPrice の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/utils/format.test.ts` — 正の数（¥1,000）、0（無料）、負の数（-¥500）、大きな数（¥1,000,000）のテストケースを含む
+- [x] T005 [P] formatDateTime の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/utils/format.test.ts` — 有効なISO文字列、Dateオブジェクト、無効な日時（フォールバック '-'）のテストケースを含む
 
 ### 実装（フェーズ2）
 
-- [ ] T006 formatPrice 関数を実装する: `src/templates/ui/utils/format.ts` — ¥記号付きカンマ区切り、0円は「無料」、負の数はマイナス記号付き。JSDocコメント（日本語）、型定義セクション区切り線を含む。contracts/components.ts のシグネチャに準拠する
-- [ ] T007 formatDateTime 関数を実装する: `src/templates/ui/utils/format.ts` — Intl.DateTimeFormat で ja-JP ロケール、年・月・日・時・分を表示、無効な日時は '-' を返す。contracts/components.ts のシグネチャに準拠する
-- [ ] T008 utils/index.ts を更新して formatPrice, formatDateTime をエクスポートする: `src/templates/ui/utils/index.ts`
+- [x] T006 formatPrice 関数を実装する: `src/templates/ui/utils/format.ts` — ¥記号付きカンマ区切り、0円は「無料」、負の数はマイナス記号付き。JSDocコメント（日本語）、型定義セクション区切り線を含む。contracts/components.ts のシグネチャに準拠する
+- [x] T007 formatDateTime 関数を実装する: `src/templates/ui/utils/format.ts` — Intl.DateTimeFormat で ja-JP ロケール、年・月・日・時・分を表示、無効な日時は '-' を返す。contracts/components.ts のシグネチャに準拠する
+- [x] T008 utils/index.ts を更新して formatPrice, formatDateTime をエクスポートする: `src/templates/ui/utils/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/utils/format.test.ts` がすべてパスすること
 
@@ -58,12 +58,12 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T009 [US1] Pagination の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/navigation.test.tsx` — 以下のシナリオを含む: (1) 表示テキスト「全N件中 M〜L件を表示」、(2) 1ページ目で「前へ」ボタン無効化、(3) 最終ページで「次へ」ボタン無効化、(4) 「次へ」クリックで onPageChange 呼び出し、(5) total=0 でコンポーネント非表示
+- [x] T009 [US1] Pagination の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/navigation.test.tsx` — 以下のシナリオを含む: (1) 表示テキスト「全N件中 M〜L件を表示」、(2) 1ページ目で「前へ」ボタン無効化、(3) 最終ページで「次へ」ボタン無効化、(4) 「次へ」クリックで onPageChange 呼び出し、(5) total=0 でコンポーネント非表示
 
 ### 実装（US1）
 
-- [ ] T010 [US1] Pagination コンポーネントを実装する: `src/templates/ui/components/navigation/Pagination.tsx` — 'use client' ディレクティブ、PaginationProps 型定義（contracts/components.ts 準拠）、「全N件中 M〜L件を表示」テキスト、前へ/次へボタン、data-testid 属性、ARIA ナビゲーション属性、base-900/base-50 カラーパレット
-- [ ] T011 [US1] navigation/index.ts を更新して Pagination をエクスポートする: `src/templates/ui/components/navigation/index.ts`
+- [x] T010 [US1] Pagination コンポーネントを実装する: `src/templates/ui/components/navigation/Pagination.tsx` — 'use client' ディレクティブ、PaginationProps 型定義（contracts/components.ts 準拠）、「全N件中 M〜L件を表示」テキスト、前へ/次へボタン、data-testid 属性、ARIA ナビゲーション属性、base-900/base-50 カラーパレット
+- [x] T011 [US1] navigation/index.ts を更新して Pagination をエクスポートする: `src/templates/ui/components/navigation/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/components/navigation.test.tsx` がすべてパスすること
 
@@ -91,12 +91,12 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T012 [US3] ImagePlaceholder の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/data-display.test.tsx` — 以下のシナリオを含む: (1) src指定時に画像表示、(2) src未指定時にSVGプレースホルダー表示、(3) alt属性の設定、(4) sm/md/lg サイズバリアント
+- [x] T012 [US3] ImagePlaceholder の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/data-display.test.tsx` — 以下のシナリオを含む: (1) src指定時に画像表示、(2) src未指定時にSVGプレースホルダー表示、(3) alt属性の設定、(4) sm/md/lg サイズバリアント
 
 ### 実装（US3）
 
-- [ ] T013 [US3] ImagePlaceholder コンポーネントを実装する: `src/templates/ui/components/data-display/ImagePlaceholder.tsx` — ImagePlaceholderProps 型定義（contracts/components.ts 準拠）、sm/md/lg サイズマッピング（w-16 h-16, w-24 h-24, w-64 h-64）、SVGアイコンプレースホルダー、data-testid 属性、alt 属性必須
-- [ ] T014 [US3] data-display/index.ts を更新して ImagePlaceholder をエクスポートする: `src/templates/ui/components/data-display/index.ts`
+- [x] T013 [US3] ImagePlaceholder コンポーネントを実装する: `src/templates/ui/components/data-display/ImagePlaceholder.tsx` — ImagePlaceholderProps 型定義（contracts/components.ts 準拠）、sm/md/lg サイズマッピング（w-16 h-16, w-24 h-24, w-64 h-64）、SVGアイコンプレースホルダー、data-testid 属性、alt 属性必須
+- [x] T014 [US3] data-display/index.ts を更新して ImagePlaceholder をエクスポートする: `src/templates/ui/components/data-display/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/components/data-display.test.tsx` がすべてパスすること
 
@@ -112,12 +112,12 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T015 [US4] StatusBadge の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/data-display.test.tsx` — 以下のシナリオを含む: (1) 定義済みステータスで対応する色とラベルが表示される、(2) 未定義ステータスでデフォルトスタイル（bg-base-100 text-base-900）とステータス値がそのまま表示される
+- [x] T015 [US4] StatusBadge の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/data-display.test.tsx` — 以下のシナリオを含む: (1) 定義済みステータスで対応する色とラベルが表示される、(2) 未定義ステータスでデフォルトスタイル（bg-base-100 text-base-900）とステータス値がそのまま表示される
 
 ### 実装（US4）
 
-- [ ] T016 [US4] StatusBadge コンポーネントを実装する: `src/templates/ui/components/data-display/StatusBadge.tsx` — StatusBadgeProps 型定義（contracts/components.ts 準拠）、rounded-full ピル型バッジ、statusColors/statusLabels による動的スタイリング、未定義ステータスのフォールバック、data-testid 属性
-- [ ] T017 [US4] data-display/index.ts を更新して StatusBadge をエクスポートする: `src/templates/ui/components/data-display/index.ts`
+- [x] T016 [US4] StatusBadge コンポーネントを実装する: `src/templates/ui/components/data-display/StatusBadge.tsx` — StatusBadgeProps 型定義（contracts/components.ts 準拠）、rounded-full ピル型バッジ、statusColors/statusLabels による動的スタイリング、未定義ステータスのフォールバック、data-testid 属性
+- [x] T017 [US4] data-display/index.ts を更新して StatusBadge をエクスポートする: `src/templates/ui/components/data-display/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/components/data-display.test.tsx` がすべてパスすること（US3 + US4）
 
@@ -133,12 +133,12 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T018 [US5] SearchBar の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/form-extended.test.tsx` — 以下のシナリオを含む: (1) テキスト入力してEnterで onSearch 呼び出し、(2) クリアボタンで入力リセットと onSearch('') 呼び出し、(3) 空のまま Enter で onSearch('') 呼び出し、(4) プレースホルダーテキストのカスタマイズ
+- [x] T018 [US5] SearchBar の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/form-extended.test.tsx` — 以下のシナリオを含む: (1) テキスト入力してEnterで onSearch 呼び出し、(2) クリアボタンで入力リセットと onSearch('') 呼び出し、(3) 空のまま Enter で onSearch('') 呼び出し、(4) プレースホルダーテキストのカスタマイズ
 
 ### 実装（US5）
 
-- [ ] T019 [US5] SearchBar コンポーネントを実装する: `src/templates/ui/components/form/SearchBar.tsx` — 'use client' ディレクティブ、SearchBarProps 型定義（contracts/components.ts 準拠）、テキスト入力フィールド、Enterキーハンドラ、クリアボタン（入力値がある場合のみ表示）、data-testid 属性、ARIA 属性、base-900/base-50 カラーパレット
-- [ ] T020 [US5] form/index.ts を更新して SearchBar をエクスポートする: `src/templates/ui/components/form/index.ts`
+- [x] T019 [US5] SearchBar コンポーネントを実装する: `src/templates/ui/components/form/SearchBar.tsx` — 'use client' ディレクティブ、SearchBarProps 型定義（contracts/components.ts 準拠）、テキスト入力フィールド、Enterキーハンドラ、クリアボタン（入力値がある場合のみ表示）、data-testid 属性、ARIA 属性、base-900/base-50 カラーパレット
+- [x] T020 [US5] form/index.ts を更新して SearchBar をエクスポートする: `src/templates/ui/components/form/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/components/form-extended.test.tsx` がすべてパスすること
 
@@ -154,12 +154,12 @@
 
 > **注意: テストを先に書き、実装前にFAILすることを確認する**
 
-- [ ] T021 [US6] QuantitySelector の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/form-extended.test.tsx` — 以下のシナリオを含む: (1) +ボタンで onChange(value+1) 呼び出し、(2) 最小値で-ボタン無効化、(3) 最大値で+ボタン無効化、(4) disabled=true で全コントロール無効化、(5) min > max で全コントロール無効化
+- [x] T021 [US6] QuantitySelector の単体テストを作成する（Given-When-Then形式）: `tests/unit/templates/ui/components/form-extended.test.tsx` — 以下のシナリオを含む: (1) +ボタンで onChange(value+1) 呼び出し、(2) 最小値で-ボタン無効化、(3) 最大値で+ボタン無効化、(4) disabled=true で全コントロール無効化、(5) min > max で全コントロール無効化
 
 ### 実装（US6）
 
-- [ ] T022 [US6] QuantitySelector コンポーネントを実装する: `src/templates/ui/components/form/QuantitySelector.tsx` — 'use client' ディレクティブ、QuantitySelectorProps 型定義（contracts/components.ts 準拠）、-/+ ボタン、数値表示、min/max バリデーション、disabled 状態サポート、data-testid 属性、ARIA 属性、base-900/base-50 カラーパレット
-- [ ] T023 [US6] form/index.ts を更新して QuantitySelector をエクスポートする: `src/templates/ui/components/form/index.ts`
+- [x] T022 [US6] QuantitySelector コンポーネントを実装する: `src/templates/ui/components/form/QuantitySelector.tsx` — 'use client' ディレクティブ、QuantitySelectorProps 型定義（contracts/components.ts 準拠）、-/+ ボタン、数値表示、min/max バリデーション、disabled 状態サポート、data-testid 属性、ARIA 属性、base-900/base-50 カラーパレット
+- [x] T023 [US6] form/index.ts を更新して QuantitySelector をエクスポートする: `src/templates/ui/components/form/index.ts`
 
 **チェックポイント**: `pnpm vitest run tests/unit/templates/ui/components/form-extended.test.tsx` がすべてパスすること（US5 + US6）
 
@@ -171,16 +171,16 @@
 
 ### 単体テストテンプレート
 
-- [ ] T024 [P] コンポーネント単体テストテンプレートにインタラクティブUIのテストパターンを追加する: `src/templates/tests/unit/component.test.tsx` — 現在は loading/error/empty/data パターンのみ。以下のパターンを追加する: (1) ボタンクリックによるコールバック呼び出し（QuantitySelector パターン）、(2) キーボード操作テスト（SearchBar の Enter キーパターン）、(3) 状態バリアントによるスタイル切り替え（StatusBadge パターン）、(4) 条件付き表示/非表示（Pagination の total=0 パターン）、(5) サイズバリアントテスト（ImagePlaceholder の sm/md/lg パターン）
+- [x] T024 [P] コンポーネント単体テストテンプレートにインタラクティブUIのテストパターンを追加する: `src/templates/tests/unit/component.test.tsx` — 現在は loading/error/empty/data パターンのみ。以下のパターンを追加する: (1) ボタンクリックによるコールバック呼び出し（QuantitySelector パターン）、(2) キーボード操作テスト（SearchBar の Enter キーパターン）、(3) 状態バリアントによるスタイル切り替え（StatusBadge パターン）、(4) 条件付き表示/非表示（Pagination の total=0 パターン）、(5) サイズバリアントテスト（ImagePlaceholder の sm/md/lg パターン）
 
 ### E2Eテストテンプレート
 
-- [ ] T025 [P] 購入者導線E2Eテンプレートに新コンポーネントの操作パターンを追加する: `src/templates/tests/e2e/buyer-flow.spec.ts` — 以下を追加する: (1) SearchBar を使用した商品検索シナリオ（`data-testid="search-input"` への入力 + Enter キー + クリアボタン）、(2) Pagination を使用したページ遷移シナリオ（`data-testid="pagination-next"` / `data-testid="pagination-prev"` クリック + 表示テキスト検証）、(3) QuantitySelector の +/- ボタン操作パターン（`data-testid="quantity-increment"` / `data-testid="quantity-decrement"` に変更）、(4) ImagePlaceholder のプレースホルダー表示検証
-- [ ] T026 [P] 管理者導線E2Eテンプレートに新コンポーネントの操作パターンを追加する: `src/templates/tests/e2e/admin-flow.spec.ts` — 以下を追加する: (1) StatusBadge の表示検証シナリオ（`data-testid="status-badge"` のテキスト・色の確認）、(2) Pagination を使用した商品・注文一覧のページ遷移シナリオ、(3) SearchBar を使用した管理画面検索シナリオ
+- [x] T025 [P] 購入者導線E2Eテンプレートに新コンポーネントの操作パターンを追加する: `src/templates/tests/e2e/buyer-flow.spec.ts` — 以下を追加する: (1) SearchBar を使用した商品検索シナリオ（`data-testid="search-input"` への入力 + Enter キー + クリアボタン）、(2) Pagination を使用したページ遷移シナリオ（`data-testid="pagination-next"` / `data-testid="pagination-prev"` クリック + 表示テキスト検証）、(3) QuantitySelector の +/- ボタン操作パターン（`data-testid="quantity-increment"` / `data-testid="quantity-decrement"` に変更）、(4) ImagePlaceholder のプレースホルダー表示検証
+- [x] T026 [P] 管理者導線E2Eテンプレートに新コンポーネントの操作パターンを追加する: `src/templates/tests/e2e/admin-flow.spec.ts` — 以下を追加する: (1) StatusBadge の表示検証シナリオ（`data-testid="status-badge"` のテキスト・色の確認）、(2) Pagination を使用した商品・注文一覧のページ遷移シナリオ、(3) SearchBar を使用した管理画面検索シナリオ
 
 ### テストガイドドキュメント
 
-- [ ] T027 テストガイド README.md に新コンポーネントの data-testid 規約とテスト例を追加する: `src/templates/tests/README.md` — 以下を追加する: (1) data-testid 規約表に新パターンを追加（`{name}-badge`, `pagination-next`/`pagination-prev`/`pagination-info`, `search-input`/`search-clear`, `quantity-increment`/`quantity-decrement`/`quantity-value`）、(2) FE単体テスト例にインタラクティブコンポーネントのテスト例を追加（QuantitySelector の +/- ボタン、SearchBar の Enter キー）、(3) E2Eテスト例に Pagination, SearchBar の操作パターンを追加
+- [x] T027 テストガイド README.md に新コンポーネントの data-testid 規約とテスト例を追加する: `src/templates/tests/README.md` — 以下を追加する: (1) data-testid 規約表に新パターンを追加（`{name}-badge`, `pagination-next`/`pagination-prev`/`pagination-info`, `search-input`/`search-clear`, `quantity-increment`/`quantity-decrement`/`quantity-value`）、(2) FE単体テスト例にインタラクティブコンポーネントのテスト例を追加（QuantitySelector の +/- ボタン、SearchBar の Enter キー）、(3) E2Eテスト例に Pagination, SearchBar の操作パターンを追加
 
 **チェックポイント**: テストテンプレートファイルが更新され、既存テストに影響がないことを確認
 
@@ -190,10 +190,10 @@
 
 **目的**: ドキュメント更新、既存テストのリグレッション確認、品質検証
 
-- [ ] T028 [P] DESIGN_GUIDE.md を更新し、全新規コンポーネントの使用例を追記する: `src/templates/ui/DESIGN_GUIDE.md` — Pagination, StatusBadge, ImagePlaceholder, SearchBar, QuantitySelector, formatPrice, formatDateTime の使用例とインポートパスを記載する
-- [ ] T029 [P] 全単体テストを実行してリグレッションがないことを確認する: `pnpm vitest run` — 既存テスト + 新規テストすべてがパスすること
-- [ ] T030 [P] 全E2Eテストを実行してリグレッションがないことを確認する: `pnpm playwright test` — 既存25件のE2Eテストがすべてパスすること
-- [ ] T031 quickstart.md の使用例が正しいことを検証する: `specs/002-ui-template-components/quickstart.md` のインポートパスとコンポーネント名が実装と一致することを確認する
+- [x] T028 [P] DESIGN_GUIDE.md を更新し、全新規コンポーネントの使用例を追記する: `src/templates/ui/DESIGN_GUIDE.md` — Pagination, StatusBadge, ImagePlaceholder, SearchBar, QuantitySelector, formatPrice, formatDateTime の使用例とインポートパスを記載する
+- [x] T029 [P] 全単体テストを実行してリグレッションがないことを確認する: `pnpm vitest run` — 既存テスト + 新規テストすべてがパスすること
+- [x] T030 [P] 全E2Eテストを実行してリグレッションがないことを確認する: `pnpm playwright test` — 既存25件のE2Eテストがすべてパスすること
+- [x] T031 quickstart.md の使用例が正しいことを検証する: `specs/002-ui-template-components/quickstart.md` のインポートパスとコンポーネント名が実装と一致することを確認する
 
 ---
 

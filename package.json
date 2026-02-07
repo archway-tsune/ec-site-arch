@@ -13,6 +13,7 @@
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
     "test:e2e": "playwright test",
+    "test:e2e:arch": "playwright test --config playwright.arch.config.ts",
     "test:coverage": "vitest run --coverage",
     "release:zip": "powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1"
   },

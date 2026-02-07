@@ -204,4 +204,82 @@ test.describe('管理者導線', () => {
       await expect(page).not.toHaveURL('/admin/dashboard');
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // 共通UIコンポーネント操作パターン（管理者向け）
+  // ─────────────────────────────────────────────────────────────────
+  //
+  // 以下は、テンプレートコンポーネントを使用した管理者向け操作パターンの雛形です。
+  // 実際の管理画面テストに組み込んで使用してください。
+
+  test.describe('注文ステータスバッジ（StatusBadge パターン）', () => {
+    test('注文ステータスが色付きバッジで表示される', async ({ page }) => {
+      // Given: 注文一覧ページにいる
+      await page.goto('/admin/orders');
+
+      // Then: ステータスバッジが表示される
+      const badge = page.locator('[data-testid="status-badge"]').first();
+      await expect(badge).toBeVisible();
+
+      // Then: バッジにステータステキストが含まれる
+      const text = await badge.textContent();
+      expect(text).toBeTruthy();
+    });
+
+    test('注文詳細でステータスバッジが表示される', async ({ page }) => {
+      // Given: 注文詳細ページにいる
+      await page.goto('/admin/orders');
+      await page.click('[data-testid="order-row"]:first-child');
+
+      // Then: ステータスバッジが表示される
+      await expect(page.locator('[data-testid="status-badge"]')).toBeVisible();
+    });
+  });
+
+  test.describe('商品一覧ページネーション（Pagination パターン）', () => {
+    test('商品一覧でページ遷移できる', async ({ page }) => {
+      // Given: 商品管理ページにいる
+      await page.goto('/admin/products');
+
+      // Then: ページネーション情報が表示される
+      const paginationInfo = page.locator('[data-testid="pagination-info"]');
+      if (await paginationInfo.isVisible()) {
+        await expect(paginationInfo).toContainText('件を表示');
+
+        // When: 「次へ」ボタンをクリック
+        await page.click('[data-testid="pagination-next"]');
+
+        // Then: 次のページの商品が表示される
+        await expect(paginationInfo).toContainText('件を表示');
+      }
+    });
+
+    test('注文一覧でページ遷移できる', async ({ page }) => {
+      // Given: 注文管理ページにいる
+      await page.goto('/admin/orders');
+
+      // Then: ページネーション情報が表示される（件数が多い場合）
+      const paginationInfo = page.locator('[data-testid="pagination-info"]');
+      if (await paginationInfo.isVisible()) {
+        await expect(paginationInfo).toContainText('件を表示');
+      }
+    });
+  });
+
+  test.describe('管理画面検索（SearchBar パターン）', () => {
+    test('商品名で検索できる', async ({ page }) => {
+      // Given: 商品管理ページにいる
+      await page.goto('/admin/products');
+
+      // When: 検索バーにキーワードを入力してEnterキーを押す
+      const searchInput = page.locator('[data-testid="search-input"]');
+      if (await searchInput.isVisible()) {
+        await searchInput.fill('テスト商品');
+        await searchInput.press('Enter');
+
+        // Then: フィルタされた商品一覧が表示される
+        await expect(page.locator('[data-testid="product-row"]')).toBeVisible();
+      }
+    });
+  });
 });

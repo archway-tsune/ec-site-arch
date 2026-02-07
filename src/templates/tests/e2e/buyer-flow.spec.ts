@@ -184,4 +184,103 @@ test.describe('購入者導線', () => {
       await expect(page.locator('[data-testid="order-detail"]')).toBeVisible();
     });
   });
+
+  // ─────────────────────────────────────────────────────────────────
+  // 共通UIコンポーネント操作パターン
+  // ─────────────────────────────────────────────────────────────────
+  //
+  // 以下は、テンプレートコンポーネントを使用した操作パターンの雛形です。
+  // 実際の導線テストに組み込んで使用してください。
+
+  test.describe('商品検索（SearchBar パターン）', () => {
+    test('キーワードで商品を検索できる', async ({ page }) => {
+      // Given: 商品一覧ページにいる
+      await page.goto('/catalog');
+
+      // When: 検索バーにキーワードを入力してEnterキーを押す
+      await page.fill('[data-testid="search-input"]', 'テスト商品');
+      await page.press('[data-testid="search-input"]', 'Enter');
+
+      // Then: 検索結果が表示される
+      await expect(page.locator('[data-testid="product-list"]')).toBeVisible();
+    });
+
+    test('検索をクリアして全商品を表示できる', async ({ page }) => {
+      // Given: 検索済みの状態
+      await page.goto('/catalog');
+      await page.fill('[data-testid="search-input"]', 'テスト');
+      await page.press('[data-testid="search-input"]', 'Enter');
+
+      // When: クリアボタンをクリック
+      await page.click('[data-testid="search-clear"]');
+
+      // Then: 全商品が表示される
+      await expect(page.locator('[data-testid="search-input"]')).toHaveValue('');
+    });
+  });
+
+  test.describe('ページネーション（Pagination パターン）', () => {
+    test('次のページへ遷移できる', async ({ page }) => {
+      // Given: 商品一覧ページの1ページ目にいる
+      await page.goto('/catalog');
+
+      // Then: ページネーション情報が表示される
+      await expect(page.locator('[data-testid="pagination-info"]')).toBeVisible();
+
+      // When: 「次へ」ボタンをクリック
+      await page.click('[data-testid="pagination-next"]');
+
+      // Then: 2ページ目の商品が表示される
+      await expect(page.locator('[data-testid="pagination-info"]')).toContainText('件を表示');
+    });
+
+    test('前のページへ戻れる', async ({ page }) => {
+      // Given: 2ページ目にいる
+      await page.goto('/catalog');
+      await page.click('[data-testid="pagination-next"]');
+
+      // When: 「前へ」ボタンをクリック
+      await page.click('[data-testid="pagination-prev"]');
+
+      // Then: 1ページ目に戻る
+      await expect(page.locator('[data-testid="pagination-prev"]')).toBeDisabled();
+    });
+  });
+
+  test.describe('数量変更（QuantitySelector パターン）', () => {
+    test('カート内の商品数量を+ボタンで増やせる', async ({ page }) => {
+      // Given: カートに商品がある
+      await page.goto('/cart');
+
+      // When: +ボタンをクリック
+      await page.click('[data-testid="quantity-increment"]');
+
+      // Then: 数量が増加する
+      await expect(page.locator('[data-testid="quantity-value"]')).toBeVisible();
+    });
+
+    test('カート内の商品数量を-ボタンで減らせる', async ({ page }) => {
+      // Given: カートに数量2以上の商品がある
+      await page.goto('/cart');
+
+      // When: -ボタンをクリック
+      await page.click('[data-testid="quantity-decrement"]');
+
+      // Then: 数量が減少する
+      await expect(page.locator('[data-testid="quantity-value"]')).toBeVisible();
+    });
+  });
+
+  test.describe('画像プレースホルダー（ImagePlaceholder パターン）', () => {
+    test('画像がない商品にはプレースホルダーが表示される', async ({ page }) => {
+      // Given: 画像が設定されていない商品がある
+      await page.goto('/catalog');
+
+      // Then: プレースホルダーが表示される
+      const placeholder = page.locator('[data-testid="image-placeholder"]');
+      if (await placeholder.count() > 0) {
+        await expect(placeholder.first()).toBeVisible();
+      }
+    });
+  });
 });

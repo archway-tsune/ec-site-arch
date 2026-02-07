@@ -122,6 +122,48 @@ describe('ProductList コンポーネント', () => {
 });
 ```
 
+### インタラクティブコンポーネントのテスト例
+
+```typescript
+// --- ボタン操作テスト（QuantitySelector パターン） ---
+describe('QuantitySelector', () => {
+  it('Given value=3, When +ボタンを押す, Then onChange(4) が呼ばれる', async () => {
+    const onChange = vi.fn();
+    render(<QuantitySelector value={3} min={1} max={10} onChange={onChange} />);
+    await user.click(screen.getByTestId('quantity-increment'));
+    expect(onChange).toHaveBeenCalledWith(4);
+  });
+});
+
+// --- キーボード操作テスト（SearchBar パターン） ---
+describe('SearchBar', () => {
+  it('Given テキスト入力済み, When Enterキーを押す, Then onSearchが呼ばれる', async () => {
+    const onSearch = vi.fn();
+    render(<SearchBar onSearch={onSearch} />);
+    await user.type(screen.getByTestId('search-input'), 'テスト{Enter}');
+    expect(onSearch).toHaveBeenCalledWith('テスト');
+  });
+});
+
+// --- 条件付き表示テスト（Pagination パターン） ---
+describe('Pagination', () => {
+  it('Given total=0, When レンダリング, Then 非表示', () => {
+    const { container } = render(
+      <Pagination page={1} limit={10} total={0} totalPages={0} onPageChange={vi.fn()} />
+    );
+    expect(container.firstChild).toBeNull();
+  });
+});
+
+// --- サイズバリアントテスト（ImagePlaceholder パターン） ---
+describe('ImagePlaceholder', () => {
+  it('Given size="sm", When レンダリング, Then 小サイズ', () => {
+    render(<ImagePlaceholder alt="テスト" size="sm" />);
+    expect(screen.getByTestId('image-placeholder').className).toContain('w-16');
+  });
+});
+```
+
 ## API統合テスト
 
 ### 使い方
@@ -175,14 +217,25 @@ describe('POST /api/products', () => {
 
 ### data-testid 規約
 
-| 要素 | data-testid |
-|------|-------------|
-| 入力フィールド | `{name}-input` |
-| ボタン | `{action}-button` |
-| リスト | `{name}-list` |
-| カード | `{name}-card` |
-| 行 | `{name}-row` |
-| メッセージ | `{type}-message` |
+| 要素 | data-testid | 例 |
+|------|-------------|-----|
+| 入力フィールド | `{name}-input` | `search-input`, `email-input` |
+| ボタン | `{action}-button` | `login-button`, `save-product-button` |
+| リスト | `{name}-list` | `product-list`, `order-list` |
+| カード | `{name}-card` | `product-card` |
+| 行 | `{name}-row` | `product-row`, `order-row` |
+| メッセージ | `{type}-message` | `success-message`, `error-message` |
+| バッジ | `{name}-badge` | `status-badge` |
+| ページネーション前へ | `pagination-prev` | — |
+| ページネーション次へ | `pagination-next` | — |
+| ページネーション情報 | `pagination-info` | — |
+| 検索入力 | `search-input` | — |
+| 検索クリア | `search-clear` | — |
+| 数量増加 | `quantity-increment` | — |
+| 数量減少 | `quantity-decrement` | — |
+| 数量表示 | `quantity-value` | — |
+| 画像プレースホルダー | `image-placeholder` | — |
+| ローディングスピナー | `loading-spinner` | — |
 
 ### 例
 
@@ -198,6 +251,29 @@ test('商品閲覧からカート追加まで', async ({ page }) => {
 
   // Then: カート件数が更新される
   await expect(page.locator('[data-testid="cart-count"]')).toHaveText('1');
+});
+
+// --- SearchBar 操作パターン ---
+test('キーワードで商品を検索', async ({ page }) => {
+  await page.goto('/catalog');
+  await page.fill('[data-testid="search-input"]', 'テスト商品');
+  await page.press('[data-testid="search-input"]', 'Enter');
+  await expect(page.locator('[data-testid="product-list"]')).toBeVisible();
+});
+
+// --- Pagination 操作パターン ---
+test('ページネーションで次ページへ遷移', async ({ page }) => {
+  await page.goto('/catalog');
+  await expect(page.locator('[data-testid="pagination-info"]')).toContainText('件を表示');
+  await page.click('[data-testid="pagination-next"]');
+  await expect(page.locator('[data-testid="pagination-info"]')).toContainText('件を表示');
+});
+
+// --- QuantitySelector 操作パターン ---
+test('数量を+ボタンで変更', async ({ page }) => {
+  await page.goto('/cart');
+  await page.click('[data-testid="quantity-increment"]');
+  await expect(page.locator('[data-testid="quantity-value"]')).toBeVisible();
 });
 ```
 
@@ -219,9 +295,26 @@ pnpm test:unit
 # 統合テスト
 pnpm test:integration
 
-# E2Eテスト
+# E2Eテスト（ドメイン実装のみ）
 pnpm test:e2e
+
+# E2Eテスト（アーキテクチャ基盤の検証用）
+pnpm test:e2e:arch
 
 # カバレッジ確認
 pnpm test:coverage
 ```
+
+### E2Eテストのディレクトリ構成
+
+```
+tests/e2e/
+├── arch/                    # アーキテクチャ基盤のE2E（pnpm test:e2e では除外）
+│   ├── buyer-flow.spec.ts   # 購入者導線
+│   └── admin-flow.spec.ts   # 管理者導線
+├── my-feature.spec.ts       # ← ドメインのE2Eテストはここに配置
+└── ...
+```
+
+- `pnpm test:e2e` — `tests/e2e/` 直下のテストのみ実行（`arch/` は除外）
+- `pnpm test:e2e:arch` — `tests/e2e/arch/` のテストのみ実行

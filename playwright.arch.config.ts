@@ -1,8 +1,15 @@
+/**
+ * アーキテクチャ付属サンプルE2Eテスト用 Playwright 設定
+ *
+ * 実行コマンド: pnpm test:e2e:arch
+ *
+ * ドメイン開発時には実行されない。
+ * アーキテクチャ基盤自体の動作確認にのみ使用する。
+ */
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/e2e',
-  // E2Eテストはインメモリストアを共有するため逐次実行
+  testDir: './tests/e2e/arch',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -17,9 +24,6 @@ export default defineConfig({
     trace: 'on-first-retry',
     actionTimeout: 15000,
   },
-  // アーキテクチャ付属のサンプルE2Eテストを除外（ドメイン開発時に混在しないようにする）
-  // アーキテクチャのE2Eを実行するには: pnpm test:e2e:arch
-  testIgnore: ['**/arch/**'],
   projects: [
     {
       name: 'chromium',

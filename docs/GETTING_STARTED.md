@@ -92,6 +92,26 @@ Claude Codeで以下を実行：
 
 ---
 
+## テスト
+
+### テストコマンド
+
+```bash
+# 単体テスト
+pnpm test:unit
+
+# 統合テスト
+pnpm test:integration
+
+# E2Eテスト（ドメイン実装のテスト）
+pnpm test:e2e
+```
+
+ドメイン実装のE2Eテストは `tests/e2e/` 直下に配置してください。
+`tests/e2e/arch/` 以下のアーキテクチャ基盤用E2Eテストは `pnpm test:e2e` の実行対象から自動的に除外されます。
+
+---
+
 ## 関連ドキュメント
 
 - [SPECKIT_INTEGRATION.md](./SPECKIT_INTEGRATION.md) - speckit連携の詳細

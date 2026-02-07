@@ -36,6 +36,8 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `.specify/` | speckit initで作成 |
 | `scripts/` | 開発者向けツール（このディレクトリ） |
 | `specs/` | アーキテクチャ用の仕様 |
+| `tests/e2e/arch/` | アーキテクチャ用E2Eテスト |
+| `playwright.arch.config.ts` | アーキテクチャ用E2E設定 |
 | `*.tsbuildinfo` | TypeScriptビルドキャッシュ |
 | `pnpm-lock.yaml` | ロックファイル（サイズ大） |
 | `*.zip` | 既存のZIPファイル |
@@ -46,7 +48,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 2. テストを実行して品質を確認
    ```bash
    pnpm test:unit
-   pnpm test:e2e
+   pnpm test:e2e:arch
    pnpm lint
    pnpm typecheck
    ```

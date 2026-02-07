@@ -22,13 +22,16 @@ $excludeDirs = @(
     '.claude',
     '.specify',
     'scripts',
-    'specs'
+    'specs',
+    'tests\e2e\arch',
+    'tests/e2e/arch'
 )
 
 $excludeFiles = @(
     '*.tsbuildinfo',
     'pnpm-lock.yaml',
-    '*.zip'
+    '*.zip',
+    'playwright.arch.config.ts'
 )
 
 # Convert output path to absolute path

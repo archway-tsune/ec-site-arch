@@ -14,25 +14,34 @@ EC Site Architecture Templateを使って新規プロジェクトを開始する
 
 ## セットアップ手順
 
-### Step 1: speckit初期化
+### Step 1: GitHubリポジトリをクローン
 
 ```bash
-speckit init my-ec-project --ai claude
-cd my-ec-project
+git clone <your-repo-url>
+cd <your-repo>
+```
+
+### Step 2: speckit初期化
+
+既存リポジトリのルートディレクトリで実行します：
+
+```bash
+specify init --here --ai claude
 ```
 
 これにより以下が作成されます：
-- `my-ec-project/` - プロジェクトディレクトリ
 - `.claude/commands/` - speckitスキル定義
 - `.specify/` - speckit設定とテンプレート
 
-### Step 2: アーキテクチャコードの展開
+### Step 3: アーキテクチャコードの展開
+
+リリースZIPをリポジトリのルートディレクトリ直下に解凍します：
 
 ```bash
 unzip ec-site-arch.zip -d .
 ```
 
-### Step 3: プロジェクト憲法の作成
+### Step 4: プロジェクト憲法の作成
 
 Claude Codeで以下を実行：
 

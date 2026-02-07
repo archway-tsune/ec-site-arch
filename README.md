@@ -27,14 +27,17 @@ speckitと組み合わせてAI駆動開発を行うことを想定していま�
 ## クイックスタート
 
 ```bash
-# 1. speckit初期化
-speckit init my-ec-project --ai claude
-cd my-ec-project
+# 1. GitHubリポジトリをクローン
+git clone <your-repo-url>
+cd <your-repo>
 
-# 2. アーキテクチャコードの展開
+# 2. speckit初期化（既存リポジトリ内で実行）
+specify init --here --ai claude
+
+# 3. アーキテクチャコードの展開（リリースZIPをリポジトリルートに解凍）
 unzip ec-site-arch.zip -d .
 
-# 3. プロジェクト憲法の作成（Claude Codeで実行）
+# 4. プロジェクト憲法の作成（Claude Codeで実行）
 /speckit.constitution
 ```
 

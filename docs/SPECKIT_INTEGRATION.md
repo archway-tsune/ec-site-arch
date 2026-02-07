@@ -13,26 +13,27 @@
 ## 1. セットアップフロー
 
 ```
-1. speckit init my-ec-project --ai claude  # プロジェクトディレクトリと設定が作成される
-2. cd my-ec-project                        # プロジェクトディレクトリに移動
-3. ec-site-arch.zip 解凍                    # アーキテクチャコードを展開
-4. /speckit.constitution                   # プロジェクト憲法を作成（セットアップ手順を含む）
-5. 開発開始
+1. git clone <your-repo-url>               # GitHubリポジトリをクローン
+2. cd <your-repo>                          # リポジトリのルートに移動
+3. specify init --here --ai claude         # speckit設定を初期化
+4. ec-site-arch.zip 解凍                    # アーキテクチャコードを展開
+5. /speckit.constitution                   # プロジェクト憲法を作成（セットアップ手順を含む）
+6. 開発開始
 ```
 
 ### ディレクトリ構成
 
 ```
-my-ec-project/
+リポジトリのルート/
 ├── .claude/
-│   └── commands/           ← speckit init で作成（スキル定義）
+│   └── commands/           ← specify init で作成（スキル定義）
 │       ├── speckit.specify.md
 │       ├── speckit.plan.md
 │       ├── speckit.tasks.md
 │       ├── speckit.implement.md
 │       └── ...
 │
-├── .specify/               ← speckit init で作成
+├── .specify/               ← specify init で作成
 │   ├── memory/
 │   │   └── constitution.md ← /speckit.constitution で作成
 │   └── templates/

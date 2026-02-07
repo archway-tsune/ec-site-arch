@@ -112,7 +112,7 @@ test.describe('管理者導線', () => {
       await expect(page.locator('[data-testid="confirm-dialog"]')).toBeVisible();
 
       // When: 確認ボタンをクリック
-      await page.click('[data-testid="confirm-delete-button"]');
+      await page.click('[data-testid="confirm-button"]');
 
       // Then: 成功メッセージが表示される
       await expect(page.locator('[data-testid="success-message"]')).toBeVisible();

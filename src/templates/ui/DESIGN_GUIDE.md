@@ -172,6 +172,35 @@ it('適切なARIAラベルが設定されている', () => {
 </div>
 ```
 
+### 確認ダイアログ
+
+```tsx
+// デフォルト（プライマリボタン）
+import { ConfirmDialog } from '@/templates/ui/components/dialog';
+
+<ConfirmDialog
+  open={isOpen}
+  message="この操作を実行しますか？"
+  onConfirm={handleConfirm}
+  onCancel={() => setIsOpen(false)}
+/>
+
+// 危険な操作（赤いボタン）
+<ConfirmDialog
+  open={isOpen}
+  title="商品の削除"
+  message="この商品をカートから削除しますか？"
+  confirmLabel="削除する"
+  variant="danger"
+  onConfirm={handleDelete}
+  onCancel={() => setIsOpen(false)}
+/>
+```
+
+- `role="dialog"` + `aria-modal="true"` で支援技術に通知
+- Escapeキーまたはオーバーレイクリックで閉じる
+- キャンセルボタンに自動フォーカス
+
 ## ファイル構成
 
 ```
@@ -185,6 +214,8 @@ src/templates/ui/
 │   │   ├── Loading.tsx
 │   │   ├── Error.tsx
 │   │   └── Empty.tsx
+│   ├── dialog/      # ダイアログ
+│   │   └── ConfirmDialog.tsx
 │   └── auth/        # 認証関連
 │       └── Forbidden.tsx
 ├── pages/           # 画面テンプレート

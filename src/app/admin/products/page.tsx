@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import type { Product } from '@/contracts/catalog';
+import { ConfirmDialog } from '@/templates/ui/components/dialog';
 
 interface ProductsResponse {
   success: boolean;
@@ -149,29 +150,14 @@ export default function AdminProductsPage() {
       )}
 
       {/* 削除確認ダイアログ */}
-      {deleteConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="rounded-lg bg-white p-6">
-            <p className="mb-4 text-base-900">この商品を削除しますか？</p>
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => setDeleteConfirm(null)}
-                className="rounded-md border border-base-900/20 px-4 py-2 text-sm hover:bg-base-100"
-              >
-                キャンセル
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDelete(deleteConfirm)}
-                className="rounded-md bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700"
-              >
-                削除する
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog
+        open={deleteConfirm !== null}
+        message="この商品を削除しますか？"
+        confirmLabel="削除する"
+        variant="danger"
+        onConfirm={() => deleteConfirm && handleDelete(deleteConfirm)}
+        onCancel={() => setDeleteConfirm(null)}
+      />
     </div>
   );
 }

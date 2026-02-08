@@ -2,18 +2,15 @@
 
 `/speckit.constitution` 実行時の入力例です。
 
----
-
+```
+/speckit.constitution 
 ## プロジェクト概要
 
-```
-プロジェクト名: [Your EC Site Name]
+プロジェクト名: トレーニングECサイト
 説明: Next.js + TypeScriptで構築するECサイト。EC Site Architecture Templateをベースに実装。
-```
 
 ## 技術スタック
 
-```
 - Next.js 14 (App Router)
 - TypeScript 5 (strict mode)
 - React 18
@@ -21,11 +18,9 @@
 - Zod (バリデーション)
 - Vitest (単体・統合テスト)
 - Playwright (E2Eテスト)
-```
 
 ## アーキテクチャ原則
 
-```
 1. テンプレート駆動開発
    - UI/API/テストは templates/ のテンプレートを基に実装
    - 共通基盤は foundation/ を使用
@@ -35,34 +30,37 @@
    - ドメイン間の依存は API 経由のみ
 
 3. テストファースト
-   - 新機能は必ずテストから開始
+   - TDD（Red → Green → Refactor）を徹底する
+   - 各ユースケースにテストタスクを含める
    - カバレッジ80%以上を維持
-```
+   - サンプル用のE2Eテストは実行対象から除外する
+
+4. 実装ワークフロー
+   - 既存のサンプル実装（src/samples/domains/）を参考にし、src/domains/ に本番ドメインとして再構築する
+   - ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする
 
 ## 品質基準
 
-```
 - TypeScript: strictモード、エラー0件
 - ESLint: エラー0件
 - テストカバレッジ: 80%以上
 - E2Eテスト: 主要導線をカバー
 - パフォーマンス: 一覧ページ初回ロード3秒以内
-```
 
 ## 認証・認可
 
-```
 - ロール: buyer（購入者）, admin（管理者）
 - セッション管理: Cookie-based
 - 認可: RBAC (Role-Based Access Control)
-```
 
 ## 命名規約
 
-```
 - ファイル名: kebab-case (例: product-list.tsx)
 - コンポーネント: PascalCase (例: ProductList)
 - 関数: camelCase (例: getProducts)
 - 定数: UPPER_SNAKE_CASE (例: MAX_ITEMS)
 - 型: PascalCase (例: ProductType)
+
+すべての仕様書・計画・タスク・実装に関するドキュメントは日本語で記述すること。
+プロジェクト憲章は、見出し・本文ともにすべて日本語で作成してください。
 ```

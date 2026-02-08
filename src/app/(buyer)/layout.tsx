@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Layout } from '@/templates/ui/components/layout/Layout';
+import type { NavLink } from '@/templates/ui/components/layout/Header';
 
 interface SessionData {
   userId: string;
@@ -73,10 +74,11 @@ export default function BuyerLayout({
     };
   }, [fetchCartCount]);
 
-  const navLinks = [
-    { href: '/catalog', label: '商品一覧' },
-    { href: '/cart', label: 'カート' },
-    { href: '/orders', label: '注文履歴' },
+  const navLinks: NavLink[] = [
+    // ドメイン実装時にリンクを追加する:
+    // { href: '/catalog', label: '商品一覧' },
+    // { href: '/cart', label: 'カート' },
+    // { href: '/orders', label: '注文履歴' },
   ];
 
   const footerLinks = [

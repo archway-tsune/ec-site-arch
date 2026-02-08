@@ -17,7 +17,7 @@
 
 **Purpose**: ベースラインの記録
 
-- [ ] T001 テストのベースラインを記録する（unit テスト数、integration テスト数、E2E テスト数を確認）
+- [x] T001 テストのベースラインを記録する（unit テスト数、integration テスト数、E2E テスト数を確認）
 
 ---
 
@@ -27,7 +27,7 @@
 
 **Independent Test**: `pnpm typecheck` がパスし、既存のテストがすべてパスすること
 
-- [ ] T002 [US1] `src/app/(buyer)/layout.tsx` の `navLinks` を空配列に変更する。コメントで追加例（`{ href: '/catalog', label: '商品一覧' }` 等）を残す
+- [x] T002 [US1] `src/app/(buyer)/layout.tsx` の `navLinks` を空配列に変更する。コメントで追加例（`{ href: '/catalog', label: '商品一覧' }` 等）を残す
 
 **Checkpoint**: 購入者画面のナビゲーションにドメイン固有のリンクが表示されないこと
 
@@ -39,7 +39,7 @@
 
 **Independent Test**: `pnpm typecheck` がパスし、既存のテストがすべてパスすること
 
-- [ ] T003 [US2] `src/app/admin/layout.tsx` の `navLinks` からドメイン固有のリンク（商品管理、注文管理）を削除し、ダッシュボードのみ残す。コメントで追加例を残す
+- [x] T003 [US2] `src/app/admin/layout.tsx` の `navLinks` からドメイン固有のリンク（商品管理、注文管理）を削除し、ダッシュボードのみ残す。コメントで追加例を残す
 
 **Checkpoint**: 管理者画面のサイドバーにダッシュボードのみ表示されること
 
@@ -51,8 +51,8 @@
 
 **Independent Test**: `pnpm typecheck` + `pnpm test:unit` + `pnpm test:integration` がすべてパスし、テスト数がベースラインと一致すること
 
-- [ ] T004 [US3] typecheck を実行してエラーがないことを確認する
-- [ ] T005 [US3] 単体テスト・統合テストを実行し、テスト数がベースラインと一致することを確認する
+- [x] T004 [US3] typecheck を実行してエラーがないことを確認する
+- [x] T005 [US3] 単体テスト・統合テストを実行し、テスト数がベースラインと一致することを確認する
 
 **Checkpoint**: サンプル実装環境で全テストがパスし、既存の振る舞いが維持されていること
 
@@ -64,12 +64,12 @@
 
 **Independent Test**: ドキュメントにナビゲーション追加手順が記載されていること
 
-- [ ] T006 [P] [US4] `docs/examples/constitution-example.md` の実装ワークフローにナビゲーションリンク追加手順を含める
-- [ ] T007 [P] [US4] `docs/examples/spec-catalog-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
-- [ ] T008 [P] [US4] `docs/examples/spec-cart-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
-- [ ] T009 [P] [US4] `docs/examples/spec-order-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
-- [ ] T010 [P] [US4] `docs/examples/spec-product-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
-- [ ] T011 [P] [US4] `src/samples/README.md` にナビゲーション制御の説明を追加する
+- [x] T006 [P] [US4] `docs/examples/constitution-example.md` の実装ワークフローにナビゲーションリンク追加手順を含める
+- [x] T007 [P] [US4] `docs/examples/spec-catalog-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
+- [x] T008 [P] [US4] `docs/examples/spec-cart-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
+- [x] T009 [P] [US4] `docs/examples/spec-order-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
+- [x] T010 [P] [US4] `docs/examples/spec-product-example.md` の `/speckit.plan` 入力にナビゲーションリンク追加を含める
+- [x] T011 [P] [US4] `src/samples/README.md` にナビゲーション制御の説明を追加する
 
 **Checkpoint**: ドキュメントにナビゲーション追加手順が記載されていること
 
@@ -79,7 +79,7 @@
 
 **Purpose**: 全体の整合性確認
 
-- [ ] T012 typecheck / unit / integration すべてパスし、テスト数がベースラインと一致することを最終確認する
+- [x] T012 typecheck / unit / integration すべてパスし、テスト数がベースラインと一致することを最終確認する
 
 ---
 

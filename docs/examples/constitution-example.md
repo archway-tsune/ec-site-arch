@@ -37,6 +37,10 @@
 4. 実装ワークフロー
    - src/domains/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する
    - ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする
+   - ドメイン実装時にレイアウトファイルの navLinks にナビゲーションリンクを追加する
+     - 購入者向け: src/app/(buyer)/layout.tsx の navLinks に追加（例: { href: '/catalog', label: '商品一覧' }）
+     - 管理者向け: src/app/admin/layout.tsx の navLinks に追加（例: { href: '/admin/products', label: '商品管理' }）
+     - navLinks はデフォルトで空（購入者）またはダッシュボードのみ（管理者）。実装したドメインのリンクのみ追加する
 
 ## 品質基準
 

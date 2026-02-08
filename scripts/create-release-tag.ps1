@@ -1,4 +1,4 @@
-# EC Site Architecture - Release Tag Creation Script
+﻿# EC Site Architecture - Release Tag Creation Script
 # Usage: pnpm release
 
 $ErrorActionPreference = "Stop"

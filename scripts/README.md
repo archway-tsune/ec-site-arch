@@ -5,24 +5,46 @@
 
 ---
 
-## create-release-zip.ps1
+## create-release-tag.ps1
 
-アーキテクチャコードをZIPファイルとしてリリースするスクリプト。
+`package.json` のバージョンからタグを自動作成・プッシュし、GitHub Actions でリリースを自動実行するスクリプト。
 
 ### 使用方法
 
 ```bash
-# npm script経由
-pnpm release:zip
+# npm script経由（推奨）
+pnpm release
 
 # 直接実行
-powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1
-
-# カスタム出力パス
-powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -OutputPath "./releases/v1.0.0.zip"
+powershell -ExecutionPolicy Bypass -File ./scripts/create-release-tag.ps1
 ```
 
-### 除外されるファイル/ディレクトリ
+### 動作フロー
+
+1. `package.json` の `version` を読み取る
+2. 現在のブランチが `main` であることを確認
+3. 同名タグの重複チェック
+4. `v{VERSION}` タグを作成・プッシュ
+5. GitHub Actions が自動的にリリースを作成
+
+### 前提条件
+
+- `main` ブランチで実行すること
+- リモートリポジトリにプッシュ権限があること
+- GitHub Actions が有効であること
+
+### エラー時の対処
+
+| エラー | 原因 | 対処 |
+|--------|------|------|
+| "tag vX.Y.Z already exists" | 同じバージョンで既にリリース済み | `package.json` のバージョンを手動で更新する |
+| "current branch is not 'main'" | main 以外のブランチで実行 | `main` ブランチに切り替えてから実行する |
+
+---
+
+## ZIP に含まれないファイル/ディレクトリ
+
+リリース ZIP から除外される対象:
 
 | 除外対象 | 理由 |
 |---------|------|
@@ -40,6 +62,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `*.tsbuildinfo` | TypeScriptビルドキャッシュ |
 | `pnpm-lock.yaml` | ロックファイル（サイズ大） |
 | `*.zip` | 既存のZIPファイル |
+| `.github/workflows/release.yml` | リリースワークフロー |
 
 ### ZIPに含まれるアーキテクチャ関連ファイル
 
@@ -52,7 +75,9 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 > **注意**: `src/samples/tests/` はリリースZIPに含まれますが、`playwright.samples.config.ts` と `vitest.samples.config.ts` は含まれません。
 > ZIP展開後に `src/samples/` を削除すると、サンプルテストも自動的に除外されます。
 
-### リリースフロー
+---
+
+## リリースフロー
 
 1. コードの変更をコミット
 2. テストを実行して品質を確認
@@ -62,25 +87,11 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
    pnpm lint
    pnpm typecheck
    ```
-3. リリースZIPを作成
+3. リリースを実行
    ```bash
-   pnpm release:zip
+   pnpm release
    ```
-4. 生成された `ec-site-arch.zip` を配布
-
-### 出力例
-
-```
-Collecting files...
-Target files: 152
-Copying files...
-Creating ZIP...
-
-========================================
-Release ZIP created successfully
-========================================
-File: ec-site-arch.zip
-Size: 178.66 KB
-Path: C:\path\to\ec-site-arch.zip
-Files: 152
-```
+4. GitHub Actions が自動的に:
+   - リリース ZIP を作成
+   - GitHub Release を公開（リリースノート自動生成）
+   - `package.json` のパッチバージョンをインクリメント

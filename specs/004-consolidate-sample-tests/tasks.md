@@ -19,8 +19,8 @@
 
 **Purpose**: ベースライン記録と移動先ディレクトリの作成
 
-- [ ] T001 テスト数のベースラインを記録する（`pnpm test:unit:samples` 相当のテスト数、`pnpm test:integration:samples` 相当のテスト数、`pnpm test:e2e:arch` のテスト数を記録）
-- [ ] T002 移動先ディレクトリ構造を作成する（`src/samples/tests/unit/domains/{catalog,cart,orders}`, `src/samples/tests/integration/domains/{catalog,cart,orders}`, `src/samples/tests/e2e/domains/{catalog,cart,orders}`）
+- [x] T001 テスト数のベースラインを記録する（`pnpm test:unit:samples` 相当のテスト数、`pnpm test:integration:samples` 相当のテスト数、`pnpm test:e2e:arch` のテスト数を記録）
+- [x] T002 移動先ディレクトリ構造を作成する（`src/samples/tests/unit/domains/{catalog,cart,orders}`, `src/samples/tests/integration/domains/{catalog,cart,orders}`, `src/samples/tests/e2e/domains/{catalog,cart,orders}`）
 
 ---
 
@@ -32,30 +32,30 @@
 
 ### Catalog ドメイン
 
-- [ ] T003 [P] [US1] 単体テストを移動する `src/samples/domains/catalog/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/catalog/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/catalog/api/usecases` に変更
-- [ ] T004 [P] [US1] UIテストを移動する `src/samples/domains/catalog/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/catalog/ui.test.tsx`、import パスを `../../ui/ProductList`, `../../ui/ProductDetail`, `../../ui/ProductCard` から `@/samples/domains/catalog/ui/ProductList`, `@/samples/domains/catalog/ui/ProductDetail`, `@/samples/domains/catalog/ui/ProductCard` に変更
-- [ ] T005 [P] [US1] 統合テストを移動する `src/samples/domains/catalog/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/catalog/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/catalog/api/usecases` に変更
+- [x] T003 [P] [US1] 単体テストを移動する `src/samples/domains/catalog/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/catalog/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/catalog/api/usecases` に変更
+- [x] T004 [P] [US1] UIテストを移動する `src/samples/domains/catalog/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/catalog/ui.test.tsx`、import パスを `../../ui/ProductList`, `../../ui/ProductDetail`, `../../ui/ProductCard` から `@/samples/domains/catalog/ui/ProductList`, `@/samples/domains/catalog/ui/ProductDetail`, `@/samples/domains/catalog/ui/ProductCard` に変更
+- [x] T005 [P] [US1] 統合テストを移動する `src/samples/domains/catalog/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/catalog/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/catalog/api/usecases` に変更
 
 ### Cart ドメイン
 
-- [ ] T006 [P] [US1] 単体テストを移動する `src/samples/domains/cart/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/cart/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/cart/api/usecases` に変更
-- [ ] T007 [P] [US1] UIテストを移動する `src/samples/domains/cart/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/cart/ui.test.tsx`、import パスを `../../ui/CartView` から `@/samples/domains/cart/ui/CartView` に変更
-- [ ] T008 [P] [US1] 統合テストを移動する `src/samples/domains/cart/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/cart/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/cart/api/usecases` に変更
+- [x] T006 [P] [US1] 単体テストを移動する `src/samples/domains/cart/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/cart/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/cart/api/usecases` に変更
+- [x] T007 [P] [US1] UIテストを移動する `src/samples/domains/cart/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/cart/ui.test.tsx`、import パスを `../../ui/CartView` から `@/samples/domains/cart/ui/CartView` に変更
+- [x] T008 [P] [US1] 統合テストを移動する `src/samples/domains/cart/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/cart/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/cart/api/usecases` に変更
 
 ### Orders ドメイン
 
-- [ ] T009 [P] [US1] 単体テストを移動する `src/samples/domains/orders/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/orders/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/orders/api/usecases` に変更
-- [ ] T010 [P] [US1] UIテストを移動する `src/samples/domains/orders/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/orders/ui.test.tsx`、import パスを `../../ui/OrderList`, `../../ui/OrderDetail` から `@/samples/domains/orders/ui/OrderList`, `@/samples/domains/orders/ui/OrderDetail` に変更
-- [ ] T011 [P] [US1] 統合テストを移動する `src/samples/domains/orders/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/orders/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/orders/api/usecases` に変更
+- [x] T009 [P] [US1] 単体テストを移動する `src/samples/domains/orders/tests/unit/usecase.test.ts` → `src/samples/tests/unit/domains/orders/usecase.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/orders/api/usecases` に変更
+- [x] T010 [P] [US1] UIテストを移動する `src/samples/domains/orders/tests/unit/ui.test.tsx` → `src/samples/tests/unit/domains/orders/ui.test.tsx`、import パスを `../../ui/OrderList`, `../../ui/OrderDetail` から `@/samples/domains/orders/ui/OrderList`, `@/samples/domains/orders/ui/OrderDetail` に変更
+- [x] T011 [P] [US1] 統合テストを移動する `src/samples/domains/orders/tests/integration/api.test.ts` → `src/samples/tests/integration/domains/orders/api.test.ts`、import パスを `../../api/usecases` から `@/samples/domains/orders/api/usecases` に変更
 
 ### クリーンアップ
 
-- [ ] T012 [US1] 旧テストディレクトリを削除する（`src/samples/domains/catalog/tests/`, `src/samples/domains/cart/tests/`, `src/samples/domains/orders/tests/`）
+- [x] T012 [US1] 旧テストディレクトリを削除する（`src/samples/domains/catalog/tests/`, `src/samples/domains/cart/tests/`, `src/samples/domains/orders/tests/`）
 
 ### 検証
 
-- [ ] T013 [US1] 型チェック（`pnpm typecheck`）がエラー0件で通ることを確認する
-- [ ] T014 [US1] 移動後のテスト実行（vitest run src/samples/tests/unit && vitest run src/samples/tests/integration）でテスト数がベースラインと一致し、すべてパスすることを確認する
+- [x] T013 [US1] 型チェック（`pnpm typecheck`）がエラー0件で通ることを確認する
+- [x] T014 [US1] 移動後のテスト実行（vitest run src/samples/tests/unit && vitest run src/samples/tests/integration）でテスト数がベースラインと一致し、すべてパスすることを確認する
 
 **Checkpoint**: 単体・統合テスト9ファイルが `src/samples/tests/` に集約済み、旧ディレクトリ削除済み
 
@@ -69,23 +69,23 @@
 
 ### 購入者導線の分解
 
-- [ ] T015 [P] [US2] catalog の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/catalog/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「商品一覧」2テスト + 「商品詳細」2テスト + 「未ログイン時の動作」1テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
-- [ ] T016 [P] [US2] cart の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/cart/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「カート」4テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
-- [ ] T017 [P] [US2] orders の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/orders/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「注文」3テスト + 「一連の購入フロー」1テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
+- [x] T015 [P] [US2] catalog の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/catalog/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「商品一覧」2テスト + 「商品詳細」2テスト + 「未ログイン時の動作」1テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
+- [x] T016 [P] [US2] cart の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/cart/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「カート」4テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
+- [x] T017 [P] [US2] orders の購入者導線E2Eテストを作成する `src/samples/tests/e2e/domains/orders/buyer-flow.spec.ts`（元の `tests/e2e/arch/buyer-flow.spec.ts` から「注文」3テスト + 「一連の購入フロー」1テスト を抽出、`loginAsBuyer` ヘルパーをインラインで含める）
 
 ### 管理者導線の分解
 
-- [ ] T018 [P] [US2] catalog の管理者導線E2Eテストを作成する `src/samples/tests/e2e/domains/catalog/admin-flow.spec.ts`（元の `tests/e2e/arch/admin-flow.spec.ts` から「商品管理」5テスト + 「一連の管理フロー」1テスト + 「権限確認」2テスト を抽出、`loginAsAdmin` と `loginAsBuyer` ヘルパーをインラインで含める）
-- [ ] T019 [P] [US2] orders の管理者導線E2Eテストを作成する `src/samples/tests/e2e/domains/orders/admin-flow.spec.ts`（元の `tests/e2e/arch/admin-flow.spec.ts` から「注文管理」4テスト を抽出、`loginAsAdmin`, `loginAsBuyer`, `createOrderAsBuyer` ヘルパーをインラインで含める）
+- [x] T018 [P] [US2] catalog の管理者導線E2Eテストを作成する `src/samples/tests/e2e/domains/catalog/admin-flow.spec.ts`（元の `tests/e2e/arch/admin-flow.spec.ts` から「商品管理」5テスト + 「一連の管理フロー」1テスト + 「権限確認」2テスト を抽出、`loginAsAdmin` と `loginAsBuyer` ヘルパーをインラインで含める）
+- [x] T019 [P] [US2] orders の管理者導線E2Eテストを作成する `src/samples/tests/e2e/domains/orders/admin-flow.spec.ts`（元の `tests/e2e/arch/admin-flow.spec.ts` から「注文管理」4テスト を抽出、`loginAsAdmin`, `loginAsBuyer`, `createOrderAsBuyer` ヘルパーをインラインで含める）
 
 ### クリーンアップ
 
-- [ ] T020 [US2] 旧E2Eテストディレクトリを削除する（`tests/e2e/arch/`）
-- [ ] T021 [US2] `playwright.arch.config.ts` の `testDir` を `./src/samples/tests/e2e` に変更する
+- [x] T020 [US2] 旧E2Eテストディレクトリを削除する（`tests/e2e/arch/`）
+- [x] T021 [US2] `playwright.arch.config.ts` の `testDir` を `./src/samples/tests/e2e` に変更する
 
 ### 検証
 
-- [ ] T022 [US2] 分解後のE2Eテスト実行（`pnpm test:e2e:arch`）でテスト数（25テスト: catalog 13, cart 4, orders 8）がベースラインと一致し、すべてパスすることを確認する
+- [x] T022 [US2] 分解後のE2Eテスト実行（`pnpm test:e2e:arch`）でテスト数（25テスト: catalog 13, cart 4, orders 8）がベースラインと一致し、すべてパスすることを確認する
 
 **Checkpoint**: E2Eテスト5ファイルがドメイン別に配置済み、各ファイルが独立実行可能
 
@@ -97,10 +97,10 @@
 
 **Independent Test**: `pnpm test:unit` でサンプルテストが0件、`pnpm test:unit:samples` でサンプルテストが実行されること
 
-- [ ] T023 [US3] `vitest.config.ts` の `test` セクションに `exclude: ['./src/samples/**/*.test.{ts,tsx}']` を追加する
-- [ ] T024 [P] [US3] `package.json` に `:samples` コマンドを追加する（`"test:unit:samples": "vitest run src/samples/tests/unit"`, `"test:integration:samples": "vitest run src/samples/tests/integration"`, `"test:e2e:samples": "playwright test --config playwright.arch.config.ts"`）
-- [ ] T025 [US3] デフォルトコマンド（`pnpm test:unit`, `pnpm test:integration`, `pnpm test:e2e`）でサンプルテストが検出されないことを確認する
-- [ ] T026 [US3] サンプルコマンド（`pnpm test:unit:samples`, `pnpm test:integration:samples`, `pnpm test:e2e:samples`）でサンプルテストが実行され、すべてパスすることを確認する
+- [x] T023 [US3] `vitest.config.ts` の `test` セクションに `exclude: ['./src/samples/**/*.test.{ts,tsx}']` を追加する
+- [x] T024 [P] [US3] `package.json` に `:samples` コマンドを追加する（`"test:unit:samples": "vitest run src/samples/tests/unit"`, `"test:integration:samples": "vitest run src/samples/tests/integration"`, `"test:e2e:samples": "playwright test --config playwright.arch.config.ts"`）
+- [x] T025 [US3] デフォルトコマンド（`pnpm test:unit`, `pnpm test:integration`, `pnpm test:e2e`）でサンプルテストが検出されないことを確認する
+- [x] T026 [US3] サンプルコマンド（`pnpm test:unit:samples`, `pnpm test:integration:samples`, `pnpm test:e2e:samples`）でサンプルテストが実行され、すべてパスすることを確認する
 
 **Checkpoint**: 環境別実行制御が機能し、デフォルト除外 + 専用コマンドで実行可能
 
@@ -112,11 +112,11 @@
 
 **Independent Test**: ドキュメント内のテストパス記述が実際のディレクトリ構成と一致すること
 
-- [ ] T027 [P] [US4] `src/samples/README.md` のディレクトリツリーを更新する（テスト構造を `src/samples/tests/` 配下の新構造に変更、テスト実行コマンドの説明を追加）
-- [ ] T028 [P] [US4] `README.md` のディレクトリ構成図を更新する（`tests/e2e/arch/` の記述を削除し、`src/samples/tests/` の説明を追加）
-- [ ] T029 [P] [US4] `scripts/README.md` のリリースZIP内容説明を更新する（`tests/e2e/arch/` の記述を `src/samples/tests/` に変更）
-- [ ] T030 [P] [US4] `docs/SPECKIT_INTEGRATION.md` のテストパス記述を更新する（サンプルテストの新配置先とテストコマンドの説明を反映）
-- [ ] T030a [P] [US4] `docs/examples/` の入力例を更新する（`constitution-example.md` のテスト除外記述、`spec-{catalog,cart,order,product}-example.md` の `/speckit.plan` 入力からサンプルテスト除外の記述を削除）
+- [x] T027 [P] [US4] `src/samples/README.md` のディレクトリツリーを更新する（テスト構造を `src/samples/tests/` 配下の新構造に変更、テスト実行コマンドの説明を追加）
+- [x] T028 [P] [US4] `README.md` のディレクトリ構成図を更新する（`tests/e2e/arch/` の記述を削除し、`src/samples/tests/` の説明を追加）
+- [x] T029 [P] [US4] `scripts/README.md` のリリースZIP内容説明を更新する（`tests/e2e/arch/` の記述を `src/samples/tests/` に変更）
+- [x] T030 [P] [US4] `docs/SPECKIT_INTEGRATION.md` のテストパス記述を更新する（サンプルテストの新配置先とテストコマンドの説明を反映）
+- [x] T030a [P] [US4] `docs/examples/` の入力例を更新する（`constitution-example.md` のテスト除外記述、`spec-{catalog,cart,order,product}-example.md` の `/speckit.plan` 入力からサンプルテスト除外の記述を削除）
 
 **Checkpoint**: すべてのドキュメントが新構造を正確に反映
 
@@ -126,11 +126,11 @@
 
 **Purpose**: 最終検証とクリーンアップ
 
-- [ ] T031 型チェック（`pnpm typecheck`）がエラー0件で通ることを最終確認する
-- [ ] T032 全サンプルテスト（`pnpm test:unit:samples && pnpm test:integration:samples && pnpm test:e2e:samples`）がパスすることを最終確認する
-- [ ] T033 デフォルトテスト（`pnpm test:unit && pnpm test:integration`）でサンプルテストが検出されないことを最終確認する
-- [ ] T034 `@/samples/` 以外からサンプルテストへの参照がないことを確認する（grep で検証）
-- [ ] T035 `tests/e2e/arch/` ディレクトリが削除されていることを確認する
+- [x] T031 型チェック（`pnpm typecheck`）がエラー0件で通ることを最終確認する
+- [x] T032 全サンプルテスト（`pnpm test:unit:samples && pnpm test:integration:samples && pnpm test:e2e:samples`）がパスすることを最終確認する
+- [x] T033 デフォルトテスト（`pnpm test:unit && pnpm test:integration`）でサンプルテストが検出されないことを最終確認する
+- [x] T034 `@/samples/` 以外からサンプルテストへの参照がないことを確認する（grep で検証）
+- [x] T035 `tests/e2e/arch/` ディレクトリが削除されていることを確認する
 
 ---
 

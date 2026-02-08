@@ -122,7 +122,15 @@ src/samples/tests/
 変更後: `src/samples/` を `exclude` に追加（デフォルト除外）:
 ```
 include: ['./tests/**/*.test.{ts,tsx}', './src/**/*.test.{ts,tsx}'],
-exclude: ['./src/samples/**/*.test.{ts,tsx}'],
+exclude: ['./src/samples/**/*.test.{ts,tsx}', 'node_modules'],
+```
+
+#### vitest.samples.config.ts（新規作成）
+
+サンプルテスト専用の設定。Vitest 1.6 は CLI の `--exclude` で config の `exclude` を上書きできないため、`:samples` コマンド用に別設定ファイルを用意する:
+```
+include: ['./src/samples/**/*.test.{ts,tsx}'],
+// exclude なし（サンプルテストを実行するため）
 ```
 
 #### playwright.arch.config.ts
@@ -140,8 +148,8 @@ testDir: './src/samples/tests/e2e'
 
 追加するコマンド:
 ```json
-"test:unit:samples": "vitest run src/samples/tests/unit",
-"test:integration:samples": "vitest run src/samples/tests/integration",
+"test:unit:samples": "vitest run src/samples/tests/unit --config vitest.samples.config.ts",
+"test:integration:samples": "vitest run src/samples/tests/integration --config vitest.samples.config.ts",
 "test:e2e:samples": "playwright test --config playwright.arch.config.ts"
 ```
 

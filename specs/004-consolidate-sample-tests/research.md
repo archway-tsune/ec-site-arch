@@ -2,13 +2,13 @@
 
 ## R-001: Vitest の exclude パターンでサンプルテストを除外する方法
 
-**Decision**: `vitest.config.ts` の `test.exclude` にサンプルテストのglob パターンを追加する
+**Decision**: `vitest.config.ts` の `test.exclude` でデフォルト除外 + `vitest.samples.config.ts` でサンプル専用設定
 
-**Rationale**: Vitest は `test.exclude` でテストファイルの除外パターンを指定できる。`src/samples/**/*.test.{ts,tsx}` を除外パターンに追加することで、デフォルトのテスト実行からサンプルテストが除外される。`:samples` コマンドでは `vitest run src/samples/tests/unit` のように直接パスを指定することで、exclude を無視して実行できる。
+**Rationale**: 当初は `test.exclude` だけで制御し、`:samples` コマンドではパス指定で exclude を迂回する想定だった。しかし Vitest 1.6 では CLI の `--exclude` は config の `exclude` に追加されるだけで上書きできず、パス指定も `exclude` を無視しない。そのため、サンプル専用の `vitest.samples.config.ts` を作成し、`include` を `src/samples/` に限定する方式に変更した。メインの `vitest.config.ts` には `test.exclude` でサンプルを除外しつつ、`:samples` コマンドでは `--config vitest.samples.config.ts` で専用設定を使用する。
 
 **Alternatives considered**:
 - 環境変数による条件分岐: 設定が複雑になり、CI設定にも影響する
-- 別の vitest config ファイル: 管理するファイルが増え、設定の重複が生じる
+- `test.exclude` のみ（当初の計画）: Vitest の CLI が exclude を上書きできないため実現不可
 
 ## R-002: Playwright で サンプルE2Eテストを分離する方法
 

@@ -45,12 +45,12 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 
 | 対象 | 説明 |
 |------|------|
-| `tests/e2e/arch/` | アーキテクチャ基盤のE2Eテスト（ZIPに含まれる） |
+| `src/samples/tests/` | サンプルテスト（単体・統合・E2E）（ZIPに含まれる） |
 | `src/contracts/` | 共有インターフェース（DTO・リポジトリ契約） |
 | `src/domains/` | 暫定スキャフォールド（@/samples/ の再エクスポート） |
 
-> **注意**: `tests/e2e/arch/` はリリースZIPに含まれますが、`playwright.arch.config.ts` は含まれません。
-> 開発時の `pnpm test:e2e` ではアーキテクチャE2Eテストは自動的に除外されます。
+> **注意**: `src/samples/tests/` はリリースZIPに含まれますが、`playwright.arch.config.ts` と `vitest.samples.config.ts` は含まれません。
+> 開発時の `pnpm test:unit` / `pnpm test:e2e` ではサンプルテストは自動的に除外されます。
 
 ### リリースフロー
 
@@ -58,7 +58,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 2. テストを実行して品質を確認
    ```bash
    pnpm test:unit
-   pnpm test:e2e:arch
+   pnpm test:e2e:samples
    pnpm lint
    pnpm typecheck
    ```

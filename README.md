@@ -57,12 +57,16 @@ src/
 ├── contracts/           # 共有インターフェース（DTO・リポジトリ契約）
 ├── domains/             # ドメイン実装（暫定スキャフォールド → 本番実装に置換）
 ├── samples/             # サンプル実装（独立した参照コード）
+│   ├── domains/         # ドメインサンプル（catalog, cart, orders）
+│   └── tests/           # サンプルテスト（本番テストから分離）
+│       ├── unit/        # サンプル単体テスト
+│       ├── integration/ # サンプル統合テスト
+│       └── e2e/         # サンプルE2Eテスト
 ├── infrastructure/      # インフラ層実装（@/contracts/ に依存）
 └── app/                 # Next.js App Router（@/domains/ に依存）
 
 tests/
 ├── e2e/                 # E2Eテスト（Playwright）
-│   └── arch/            # アーキテクチャ基盤のE2E（開発時は自動除外）
 ├── integration/         # 統合テスト
 │   ├── domains/         # ドメイン実装の統合テスト
 │   ├── foundation/      # 共通基盤の統合テスト

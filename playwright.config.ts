@@ -17,9 +17,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     actionTimeout: 15000,
   },
-  // アーキテクチャ付属のサンプルE2Eテストを除外（ドメイン開発時に混在しないようにする）
-  // アーキテクチャのE2Eを実行するには: pnpm test:e2e:arch
-  testIgnore: ['**/arch/**'],
+  // サンプルE2Eテストは playwright.samples.config.ts で分離済み
+  // サンプルE2Eを実行するには: pnpm test:e2e:samples
   projects: [
     {
       name: 'chromium',

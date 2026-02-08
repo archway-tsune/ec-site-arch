@@ -6,7 +6,7 @@
 ## 目的
 
 - アーキテクチャテンプレートの適用例を示す
-- アーキテクチャE2Eテスト（`tests/e2e/arch/`）の実行環境を提供する
+- サンプルテスト（単体・統合・E2E）の実行環境を提供する
 - 新規ドメイン実装時の参考コードとして利用する
 
 ## 依存関係
@@ -26,19 +26,32 @@ src/samples/ ──→ @/foundation/ （共通基盤）
 
 ```
 src/samples/
-└── domains/          # ドメインサンプル実装
-    ├── catalog/      # 商品カタログ
-    │   ├── api/      # ユースケース
-    │   ├── ui/       # UIコンポーネント
-    │   └── tests/    # テスト
-    ├── cart/         # ショッピングカート
-    │   ├── api/
-    │   ├── ui/
-    │   └── tests/
-    └── orders/       # 注文管理
-        ├── api/
-        ├── ui/
-        └── tests/
+├── domains/          # ドメインサンプル実装
+│   ├── catalog/      # 商品カタログ
+│   │   ├── api/      # ユースケース
+│   │   └── ui/       # UIコンポーネント
+│   ├── cart/         # ショッピングカート
+│   │   ├── api/
+│   │   └── ui/
+│   └── orders/       # 注文管理
+│       ├── api/
+│       └── ui/
+└── tests/            # サンプルテスト（本番テストから分離）
+    ├── unit/         # 単体テスト
+    │   └── domains/
+    │       ├── catalog/
+    │       ├── cart/
+    │       └── orders/
+    ├── integration/  # 統合テスト
+    │   └── domains/
+    │       ├── catalog/
+    │       ├── cart/
+    │       └── orders/
+    └── e2e/          # E2Eテスト（Playwright）
+        └── domains/
+            ├── catalog/
+            ├── cart/
+            └── orders/
 ```
 
 ## 本番実装との関係
@@ -50,10 +63,29 @@ src/samples/
 | `src/contracts/` | 共有インターフェース | なし |
 | `src/infrastructure/` | インフラ層実装 | `@/contracts/` |
 
+## テスト実行コマンド
+
+サンプルテストは専用のコマンドで実行します（本番テストとは分離されています）。
+
+```bash
+# サンプル単体テスト
+pnpm test:unit:samples
+
+# サンプル統合テスト
+pnpm test:integration:samples
+
+# サンプルE2Eテスト
+pnpm test:e2e:samples
+```
+
+- 単体・統合テストは `vitest.samples.config.ts` で設定されています
+- E2Eテストは `playwright.samples.config.ts` で設定されています
+- `src/samples/` を削除すると、サンプルテストも自動的に除外されます
+
 ## サンプルの利用方法
 
 1. **参照コードとして**: 新規ドメインを実装する際の参考
-2. **テスト環境として**: アーキテクチャE2Eテスト（`pnpm test:e2e:arch`）でのデモデータ提供
+2. **テスト環境として**: サンプルテスト（`pnpm test:unit:samples` 等）でのデモデータ提供
 3. **学習用として**: アーキテクチャパターンの理解
 
 ## 注意事項

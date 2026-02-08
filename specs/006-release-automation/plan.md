@@ -60,7 +60,7 @@ scripts/
 ├── create-release-tag.ps1  # 新規: タグ自動作成スクリプト
 └── README.md               # 既存（リリースフロー更新）
 
-package.json                # 既存（release スクリプト追加）
+package.json                # 既存（release スクリプト追加、release:zip 削除）
 ```
 
 **Structure Decision**: 既存の `scripts/` ディレクトリにリリースタグ作成用の PowerShell スクリプトを追加。GitHub Actions ワークフローは既存の `.github/workflows/` に配置。

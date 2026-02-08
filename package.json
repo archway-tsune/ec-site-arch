@@ -1,6 +1,6 @@
 {
   "name": "ec-site-arch",
-  "version": "0.1.0",
+  "version": "1.0.4",
   "description": "ECサイト向けアーキテクチャ基盤",
   "type": "module",
   "scripts": {

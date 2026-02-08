@@ -88,8 +88,9 @@ export default function AdminLayout({
 
   const navLinks = [
     { href: '/admin', label: 'ダッシュボード' },
-    { href: '/admin/products', label: '商品管理' },
-    { href: '/admin/orders', label: '注文管理' },
+    // ドメイン実装時にリンクを追加する:
+    // { href: '/admin/products', label: '商品管理' },
+    // { href: '/admin/orders', label: '注文管理' },
   ];
 
   return (

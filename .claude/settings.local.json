@@ -20,7 +20,9 @@
       "Bash(pnpm test:*)",
       "Bash(npm run test:*)",
       "Bash(powershell -Command:*)",
-      "Bash(pnpm exec vitest:*)"
+      "Bash(pnpm exec vitest:*)",
+      "Bash(ls:*)",
+      "Bash(pwsh:*)"
     ]
   }
 }

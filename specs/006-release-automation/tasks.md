@@ -17,8 +17,8 @@
 
 **Purpose**: 新規ファイルの作成と基本構造の準備
 
-- [ ] T001 [P] `scripts/create-release-tag.ps1` を新規作成する。`package.json` の version を読み取り `v{VERSION}` タグを作成・プッシュするスクリプト。`ConvertFrom-Json` で version を読み取り、main ブランチであることを確認（FR-003）、`git tag -l` で重複チェック、存在する場合は「タグ v{VERSION} は既に存在します。package.json のバージョンを確認してください。」と表示して終了（FR-001, FR-002, FR-003）
-- [ ] T002 [P] `package.json` の scripts に `"release": "powershell -ExecutionPolicy Bypass -File ./scripts/create-release-tag.ps1"` を追加する（FR-001）
+- [x] T001 [P] `scripts/create-release-tag.ps1` を新規作成する。`package.json` の version を読み取り `v{VERSION}` タグを作成・プッシュするスクリプト。`ConvertFrom-Json` で version を読み取り、main ブランチであることを確認（FR-003）、`git tag -l` で重複チェック、存在する場合は「タグ v{VERSION} は既に存在します。package.json のバージョンを確認してください。」と表示して終了（FR-001, FR-002, FR-003）
+- [x] T002 [P] `package.json` の scripts に `"release": "powershell -ExecutionPolicy Bypass -File ./scripts/create-release-tag.ps1"` を追加する（FR-001）
 
 **Checkpoint**: `pnpm release` コマンドでタグが作成・プッシュされることをローカルで確認可能
 
@@ -32,10 +32,10 @@
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] `.github/workflows/release.yml` を新規作成する。トリガー: `on: push: tags: ['v*']`、権限: `permissions: contents: write`（FR-015 最小権限）、条件: `if: github.ref_type == 'tag'`（FR-004）
-- [ ] T004 [US1] `release.yml` にバージョン抽出ステップを追加する。`GITHUB_REF_NAME` から `v` プレフィックスを除去して `VERSION` 出力変数に設定する（FR-005）
-- [ ] T005 [US1] `release.yml` に ZIP 作成ステップを追加する。`zip -r "ec-site-arch-v${VERSION}.zip" .` で除外パターンを `-x` オプションで指定する。除外対象: `node_modules/*`, `.next/*`, `coverage/*`, `test-results/*`, `playwright-report/*`, `.git/*`, `.claude/*`, `.specify/*`, `scripts/*`, `specs/*`, `*.tsbuildinfo`, `pnpm-lock.yaml`, `*.zip`, `playwright.samples.config.ts`, `.github/workflows/release.yml`（FR-006, FR-007）
-- [ ] T006 [US1] `release.yml` に GitHub Release 作成ステップを追加する。`gh release create` でタグ名をタイトルに使用し、ZIP を添付し、`--generate-notes` でリリースノートを自動生成する。`GH_TOKEN: ${{ github.token }}` を env に設定する（FR-008, FR-009）
+- [x] T003 [US1] `.github/workflows/release.yml` を新規作成する。トリガー: `on: push: tags: ['v*']`、権限: `permissions: contents: write`（FR-015 最小権限）、条件: `if: github.ref_type == 'tag'`（FR-004）
+- [x] T004 [US1] `release.yml` にバージョン抽出ステップを追加する。`GITHUB_REF_NAME` から `v` プレフィックスを除去して `VERSION` 出力変数に設定する（FR-005）
+- [x] T005 [US1] `release.yml` に ZIP 作成ステップを追加する。`zip -r "ec-site-arch-v${VERSION}.zip" .` で除外パターンを `-x` オプションで指定する。除外対象: `node_modules/*`, `.next/*`, `coverage/*`, `test-results/*`, `playwright-report/*`, `.git/*`, `.claude/*`, `.specify/*`, `scripts/*`, `specs/*`, `*.tsbuildinfo`, `pnpm-lock.yaml`, `*.zip`, `playwright.samples.config.ts`, `.github/workflows/release.yml`（FR-006, FR-007）
+- [x] T006 [US1] `release.yml` に GitHub Release 作成ステップを追加する。`gh release create` でタグ名をタイトルに使用し、ZIP を添付し、`--generate-notes` でリリースノートを自動生成する。`GH_TOKEN: ${{ github.token }}` を env に設定する（FR-008, FR-009）
 
 **Checkpoint**: タグプッシュで GitHub Release が作成され ZIP が添付されることを確認
 
@@ -49,9 +49,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] `release.yml` に Node.js セットアップステップを追加する。`actions/setup-node@v4` で node-version `'20'` を指定する
-- [ ] T008 [US2] `release.yml` にパッチバージョンインクリメントステップを追加する。`node -e` でインラインスクリプトにより `package.json` の PATCH バージョンのみを +1 する。MAJOR・MINOR は変更しない。`JSON.stringify(pkg, null, 2) + '\n'` でフォーマット（インデント 2 スペース、末尾改行）を保持する（FR-010）
-- [ ] T009 [US2] `release.yml` にコミット・プッシュステップを追加する。`git config` で `github-actions[bot]` を設定し、`git add package.json && git commit -m "chore: bump version to ${NEW_VERSION} [skip ci]" && git push origin HEAD:main` を実行する（FR-011, FR-012）
+- [x] T007 [US2] `release.yml` に Node.js セットアップステップを追加する。`actions/setup-node@v4` で node-version `'20'` を指定する
+- [x] T008 [US2] `release.yml` にパッチバージョンインクリメントステップを追加する。`node -e` でインラインスクリプトにより `package.json` の PATCH バージョンのみを +1 する。MAJOR・MINOR は変更しない。`JSON.stringify(pkg, null, 2) + '\n'` でフォーマット（インデント 2 スペース、末尾改行）を保持する（FR-010）
+- [x] T009 [US2] `release.yml` にコミット・プッシュステップを追加する。`git config` で `github-actions[bot]` を設定し、`git add package.json && git commit -m "chore: bump version to ${NEW_VERSION} [skip ci]" && git push origin HEAD:main` を実行する（FR-011, FR-012）
 
 **Checkpoint**: リリース後に `package.json` のバージョンが自動インクリメントされ、CI が再トリガーされないことを確認
 
@@ -61,9 +61,9 @@
 
 **Purpose**: ドキュメント更新と最終確認
 
-- [ ] T010 [P] `scripts/create-release-zip.ps1` を削除し、`package.json` から `release:zip` スクリプトを削除する（FR-013）
-- [ ] T011 [P] `scripts/README.md` を更新する。リリースフローをコマンドベース（`pnpm release`）に更新し、`create-release-tag.ps1` のドキュメントを追加し、`create-release-zip.ps1` のドキュメントを削除する（FR-014）
-- [ ] T012 全変更ファイルの最終確認を行う。`release.yml` の除外パターンが FR-007 と一致していること、`package.json` に `release` スクリプトが追加され `release:zip` が削除されていること、`create-release-zip.ps1` が削除されていることを確認する
+- [x] T010 [P] `scripts/create-release-zip.ps1` を削除し、`package.json` から `release:zip` スクリプトを削除する（FR-013）
+- [x] T011 [P] `scripts/README.md` を更新する。リリースフローをコマンドベース（`pnpm release`）に更新し、`create-release-tag.ps1` のドキュメントを追加し、`create-release-zip.ps1` のドキュメントを削除する（FR-014）
+- [x] T012 全変更ファイルの最終確認を行う。`release.yml` の除外パターンが FR-007 と一致していること、`package.json` に `release` スクリプトが追加され `release:zip` が削除されていること、`create-release-zip.ps1` が削除されていることを確認する
 
 ---
 

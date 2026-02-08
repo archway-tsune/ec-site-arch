@@ -17,7 +17,7 @@
     "test:integration:samples": "vitest run src/samples/tests/integration --config vitest.samples.config.ts",
     "test:e2e:samples": "playwright test --config playwright.samples.config.ts",
     "test:coverage": "vitest run --coverage",
-    "release:zip": "powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1"
+    "release": "powershell -ExecutionPolicy Bypass -File ./scripts/create-release-tag.ps1"
   },
   "dependencies": {
     "next": "^14.2.0",

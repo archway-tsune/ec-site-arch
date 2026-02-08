@@ -38,7 +38,7 @@
 | ファイル | 変更内容 |
 |----------|----------|
 | `vitest.config.ts` | `test.exclude` に `./src/samples/**/*.test.{ts,tsx}` を追加 |
-| `playwright.arch.config.ts` | `testDir` を `./src/samples/tests/e2e` に変更 |
+| `playwright.samples.config.ts` | `testDir` を `./src/samples/tests/e2e` に変更 |
 | `package.json` | `:samples` コマンド3つを追加 |
 
 ## ドキュメント更新一覧

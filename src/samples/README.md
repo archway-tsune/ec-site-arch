@@ -79,8 +79,8 @@ pnpm test:e2e:samples
 ```
 
 - 単体・統合テストは `vitest.samples.config.ts` で設定されています
-- E2Eテストは `playwright.arch.config.ts` で設定されています
-- 本番の `pnpm test:unit` / `pnpm test:e2e` ではサンプルテストは自動的に除外されます
+- E2Eテストは `playwright.samples.config.ts` で設定されています
+- `src/samples/` を削除すると、サンプルテストも自動的に除外されます
 
 ## サンプルの利用方法
 

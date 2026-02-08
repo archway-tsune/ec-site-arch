@@ -36,7 +36,7 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `.specify/` | speckit initで作成 |
 | `scripts/` | 開発者向けツール（このディレクトリ） |
 | `specs/` | アーキテクチャ用の仕様 |
-| `playwright.arch.config.ts` | アーキテクチャ用E2E設定 |
+| `playwright.samples.config.ts` | サンプルE2E設定 |
 | `*.tsbuildinfo` | TypeScriptビルドキャッシュ |
 | `pnpm-lock.yaml` | ロックファイル（サイズ大） |
 | `*.zip` | 既存のZIPファイル |
@@ -49,8 +49,8 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `src/contracts/` | 共有インターフェース（DTO・リポジトリ契約） |
 | `src/domains/` | 暫定スキャフォールド（@/samples/ の再エクスポート） |
 
-> **注意**: `src/samples/tests/` はリリースZIPに含まれますが、`playwright.arch.config.ts` と `vitest.samples.config.ts` は含まれません。
-> 開発時の `pnpm test:unit` / `pnpm test:e2e` ではサンプルテストは自動的に除外されます。
+> **注意**: `src/samples/tests/` はリリースZIPに含まれますが、`playwright.samples.config.ts` と `vitest.samples.config.ts` は含まれません。
+> ZIP展開後に `src/samples/` を削除すると、サンプルテストも自動的に除外されます。
 
 ### リリースフロー
 

@@ -29,7 +29,7 @@ $excludeFiles = @(
     '*.tsbuildinfo',
     'pnpm-lock.yaml',
     '*.zip',
-    'playwright.arch.config.ts'
+    'playwright.samples.config.ts'
 )
 
 # Convert output path to absolute path

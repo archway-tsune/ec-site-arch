@@ -19,7 +19,7 @@
 
 **Purpose**: ベースライン記録と移動先ディレクトリの作成
 
-- [x] T001 テスト数のベースラインを記録する（`pnpm test:unit:samples` 相当のテスト数、`pnpm test:integration:samples` 相当のテスト数、`pnpm test:e2e:arch` のテスト数を記録）
+- [x] T001 テスト数のベースラインを記録する（`pnpm test:unit:samples` 相当のテスト数、`pnpm test:integration:samples` 相当のテスト数、`pnpm test:e2e:samples` のテスト数を記録）
 - [x] T002 移動先ディレクトリ構造を作成する（`src/samples/tests/unit/domains/{catalog,cart,orders}`, `src/samples/tests/integration/domains/{catalog,cart,orders}`, `src/samples/tests/e2e/domains/{catalog,cart,orders}`）
 
 ---
@@ -65,7 +65,7 @@
 
 **Goal**: 2ファイルのE2Eテストをドメイン別に5ファイルに分解し、各ファイルが独立して実行可能にする
 
-**Independent Test**: `playwright test --config playwright.arch.config.ts` でテスト数がベースラインと一致し、すべてパスすること
+**Independent Test**: `playwright test --config playwright.samples.config.ts` でテスト数がベースラインと一致し、すべてパスすること
 
 ### 購入者導線の分解
 
@@ -81,11 +81,11 @@
 ### クリーンアップ
 
 - [x] T020 [US2] 旧E2Eテストディレクトリを削除する（`tests/e2e/arch/`）
-- [x] T021 [US2] `playwright.arch.config.ts` の `testDir` を `./src/samples/tests/e2e` に変更する
+- [x] T021 [US2] `playwright.samples.config.ts` の `testDir` を `./src/samples/tests/e2e` に変更する
 
 ### 検証
 
-- [x] T022 [US2] 分解後のE2Eテスト実行（`pnpm test:e2e:arch`）でテスト数（25テスト: catalog 13, cart 4, orders 8）がベースラインと一致し、すべてパスすることを確認する
+- [x] T022 [US2] 分解後のE2Eテスト実行（`pnpm test:e2e:samples`）でテスト数（25テスト: catalog 13, cart 4, orders 8）がベースラインと一致し、すべてパスすることを確認する
 
 **Checkpoint**: E2Eテスト5ファイルがドメイン別に配置済み、各ファイルが独立実行可能
 
@@ -98,7 +98,7 @@
 **Independent Test**: `pnpm test:unit` でサンプルテストが0件、`pnpm test:unit:samples` でサンプルテストが実行されること
 
 - [x] T023 [US3] `vitest.config.ts` の `test` セクションに `exclude: ['./src/samples/**/*.test.{ts,tsx}']` を追加する
-- [x] T024 [P] [US3] `package.json` に `:samples` コマンドを追加する（`"test:unit:samples": "vitest run src/samples/tests/unit"`, `"test:integration:samples": "vitest run src/samples/tests/integration"`, `"test:e2e:samples": "playwright test --config playwright.arch.config.ts"`）
+- [x] T024 [P] [US3] `package.json` に `:samples` コマンドを追加する（`"test:unit:samples": "vitest run src/samples/tests/unit"`, `"test:integration:samples": "vitest run src/samples/tests/integration"`, `"test:e2e:samples": "playwright test --config playwright.samples.config.ts"`）
 - [x] T025 [US3] デフォルトコマンド（`pnpm test:unit`, `pnpm test:integration`, `pnpm test:e2e`）でサンプルテストが検出されないことを確認する
 - [x] T026 [US3] サンプルコマンド（`pnpm test:unit:samples`, `pnpm test:integration:samples`, `pnpm test:e2e:samples`）でサンプルテストが実行され、すべてパスすることを確認する
 

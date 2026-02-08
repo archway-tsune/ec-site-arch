@@ -33,7 +33,6 @@
    - TDD（Red → Green → Refactor）を徹底する
    - 各ユースケースにテストタスクを含める
    - カバレッジ80%以上を維持
-   - サンプル用のテストは vitest.config.ts の test.exclude と専用 Playwright 設定で除外済み
 
 4. 実装ワークフロー
    - src/domains/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する

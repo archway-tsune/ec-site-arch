@@ -8,7 +8,7 @@
 # 移動前のテスト数を記録
 pnpm test:unit --reporter=verbose 2>&1 | grep -c "✓\|✗"
 pnpm test:integration --reporter=verbose 2>&1 | grep -c "✓\|✗"
-pnpm test:e2e:arch 2>&1 | grep -E "passed|failed"
+pnpm test:e2e:samples 2>&1 | grep -E "passed|failed"
 ```
 
 ### 2. 単体・統合テストの移動（9ファイル）
@@ -41,7 +41,7 @@ mkdir -p src/samples/tests/e2e/domains/{catalog,cart,orders}
 ### 5. 設定変更
 
 - `vitest.config.ts`: exclude に `src/samples/` パターン追加
-- `playwright.arch.config.ts`: testDir 変更
+- `playwright.samples.config.ts`: testDir 変更
 - `package.json`: `:samples` コマンド追加
 
 ### 6. 旧ディレクトリ削除

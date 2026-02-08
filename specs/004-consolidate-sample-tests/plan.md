@@ -5,7 +5,7 @@
 
 ## Summary
 
-サンプルテストを `src/samples/tests/` に集約し、E2Eテストをドメイン別に分解する。テスト設定の除外パターンでサンプルテストをデフォルト除外とし、アーキテクチャリポジトリのCIのみ `:samples` サフィックス付きコマンドで実行する。
+サンプルテストを `src/samples/tests/` に集約し、E2Eテストをドメイン別に分解する。デフォルトのテストコマンドでサンプルテストも実行される（アーキテクチャリポジトリのCI用）。リリース ZIP 展開後は `src/samples/` が存在しないため自然に除外される。
 
 ## Technical Context
 
@@ -114,26 +114,19 @@ src/samples/tests/
 
 #### vitest.config.ts
 
-現在の `include` パターン:
-```
-['./tests/**/*.test.{ts,tsx}', './src/**/*.test.{ts,tsx}']
-```
-
-変更後: `src/samples/` を `exclude` に追加（デフォルト除外）:
+変更不要: `include` パターンが `src/samples/` を含むため、サンプルテストもデフォルトで実行される。リリース ZIP 展開後は `src/samples/` が存在しないため自然に除外される。
 ```
 include: ['./tests/**/*.test.{ts,tsx}', './src/**/*.test.{ts,tsx}'],
-exclude: ['./src/samples/**/*.test.{ts,tsx}', 'node_modules'],
 ```
 
 #### vitest.samples.config.ts（新規作成）
 
-サンプルテスト専用の設定。Vitest 1.6 は CLI の `--exclude` で config の `exclude` を上書きできないため、`:samples` コマンド用に別設定ファイルを用意する:
+サンプルテストだけを単独実行するための専用設定。`:samples` コマンドで使用する:
 ```
 include: ['./src/samples/**/*.test.{ts,tsx}'],
-// exclude なし（サンプルテストを実行するため）
 ```
 
-#### playwright.arch.config.ts
+#### playwright.samples.config.ts
 
 変更後: `testDir` を新しい配置先に変更:
 ```
@@ -150,13 +143,13 @@ testDir: './src/samples/tests/e2e'
 ```json
 "test:unit:samples": "vitest run src/samples/tests/unit --config vitest.samples.config.ts",
 "test:integration:samples": "vitest run src/samples/tests/integration --config vitest.samples.config.ts",
-"test:e2e:samples": "playwright test --config playwright.arch.config.ts"
+"test:e2e:samples": "playwright test --config playwright.samples.config.ts"
 ```
 
 既存コマンドの変更:
 - `test:unit`: `vitest run tests/unit` → 変更不要（tests/unit のみ対象）
 - `test:integration`: `vitest run tests/integration` → 変更不要
-- `test:e2e:arch`: `playwright test --config playwright.arch.config.ts` → 変更不要（config の testDir が変わるだけ）
+- `test:e2e:samples`: `playwright test --config playwright.samples.config.ts` → 変更不要（config の testDir が変わるだけ）
 
 ### Import パス変更（ドメインテスト 9ファイル）
 

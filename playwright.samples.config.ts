@@ -1,8 +1,15 @@
+/**
+ * サンプルE2Eテスト用 Playwright 設定
+ *
+ * 実行コマンド: pnpm test:e2e:samples
+ *
+ * サンプルドメインのE2Eテスト専用設定。
+ * リリースZIP展開後のプロジェクトには含まれない。
+ */
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/e2e',
-  // E2Eテストはインメモリストアを共有するため逐次実行
+  testDir: './src/samples/tests/e2e',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -17,8 +24,6 @@ export default defineConfig({
     trace: 'on-first-retry',
     actionTimeout: 15000,
   },
-  // サンプルE2Eテストは playwright.samples.config.ts で分離済み
-  // サンプルE2Eを実行するには: pnpm test:e2e:samples
   projects: [
     {
       name: 'chromium',

@@ -36,7 +36,9 @@
    - サンプル用のE2Eテストは実行対象から除外する
 
 4. 実装ワークフロー
-   - 既存のサンプル実装（src/samples/domains/）を参考にし、src/domains/ に本番ドメインとして再構築する
+   - src/domains/{catalog,cart,orders}/ の暫定スキャフォールド（@/samples/ を再エクスポート）を本番実装に置き換える
+   - src/contracts/ の共有リポジトリインターフェース（ProductRepository, CartRepository 等）に準拠して実装する
+   - src/samples/ は独立した参考実装として参照し、移行元としては扱わない
    - ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする
 
 ## 品質基準

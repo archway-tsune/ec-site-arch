@@ -2,7 +2,7 @@
  * 商品一覧・登録API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getProducts, createProduct } from '@/samples/domains/catalog/api';
+import { getProducts, createProduct } from '@/domains/catalog/api';
 import { productRepository } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

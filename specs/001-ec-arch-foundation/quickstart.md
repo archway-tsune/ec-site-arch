@@ -13,15 +13,27 @@
 src/
 ├── foundation/       # 共通基盤（認証・エラー・ログ等）
 ├── templates/        # 再利用可能なテンプレート
-├── samples/          # サンプル実装（参照用）
+├── contracts/        # 共有インターフェース（DTO・リポジトリ契約）
+├── domains/          # ドメイン実装（暫定スキャフォールド → 本番置換）
+├── samples/          # サンプル実装（独立した参照コード）
 │   └── domains/      # Catalog, Cart, Orders のサンプル
-├── domains/          # 本番ドメイン実装（ここに実装）
-├── contracts/        # 型定義・契約
-├── infrastructure/   # インフラ層（リポジトリ等）
-└── app/              # Next.js App Router
+├── infrastructure/   # インフラ層（@/contracts/ に依存）
+└── app/              # Next.js App Router（@/domains/ に依存）
 ```
 
-### 1.2 サンプル実装
+### 1.2 依存関係
+
+```
+app/ ──→ @/domains/ ──→ （暫定: @/samples/ を再エクスポート / 本番: 独自実装）
+infrastructure/ ──→ @/contracts/ （共有インターフェースのみ）
+samples/ ──→ @/contracts/ （独立した参照コード）
+```
+
+- `src/app/` は `@/domains/` 経由でドメインロジックをインポートします
+- `src/infrastructure/` は `@/contracts/` の共有インターフェース（ProductRepository 等）のみに依存します
+- `src/samples/` は独立した参照コードであり、`@/contracts/` のみに依存します
+
+### 1.3 サンプル実装
 
 `src/samples/domains/` にはアーキテクチャの検証用サンプルが含まれています:
 
@@ -31,7 +43,9 @@ src/
 | **Cart** | ショッピングカート（追加・更新・削除） | `src/samples/domains/cart/` |
 | **Orders** | 注文管理（作成・一覧・ステータス更新） | `src/samples/domains/orders/` |
 
-新規ドメインを実装する際は、これらのサンプルを参考にしてください。
+サンプルは独立した参照コードです。新規ドメインを実装する際の参考にしてください。
+`src/domains/` の暫定スキャフォールドが `@/samples/` を再エクスポートしていますが、
+本番実装時にはこれらを独自の実装に置き換えてください。
 
 ## 2. 前提条件
 
@@ -101,12 +115,12 @@ pnpm test
 mkdir -p src/domains/wishlist/{ui,api,tests/{unit,integration}}
 ```
 
-### 4.2 契約（DTO）の定義
+### 4.2 契約（DTO・リポジトリインターフェース）の定義
 
-`specs/001-ec-arch-foundation/contracts/` を参考に、ドメインの契約を定義する。
+`src/contracts/` に共有インターフェースを定義する。既存の `catalog.ts`, `cart.ts`, `orders.ts` を参考にしてください。
 
 ```typescript
-// src/domains/wishlist/contracts/wishlist.ts
+// src/contracts/wishlist.ts
 import { z } from 'zod';
 
 export const WishlistItemSchema = z.object({
@@ -116,6 +130,13 @@ export const WishlistItemSchema = z.object({
 export type WishlistItem = z.infer<typeof WishlistItemSchema>;
 
 // 入出力契約を定義...
+
+// リポジトリインターフェース
+export interface WishlistRepository {
+  findByUserId(userId: string): Promise<WishlistItem[]>;
+  add(userId: string, productId: string): Promise<WishlistItem>;
+  remove(userId: string, productId: string): Promise<void>;
+}
 ```
 
 ### 4.3 ユースケースの実装
@@ -126,7 +147,7 @@ export type WishlistItem = z.infer<typeof WishlistItemSchema>;
 // src/domains/wishlist/api/usecases/addToWishlist.ts
 import { authorize } from '@/foundation/auth/authorize';
 import { validate } from '@/foundation/validation/runtime';
-import { AddToWishlistInputSchema, type AddToWishlistInput } from '../contracts/wishlist';
+import { AddToWishlistInputSchema, type AddToWishlistInput } from '@/contracts/wishlist';
 
 export async function addToWishlist(
   input: unknown,
@@ -322,9 +343,11 @@ export const POST = createLoginHandler({
 ### 4.8 インメモリリポジトリの実装
 
 `src/templates/infrastructure/repository.ts` を利用してデモ・テスト用のリポジトリを作成する。
+リポジトリは `@/contracts/` のインターフェースを実装する。
 
 ```typescript
 // src/infrastructure/repositories/wishlist.ts
+import type { WishlistItem, WishlistRepository } from '@/contracts/wishlist';
 import {
   createInMemoryStore,
   createCrudRepository,
@@ -332,7 +355,7 @@ import {
   type BaseEntity,
 } from '@/templates/infrastructure/repository';
 
-interface WishlistItem extends BaseEntity {
+interface WishlistEntity extends BaseEntity {
   userId: string;
   productId: string;
 }
@@ -548,16 +571,22 @@ describe('POST /api/wishlist/items', () => {
 
 ### 4.13 ルーティングの追加
 
-Next.js App Router にルートを追加する。
+Next.js App Router にルートを追加する。`src/app/` は常に `@/domains/` 経由でインポートする。
 
 ```typescript
 // src/app/(buyer)/wishlist/page.tsx
-export { default } from '@/domains/wishlist/ui/WishlistPage';
+import { WishlistPage } from '@/domains/wishlist/ui';
+
+export default function Page() {
+  return <WishlistPage />;
+}
 ```
+
+> **注意**: `@/samples/` を直接インポートせず、必ず `@/domains/` 経由でインポートしてください。
 
 ## 5. 認可の設定
 
-`contracts/auth.ts` にユースケースの認可要件を追加する。
+`src/contracts/auth.ts` にユースケースの認可要件を追加する。
 
 ```typescript
 export const UseCaseAuthorization = {
@@ -591,7 +620,7 @@ pnpm test:coverage
 新規ドメイン追加時のチェックリスト:
 
 ### 基本要件
-- [ ] 契約（DTO）が Zod スキーマで定義されている
+- [ ] 契約（DTO・リポジトリインターフェース）が `src/contracts/` に定義されている
 - [ ] ユースケースに認可チェックが含まれている
 - [ ] ユースケースに runtime validation が含まれている
 - [ ] `UseCaseAuthorization` に認可要件が追加されている
@@ -608,7 +637,7 @@ pnpm test:coverage
 - [ ] ログイン/ログアウトページが適切に設定されている
 
 ### インフラ
-- [ ] リポジトリがテンプレートから作成されている
+- [ ] リポジトリが `@/contracts/` のインターフェースを実装している
 - [ ] リポジトリにリセット関数が実装されている
 - [ ] リセット関数が `/api/test/reset` に登録されている
 

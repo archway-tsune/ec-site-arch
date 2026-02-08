@@ -18,30 +18,12 @@ import {
   type GetOrderByIdOutput,
   type CreateOrderOutput,
   type UpdateOrderStatusOutput,
+  type OrderRepository,
+  type CartFetcher,
 } from '@/contracts/orders';
-import type { Cart } from '@/contracts/cart';
 
-// ─────────────────────────────────────────────────────────────────
-// リポジトリインターフェース
-// ─────────────────────────────────────────────────────────────────
-
-export interface OrderRepository {
-  findAll(params: {
-    userId?: string;
-    status?: OrderStatus;
-    offset: number;
-    limit: number;
-  }): Promise<Order[]>;
-  findById(id: string): Promise<Order | null>;
-  create(data: Omit<Order, 'id' | 'createdAt' | 'updatedAt'>): Promise<Order>;
-  updateStatus(id: string, status: OrderStatus): Promise<Order>;
-  count(params: { userId?: string; status?: OrderStatus }): Promise<number>;
-}
-
-export interface CartFetcher {
-  getByUserId(userId: string): Promise<Cart | null>;
-  clear(userId: string): Promise<void>;
-}
+// 既存の外部参照を維持するための再エクスポート
+export type { OrderRepository, CartFetcher } from '@/contracts/orders';
 
 // ─────────────────────────────────────────────────────────────────
 // コンテキスト

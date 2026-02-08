@@ -19,31 +19,12 @@ import {
   type UpdateCartItemOutput,
   type RemoveFromCartInput,
   type RemoveFromCartOutput,
+  type CartRepository,
+  type ProductFetcher,
 } from '@/contracts/cart';
 
-// ─────────────────────────────────────────────────────────────────
-// リポジトリインターフェース
-// ─────────────────────────────────────────────────────────────────
-
-export interface CartRepository {
-  findByUserId(userId: string): Promise<Cart | null>;
-  create(userId: string): Promise<Cart>;
-  addItem(
-    userId: string,
-    item: Omit<CartItem, 'addedAt'>
-  ): Promise<Cart>;
-  updateItemQuantity(userId: string, productId: string, quantity: number): Promise<Cart>;
-  removeItem(userId: string, productId: string): Promise<Cart>;
-}
-
-export interface ProductFetcher {
-  findById(productId: string): Promise<{
-    id: string;
-    name: string;
-    price: number;
-    imageUrl?: string;
-  } | null>;
-}
+// 既存の外部参照を維持するための再エクスポート
+export type { CartRepository, ProductFetcher } from '@/contracts/cart';
 
 // ─────────────────────────────────────────────────────────────────
 // コンテキスト

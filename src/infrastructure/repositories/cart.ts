@@ -6,7 +6,7 @@
  * グローバル変数を使用してデータを保持しています。
  */
 import type { Cart, CartItem } from '@/contracts/cart';
-import type { CartRepository, ProductFetcher } from '@/samples/domains/cart/api/usecases';
+import type { CartRepository, ProductFetcher } from '@/contracts/cart';
 import { productRepository } from './product';
 
 // グローバル変数の型定義（HMR対策）

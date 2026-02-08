@@ -2,7 +2,7 @@
  * 商品詳細・更新・削除API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getProductById, updateProduct, deleteProduct, NotFoundError } from '@/samples/domains/catalog/api';
+import { getProductById, updateProduct, deleteProduct, NotFoundError } from '@/domains/catalog/api';
 import { productRepository } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

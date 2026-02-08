@@ -22,9 +22,7 @@ $excludeDirs = @(
     '.claude',
     '.specify',
     'scripts',
-    'specs',
-    'tests\e2e\arch',
-    'tests/e2e/arch'
+    'specs'
 )
 
 $excludeFiles = @(

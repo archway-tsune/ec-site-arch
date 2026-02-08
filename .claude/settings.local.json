@@ -20,7 +20,13 @@
       "Bash(pnpm test:*)",
       "Bash(npm run test:*)",
       "Bash(powershell -Command:*)",
-      "Bash(pnpm exec vitest:*)"
+      "Bash(pnpm exec vitest:*)",
+      "Bash(ls:*)",
+      "Bash(pwsh:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm test:integration:*)",
+      "Bash(powershell -ExecutionPolicy Bypass -File scripts/create-release-zip.ps1:*)",
+      "Bash(powershell -File -:*)"
     ]
   }
 }

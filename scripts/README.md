@@ -36,11 +36,21 @@ powershell -ExecutionPolicy Bypass -File ./scripts/create-release-zip.ps1 -Outpu
 | `.specify/` | speckit initで作成 |
 | `scripts/` | 開発者向けツール（このディレクトリ） |
 | `specs/` | アーキテクチャ用の仕様 |
-| `tests/e2e/arch/` | アーキテクチャ用E2Eテスト |
 | `playwright.arch.config.ts` | アーキテクチャ用E2E設定 |
 | `*.tsbuildinfo` | TypeScriptビルドキャッシュ |
 | `pnpm-lock.yaml` | ロックファイル（サイズ大） |
 | `*.zip` | 既存のZIPファイル |
+
+### ZIPに含まれるアーキテクチャ関連ファイル
+
+| 対象 | 説明 |
+|------|------|
+| `tests/e2e/arch/` | アーキテクチャ基盤のE2Eテスト（ZIPに含まれる） |
+| `src/contracts/` | 共有インターフェース（DTO・リポジトリ契約） |
+| `src/domains/` | 暫定スキャフォールド（@/samples/ の再エクスポート） |
+
+> **注意**: `tests/e2e/arch/` はリリースZIPに含まれますが、`playwright.arch.config.ts` は含まれません。
+> 開発時の `pnpm test:e2e` ではアーキテクチャE2Eテストは自動的に除外されます。
 
 ### リリースフロー
 

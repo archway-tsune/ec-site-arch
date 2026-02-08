@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ProductDetail } from '@/samples/domains/catalog/ui/ProductDetail';
+import { ProductDetail } from '@/domains/catalog/ui';
 import type { Product } from '@/contracts/catalog';
 
 interface ProductResponse {

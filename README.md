@@ -54,10 +54,11 @@ unzip ec-site-arch.zip -d .
 src/
 ├── foundation/          # 共通基盤（認証・エラー・ログ・バリデーション）
 ├── templates/           # 再利用テンプレート（UI・API・インフラ・テスト）
-├── samples/             # サンプル実装（Catalog, Cart, Orders）
-├── domains/             # 本番ドメイン実装（ここに実装）
-├── infrastructure/      # インフラ層実装
-└── app/                 # Next.js App Router
+├── contracts/           # 共有インターフェース（DTO・リポジトリ契約）
+├── domains/             # ドメイン実装（暫定スキャフォールド → 本番実装に置換）
+├── samples/             # サンプル実装（独立した参照コード）
+├── infrastructure/      # インフラ層実装（@/contracts/ に依存）
+└── app/                 # Next.js App Router（@/domains/ に依存）
 
 tests/
 ├── e2e/                 # E2Eテスト（Playwright）
@@ -71,6 +72,22 @@ tests/
     ├── foundation/      # 共通基盤の単体テスト
     └── templates/       # テンプレートの単体テスト
 ```
+
+### 依存関係
+
+```
+app/ ──→ @/domains/ ──→ （暫定: @/samples/ を再エクスポート）
+                        （本番: 独自実装に置換）
+
+infrastructure/ ──→ @/contracts/ （共有インターフェースのみに依存）
+
+samples/ ──→ @/contracts/ （独立した参照実装）
+```
+
+- `src/app/` は `@/domains/` 経由でドメインロジックをインポートします
+- `src/infrastructure/` は `@/contracts/` の共有インターフェースのみに依存します
+- `src/samples/` は独立した参照コードであり、`@/contracts/` のみに依存します
+- `src/domains/` の暫定スキャフォールドは `@/samples/` を再エクスポートしていますが、本番実装で置き換えてください
 
 ---
 

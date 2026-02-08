@@ -2,7 +2,7 @@
  * カート追加API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { addToCart, NotFoundError } from '@/samples/domains/cart/api';
+import { addToCart, NotFoundError } from '@/domains/cart/api';
 import { cartRepository, productFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';

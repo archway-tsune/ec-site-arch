@@ -79,7 +79,27 @@ Claude Codeで以下を実行：
 
 ---
 
-## サンプル実装
+## アーキテクチャの依存構造
+
+本テンプレートでは、本番コードとサンプル実装を分離しています：
+
+```
+src/app/        → @/domains/ をインポート
+src/infrastructure/ → @/contracts/ をインポート（共有インターフェース）
+src/samples/    → @/contracts/ をインポート（独立した参照コード）
+```
+
+### src/domains/ - 暫定スキャフォールド
+
+`src/domains/` には暫定スキャフォールドが配置されており、初期状態では `@/samples/` を再エクスポートしています。
+本番実装時にはこの再エクスポートを独自の実装に置き換えてください。
+
+### src/contracts/ - 共有インターフェース
+
+`src/contracts/` にはリポジトリインターフェース（ProductRepository, CartRepository, OrderRepository 等）と
+DTO（Zodスキーマ）が定義されています。`src/infrastructure/` と `src/samples/` はこの契約のみに依存します。
+
+### src/samples/ - 参照コード
 
 `src/samples/domains/` に以下のサンプル実装があります：
 
@@ -89,14 +109,14 @@ Claude Codeで以下を実行：
 | Cart | 商品追加・削除、数量変更 |
 | Orders | 注文作成、注文履歴 |
 
-これらを参考に、`src/domains/` に本番実装を作成してください。
+サンプルは独立した参照コードです。本番実装は `src/domains/` に作成してください。
 
-### サンプルの扱い
+### 本番実装への移行
 
 ```bash
-# 参照として残す → そのまま
-# 削除する → rm -rf src/samples/
-# 本番実装のベースにする → cp -r src/samples/domains/* src/domains/
+# 1. src/domains/{domain}/api/index.ts の再エクスポートを独自実装に置換
+# 2. src/domains/{domain}/ui/index.ts の再エクスポートを独自実装に置換
+# 3. 不要になったら src/samples/ を削除 → rm -rf src/samples/
 ```
 
 ---

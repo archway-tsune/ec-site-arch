@@ -33,12 +33,10 @@
    - TDD（Red → Green → Refactor）を徹底する
    - 各ユースケースにテストタスクを含める
    - カバレッジ80%以上を維持
-   - サンプル用のE2Eテストは実行対象から除外する
+   - サンプル用のテストは vitest.config.ts の test.exclude と専用 Playwright 設定で除外済み
 
 4. 実装ワークフロー
-   - src/domains/{catalog,cart,orders}/ の暫定スキャフォールド（@/samples/ を再エクスポート）を本番実装に置き換える
-   - src/contracts/ の共有リポジトリインターフェース（ProductRepository, CartRepository 等）に準拠して実装する
-   - src/samples/ は独立した参考実装として参照し、移行元としては扱わない
+   - src/domains/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する
    - ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする
 
 ## 品質基準

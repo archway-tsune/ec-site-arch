@@ -34,14 +34,6 @@ pnpm release
    - GitHub Release を公開（リリースノート自動生成）
    - `package.json` を `1.0.5` にインクリメント
 
-### ローカルで ZIP のみ作成する
-
-```bash
-pnpm release:zip
-```
-
-従来どおりローカルで ZIP を手動作成できる（GitHub Release は作成されない）。
-
 ## 前提条件
 
 - main ブランチで作業していること
@@ -63,5 +55,4 @@ pnpm release:zip
 | `scripts/create-release-tag.ps1` | 新規: タグ自動作成スクリプト |
 | `.github/workflows/release.yml` | 新規: リリースワークフロー |
 | `package.json` | `release` スクリプト追加 |
-| `scripts/create-release-zip.ps1` | 除外パターンに `release.yml` 追加 |
 | `scripts/README.md` | リリースフロー・ドキュメント更新 |

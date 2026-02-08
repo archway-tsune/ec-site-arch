@@ -17,7 +17,7 @@ GitHub Releases を使ったリリース自動化。開発者が `pnpm release` 
 **Project Type**: CI/CD インフラ（アプリケーションコード変更なし）
 **Performance Goals**: N/A
 **Constraints**: GitHub Actions の `contents: write` 権限が必要。無限ループ防止のため `[skip ci]` を使用
-**Scale/Scope**: ワークフローファイル 1 個、スクリプト 1 個新規、既存ファイル 2 個修正
+**Scale/Scope**: ワークフローファイル 1 個、スクリプト 1 個新規、既存ファイル 2 個修正、既存ファイル 1 個削除
 
 ## Constitution Check
 
@@ -57,7 +57,6 @@ specs/006-release-automation/
 └── release.yml             # 新規: リリースワークフロー
 
 scripts/
-├── create-release-zip.ps1  # 既存（除外パターン追加）
 ├── create-release-tag.ps1  # 新規: タグ自動作成スクリプト
 └── README.md               # 既存（リリースフロー更新）
 
@@ -76,18 +75,19 @@ package.json                # 既存（release スクリプト追加）
 
 | ファイル | 操作 | FR |
 |---------|------|-----|
-| `scripts/create-release-tag.ps1` | 新規 | FR-001, FR-002 |
-| `package.json` | 修正 | FR-001（`release` スクリプト追加） |
-| `.github/workflows/release.yml` | 新規 | FR-003〜FR-011 |
-| `scripts/create-release-zip.ps1` | 修正 | FR-012 |
-| `scripts/README.md` | 修正 | FR-013 |
+| `scripts/create-release-tag.ps1` | 新規 | FR-001, FR-002, FR-003 |
+| `package.json` | 修正 | FR-001（`release` スクリプト追加）, FR-013（`release:zip` 削除） |
+| `.github/workflows/release.yml` | 新規 | FR-004〜FR-012, FR-015 |
+| `scripts/create-release-zip.ps1` | 削除 | FR-013 |
+| `scripts/README.md` | 修正 | FR-014 |
 
 ### 1. `scripts/create-release-tag.ps1`（新規）
 
 `package.json` のバージョンを読み取り、タグを作成・プッシュするスクリプト。
 
 - `package.json` から version を読み取り `v{VERSION}` タグ名を生成
-- `git tag` で同名タグの存在を確認し、存在する場合はエラー終了
+- 現在のブランチが main であることを確認し、main 以外なら警告・中断（FR-003）
+- `git tag` で同名タグの存在を確認し、存在する場合はエラー終了（FR-002）
 - `git tag v{VERSION}` でタグ作成
 - `git push origin v{VERSION}` でリモートにプッシュ
 
@@ -107,22 +107,23 @@ package.json                # 既存（release スクリプト追加）
 - **権限**: `contents: write`
 - **ステップ**:
   1. Checkout（`fetch-depth: 0`）
-  2. タグからバージョン抽出（`v0.1.0` → `0.1.0`）
-  3. `zip -r` で ZIP 作成（除外パターンは `create-release-zip.ps1` と一致 + `release.yml` 自体）
+  2. タグからバージョン抽出（`v1.0.4` → `1.0.4`）
+  3. `zip -r` で ZIP 作成（FR-007 の除外パターンに従う）
   4. `gh release create` でリリース作成 + ZIP 添付（`--generate-notes`）
   5. Node.js セットアップ
   6. `node -e` で `package.json` パッチバージョンインクリメント
   7. `git commit` に `[skip ci]` 付与、`git push origin HEAD:main`
 
-### 4. `scripts/create-release-zip.ps1`（修正）
+### 4. `scripts/create-release-zip.ps1`（削除）
 
-`$excludeFiles` に `'release.yml'` を追加。
+自動リリースで代替されるため、ローカル ZIP 作成スクリプトを削除する。
+`package.json` の `release:zip` スクリプトも削除する。
 
 ### 5. `scripts/README.md`（修正）
 
-- 除外ファイル一覧に `release.yml` を追加
 - リリースフローをコマンドベース（`pnpm release`）に更新
 - `create-release-tag.ps1` のドキュメントを追加
+- `create-release-zip.ps1` のドキュメントを削除
 
 ### ZIP 除外パターン（release.yml 内）
 

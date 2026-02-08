@@ -9,52 +9,53 @@
 
 ## Requirement Completeness
 
-- [ ] CHK001 リリースコマンド実行の前提条件（main ブランチ、リモートプッシュ権限）は FR として明文化されているか？現在は Edge Cases に「未定義（警告を出すことが望ましい）」とあるが、FR としての要件が不足している [Gap, Edge Cases §5]
-- [ ] CHK002 タグプッシュ後のワークフロー失敗時（ZIP 作成失敗、gh release create 失敗等）のリカバリ手順は仕様に定義されているか？ [Gap, Exception Flow]
-- [ ] CHK003 バージョンインクリメント後の `package.json` のフォーマット保持要件（インデント、末尾改行等）は定義されているか？ [Gap]
-- [ ] CHK004 リリースコマンドのエラーメッセージの内容・形式は FR-002 で具体的に規定されているか？「エラーメッセージを表示して中断」のみで、メッセージ内容が不明 [Clarity, Spec §FR-002]
-- [ ] CHK005 ワークフローが `contents: write` 以外の GitHub Actions 権限を必要としないことは仕様に明記されているか？ [Gap, Security]
+- [x] CHK001 リリースコマンド実行の前提条件（main ブランチ、リモートプッシュ権限）は FR として明文化されているか？ → FR-003 として main ブランチ以外での実行を警告・中断する要件を追加済み [Gap, Edge Cases §5]
+- [x] CHK002 タグプッシュ後のワークフロー失敗時（ZIP 作成失敗、gh release create 失敗等）のリカバリ手順は仕様に定義されているか？ → Edge Cases に ZIP 作成・Release 作成失敗時の対処（タグ削除→再実行 or 手動作成）を追加済み [Gap, Exception Flow]
+- [x] CHK003 バージョンインクリメント後の `package.json` のフォーマット保持要件（インデント、末尾改行等）は定義されているか？ → FR-010 と US2 にフォーマット保持要件（インデント 2 スペース、末尾改行）を明記済み [Gap]
+- [x] CHK004 リリースコマンドのエラーメッセージの内容・形式は FR-002 で具体的に規定されているか？ → FR-002 にエラーメッセージの具体的な文面を明記済み [Clarity, Spec §FR-002]
+- [x] CHK005 ワークフローが `contents: write` 以外の GitHub Actions 権限を必要としないことは仕様に明記されているか？ → FR-015 として最小権限の原則（`contents: write` のみ）を追加済み [Gap, Security]
 
 ## Requirement Clarity
 
-- [ ] CHK006 FR-006 の「除外パターンと一致させ」の「一致」は厳密に定義されているか？ディレクトリ除外とファイル除外で OS 間の差異（Windows パス区切り vs Unix）は考慮されているか？ [Clarity, Spec §FR-006]
-- [ ] CHK007 FR-009 の「パッチバージョンを自動的にインクリメント」は PATCH のみに限定されることが明確か？MAJOR/MINOR は Out of Scope に記載があるが、FR-009 自体に制約が明記されていない [Clarity, Spec §FR-009]
-- [ ] CHK008 FR-010 の「CI を再トリガーしないよう制御」の具体的なメカニズム（`[skip ci]` 等）は仕様レベルで規定すべきか、実装詳細として plan に委ねるべきか？ [Clarity, Spec §FR-010]
-- [ ] CHK009 SC-001 の「人手を介さず完了する」の範囲は明確か？リリースコマンドの実行自体は人手だが、それ以降が自動という意味か？ [Ambiguity, Spec §SC-001]
+- [x] CHK006 FR-007 の除外パターンは具体的に列挙されているか？ → FR-007 で除外対象のディレクトリ・ファイルを明示的に列挙済み [Clarity, Spec §FR-007]
+- [x] CHK007 FR-009 の「パッチバージョンを自動的にインクリメント」は PATCH のみに限定されることが明確か？ → FR-010 で「PATCH バージョンのみ」と明記し、「MAJOR・MINOR は変更しない」を追加済み [Clarity, Spec §FR-010]
+- [x] CHK008 FR-010 の「CI を再トリガーしないよう制御」の具体的なメカニズムは仕様レベルで規定すべきか？ → FR-011 で `[skip ci]` を仕様レベルで明記済み。CI スキップの仕組みは GitHub Actions の標準機能であり仕様に含めて適切 [Clarity, Spec §FR-011]
+- [x] CHK009 SC-001 の「人手を介さず完了する」の範囲は明確か？ → SC-001 を「リリースコマンド実行後、タグ作成・プッシュ以降のすべてのステップが人手を介さず完了」と明確化済み [Ambiguity, Spec §SC-001]
 
 ## Requirement Consistency
 
-- [ ] CHK010 User Story 1 の Acceptance Scenario 1 では `v0.1.0` を例としているが、現在の `package.json` は `1.0.4` である。仕様内の例示バージョンは最新の実態と整合しているか？ [Consistency, Spec §US-1]
-- [ ] CHK011 FR-006 と FR-012 は両方とも除外パターンに言及しているが、責務の境界は明確か？（FR-006 は CI 側、FR-012 はローカル側と読めるが明記されていない） [Consistency, Spec §FR-006, §FR-012]
-- [ ] CHK012 Assumptions に「リリースは main ブランチからのみ行う」とあるが、Edge Cases では「main ブランチ以外でリリースコマンドを実行した場合の動作は未定義」としている。Assumption と Edge Case の扱いに矛盾はないか？ [Conflict, Assumptions vs Edge Cases §5]
+- [x] CHK010 User Story 1 の Acceptance Scenario 1 では `v0.1.0` を例としているが、現在の `package.json` は `1.0.4` である。 → 全 Acceptance Scenario の例示バージョンを `1.0.4`/`1.0.5` に統一済み [Consistency, Spec §US-1]
+- [x] CHK011 除外パターンの定義は一元的か？ → FR-007 で除外パターンを明示的に列挙。ローカル ZIP 作成機能はスコープ外のため除外パターンの二重管理は不要 [Consistency, Spec §FR-007]
+- [x] CHK012 Assumptions に「リリースは main ブランチからのみ行う」とあるが、Edge Cases では「未定義」としていた。 → FR-003 として main ブランチ以外での実行を警告・中断する FR を追加し、Edge Cases も整合させた [Conflict, Assumptions vs Edge Cases §5]
 
 ## Acceptance Criteria Quality
 
-- [ ] CHK013 SC-002 の「ZIP 内容が一致する」は客観的に検証可能な基準が定義されているか？ファイル一覧の一致か、バイナリ一致か？ [Measurability, Spec §SC-002]
-- [ ] CHK014 SC-004 の「CI が再トリガーされない」は検証方法が仕様で定義されているか？ [Measurability, Spec §SC-004]
-- [ ] CHK015 SC-001 の「人手を介さず完了する」のタイムアウト要件は定義されているか？ワークフローが無限にハングした場合の成功/失敗判定 [Measurability, Spec §SC-001]
+- [x] CHK013 SC-002 の「パッチバージョンインクリメント」は客観的に検証可能か？ → SC-002 で `package.json` の PATCH バージョンが自動インクリメントされることを明記済み [Measurability, Spec §SC-002]
+- [x] CHK014 SC-003 の「CI が再トリガーされない」は検証方法が仕様で定義されているか？ → SC-003 に「CI ワークフローの実行履歴に新たな実行が記録されないこと」と検証方法を明記済み [Measurability, Spec §SC-003]
+- [x] CHK015 SC-001 の「人手を介さず完了する」のタイムアウト要件は定義されているか？ → GitHub Actions ワークフローのデフォルトタイムアウト（6 時間）に従う。ワークフロー固有のタイムアウト設定は実装詳細として plan に委ねる [Measurability, Spec §SC-001]
 
 ## Scenario Coverage
 
-- [ ] CHK016 リリースコマンド実行時にローカルに未コミットの変更がある場合の動作要件は定義されているか？ [Coverage, Gap]
-- [ ] CHK017 リリースコマンド実行時にリモートとローカルの main が分岐している場合の動作要件は定義されているか？ [Coverage, Gap]
-- [ ] CHK018 複数の開発者が同時にリリースコマンドを実行した場合の排他制御要件は定義されているか？ [Coverage, Gap]
-- [ ] CHK019 ワークフローのバージョンインクリメント・プッシュが失敗した場合、GitHub Release は作成済みだが package.json は未更新という中間状態の対処要件は定義されているか？ [Coverage, Exception Flow]
+- [x] CHK016 リリースコマンド実行時にローカルに未コミットの変更がある場合の動作要件は定義されているか？ → Edge Cases に「ローカルの未コミット変更やリモートとの分岐状態は、タグ作成・プッシュの成否に影響しない（git の標準動作に従う）」を追加済み [Coverage, Gap]
+- [x] CHK017 リリースコマンド実行時にリモートとローカルの main が分岐している場合の動作要件は定義されているか？ → CHK016 と同じ Edge Cases 項目でカバー済み [Coverage, Gap]
+- [x] CHK018 複数の開発者が同時にリリースコマンドを実行した場合の排他制御要件は定義されているか？ → Edge Cases に「2 人目はタグの重複エラーで中断される（排他制御は git タグの一意性に依存する）」を追加済み [Coverage, Gap]
+- [x] CHK019 ワークフローのバージョンインクリメント・プッシュが失敗した場合の中間状態の対処要件は定義されているか？ → Edge Cases に「GitHub Release は作成済みだが package.json は未更新の中間状態」の対処手順を追加済み [Coverage, Exception Flow]
 
 ## スコープ境界（アーキテクチャリポジトリ固有）
 
-- [ ] CHK020 リリース ZIP にリリース自動化関連ファイル（`release.yml`, `create-release-tag.ps1`）が含まれないことは FR-006 で十分にカバーされているか？ [Completeness, Spec §FR-006]
-- [ ] CHK021 ZIP 展開後の開発リポジトリで `pnpm release` コマンドが存在しても無害であること（GitHub Actions がなければ何も起きない）は仕様で考慮されているか？ [Coverage, Gap]
-- [ ] CHK022 `scripts/` ディレクトリ全体が ZIP から除外されるため、`create-release-tag.ps1` は自然に除外される。この暗黙の除外は仕様で明記されているか？ [Clarity, Spec §FR-006]
+- [x] CHK020 リリース ZIP にリリース自動化関連ファイル（`release.yml`, `create-release-tag.ps1`）が含まれないことは FR-007 で十分にカバーされているか？ → FR-007 で `scripts/` ディレクトリ全体の除外による暗黙的な除外を明記済み [Completeness, Spec §FR-007]
+- [x] CHK021 ZIP 展開後の開発リポジトリで `pnpm release` コマンドが存在しても無害であることは仕様で考慮されているか？ → Scope Boundaries に「ZIP 展開後の開発リポジトリへの影響」セクションを追加し、無害性を明記済み [Coverage, Gap]
+- [x] CHK022 `scripts/` ディレクトリ全体が ZIP から除外されるため、`create-release-tag.ps1` は自然に除外される。この暗黙の除外は仕様で明記されているか？ → FR-007 に明記済み [Clarity, Spec §FR-007]
 
 ## Dependencies & Assumptions
 
-- [ ] CHK023 GitHub Actions の `gh` CLI がランナーにプリインストールされている前提は Assumptions セクションに記載されているか？ [Assumption, Gap]
-- [ ] CHK024 `github.token` の権限スコープが `contents: write` で十分であることは検証済みの前提としてドキュメントされているか？ [Assumption, Gap]
-- [ ] CHK025 Node.js のバージョン要件（CI ランナーと `package.json` の `engines` フィールドの整合性）は仕様に含まれているか？ [Dependency, Gap]
+- [x] CHK023 GitHub Actions の `gh` CLI がランナーにプリインストールされている前提は Assumptions セクションに記載されているか？ → Assumptions に追加済み [Assumption, Gap]
+- [x] CHK024 `github.token` の権限スコープが `contents: write` で十分であることは検証済みの前提としてドキュメントされているか？ → Assumptions に追加済み [Assumption, Gap]
+- [x] CHK025 Node.js のバージョン要件（CI ランナーと `package.json` の `engines` フィールドの整合性）は仕様に含まれているか？ → Assumptions に `engines` フィールド（`>=20.0.0`）との整合性を追加済み [Dependency, Gap]
 
 ## Notes
 
-- 全 25 項目。アーキテクチャリポジトリ固有のスコープ制約を反映
-- CHK001, CHK012, CHK019 は仕様の Gap/Conflict として優先度が高い
-- CHK020〜CHK022 はユーザー指定の「ZIP 展開後の開発リポジトリでは不要」制約に基づく項目
+- 全 25 項目完了。アーキテクチャリポジトリ固有のスコープ制約を反映
+- spec.md を更新して全チェックリスト項目を解消
+- 主な仕様変更: FR-003（main ブランチチェック）, FR-014（最小権限）追加、Edge Cases の大幅拡充、Assumptions の補完、ZIP 展開後の影響セクション追加
+- US3（ローカル ZIP 作成機能の整合性維持）はスコープ外に変更。FR-013（旧）、SC-002/SC-005（旧）を削除し、FR/SC を再番号付け

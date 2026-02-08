@@ -105,3 +105,31 @@ export type RemoveFromCartInput = z.infer<typeof RemoveFromCartInputSchema>;
  */
 export const RemoveFromCartOutputSchema = CartSchema;
 export type RemoveFromCartOutput = z.infer<typeof RemoveFromCartOutputSchema>;
+
+// ─────────────────────────────────────────────────────────────────
+// リポジトリインターフェース
+// ─────────────────────────────────────────────────────────────────
+
+export interface CartRepository {
+  findByUserId(userId: string): Promise<Cart | null>;
+  create(userId: string): Promise<Cart>;
+  addItem(
+    userId: string,
+    item: Omit<CartItem, 'addedAt'>
+  ): Promise<Cart>;
+  updateItemQuantity(
+    userId: string,
+    productId: string,
+    quantity: number
+  ): Promise<Cart>;
+  removeItem(userId: string, productId: string): Promise<Cart>;
+}
+
+export interface ProductFetcher {
+  findById(productId: string): Promise<{
+    id: string;
+    name: string;
+    price: number;
+    imageUrl?: string;
+  } | null>;
+}

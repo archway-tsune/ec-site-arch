@@ -7,7 +7,7 @@
  */
 import type { Order, OrderStatus } from '@/contracts/orders';
 import type { Cart } from '@/contracts/cart';
-import type { OrderRepository, CartFetcher } from '@/samples/domains/orders/api/usecases';
+import type { OrderRepository, CartFetcher } from '@/contracts/orders';
 import { cartRepository, clearCart } from './cart';
 
 // グローバル変数の型定義（HMR対策）

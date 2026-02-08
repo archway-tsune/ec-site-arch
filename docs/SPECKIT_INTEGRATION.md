@@ -41,9 +41,11 @@
 ├── src/                    ← zip から展開
 │   ├── foundation/         # 共通基盤
 │   ├── templates/          # 再利用テンプレート
-│   ├── samples/            # サンプル実装（参考）
-│   ├── domains/            # 本番ドメイン実装
-│   └── app/                # Next.js App Router
+│   ├── contracts/          # 共有インターフェース（DTO・リポジトリ契約）
+│   ├── domains/            # ドメイン実装（暫定スキャフォールド → 本番置換）
+│   ├── samples/            # サンプル実装（独立した参照コード）
+│   ├── infrastructure/     # インフラ層（@/contracts/ に依存）
+│   └── app/                # Next.js App Router（@/domains/ に依存）
 │
 ├── tests/                  ← zip から展開
 ├── docs/                   ← zip から展開
@@ -134,7 +136,7 @@
 - [ ] T001 型定義を実装する `src/domains/profile/types/index.ts`
 - [ ] T002 [P] UIコンポーネントを実装する `src/domains/profile/ui/`
 - [ ] T003 [P] APIユースケースを実装する `src/domains/profile/api/usecases.ts`
-- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/profile.ts`
+- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/profile.ts`（`@/contracts/` のインターフェースを実装）
 
 ### Task 1-2: ページ実装
 - [ ] T005 プロフィールページを実装する `src/app/(buyer)/profile/page.tsx`
@@ -158,7 +160,8 @@
 
 ## 5. サンプル実装の参照
 
-speckitで実装する際は、サンプル実装を参考にしてください：
+speckitで実装する際は、独立した参照コードであるサンプル実装を参考にしてください。
+サンプルは `@/contracts/` のみに依存しており、本番コードから分離されています。
 
 ### Catalogドメイン（商品管理）
 - 一覧・詳細表示
@@ -180,6 +183,13 @@ speckitで実装する際は、サンプル実装を参考にしてください�
 - ステータス管理
 
 参照: `src/samples/domains/orders/`
+
+### 本番実装のパス
+
+実装は `src/domains/` に配置します。`src/app/` は `@/domains/` 経由でインポートし、
+`src/infrastructure/` は `@/contracts/` の共有インターフェースに依存します。
+初期状態の暫定スキャフォールド（`src/domains/*/api/index.ts`, `src/domains/*/ui/index.ts`）を
+独自実装に置き換えてください。
 
 ---
 

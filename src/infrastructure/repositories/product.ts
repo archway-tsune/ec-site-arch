@@ -6,7 +6,7 @@
  * グローバル変数を使用してデータを保持しています。
  */
 import type { Product } from '@/contracts/catalog';
-import type { ProductRepository } from '@/samples/domains/catalog/api/usecases';
+import type { ProductRepository } from '@/contracts/catalog';
 
 // サンプル商品データ
 const sampleProducts: Product[] = [

@@ -44,7 +44,7 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 ```text
 /speckit.plan
 テスト駆動開発を徹底する。サンプル用のE2Eテストは実行から除外する。
-既存のサンプル実装（src/samples/domains/catalog/）を参考にし、src/domains/catalog/ に本番ドメインとして再構築する。
+src/domains/catalog/ の暫定スキャフォールド（@/samples/ を再エクスポート中）を本番実装に置き換える。src/contracts/ の共有インターフェースに準拠し、src/samples/domains/catalog/ は参考実装として参照する。
 計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 

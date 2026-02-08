@@ -25,25 +25,25 @@
 
 ### 共有契約へのインターフェース追加
 
-- [ ] T001 [P] [US1] src/contracts/catalog.ts にProductRepository インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。既存DTOスキーマは変更しない）
-- [ ] T002 [P] [US1] src/contracts/cart.ts にCartRepository, ProductFetcher インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。既存DTOスキーマは変更しない）
-- [ ] T003 [P] [US1] src/contracts/orders.ts にOrderRepository, CartFetcher インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。CartFetcher が参照する Cart 型は @/contracts/cart から import する。既存DTOスキーマは変更しない）
+- [x] T001 [P] [US1] src/contracts/catalog.ts にProductRepository インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。既存DTOスキーマは変更しない）
+- [x] T002 [P] [US1] src/contracts/cart.ts にCartRepository, ProductFetcher インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。既存DTOスキーマは変更しない）
+- [x] T003 [P] [US1] src/contracts/orders.ts にOrderRepository, CartFetcher インターフェースを追加する（contracts/repository-interfaces.md の定義に従う。CartFetcher が参照する Cart 型は @/contracts/cart から import する。既存DTOスキーマは変更しない）
 
 ### サンプルのインターフェース参照先を共有契約に変更
 
-- [ ] T004 [P] [US1] src/samples/domains/catalog/api/usecases.ts のインライン ProductRepository 定義を削除し、@/contracts/catalog からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
-- [ ] T005 [P] [US1] src/samples/domains/cart/api/usecases.ts のインライン CartRepository, ProductFetcher 定義を削除し、@/contracts/cart からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
-- [ ] T006 [P] [US1] src/samples/domains/orders/api/usecases.ts のインライン OrderRepository, CartFetcher 定義を削除し、@/contracts/orders からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
+- [x] T004 [P] [US1] src/samples/domains/catalog/api/usecases.ts のインライン ProductRepository 定義を削除し、@/contracts/catalog からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
+- [x] T005 [P] [US1] src/samples/domains/cart/api/usecases.ts のインライン CartRepository, ProductFetcher 定義を削除し、@/contracts/cart からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
+- [x] T006 [P] [US1] src/samples/domains/orders/api/usecases.ts のインライン OrderRepository, CartFetcher 定義を削除し、@/contracts/orders からの import に置き換える（再エクスポートを維持し、既存の外部参照を壊さない）
 
 ### インフラ層の参照先を共有契約に変更
 
-- [ ] T007 [P] [US1] src/infrastructure/repositories/product.ts の import を @/samples/domains/catalog/api/usecases から @/contracts/catalog に変更する（type { ProductRepository } のみ）
-- [ ] T008 [P] [US1] src/infrastructure/repositories/cart.ts の import を @/samples/domains/cart/api/usecases から @/contracts/cart に変更する（type { CartRepository, ProductFetcher } のみ）
-- [ ] T009 [P] [US1] src/infrastructure/repositories/order.ts の import を @/samples/domains/orders/api/usecases から @/contracts/orders に変更する（type { OrderRepository, CartFetcher } のみ）
+- [x] T007 [P] [US1] src/infrastructure/repositories/product.ts の import を @/samples/domains/catalog/api/usecases から @/contracts/catalog に変更する（type { ProductRepository } のみ）
+- [x] T008 [P] [US1] src/infrastructure/repositories/cart.ts の import を @/samples/domains/cart/api/usecases から @/contracts/cart に変更する（type { CartRepository, ProductFetcher } のみ）
+- [x] T009 [P] [US1] src/infrastructure/repositories/order.ts の import を @/samples/domains/orders/api/usecases から @/contracts/orders に変更する（type { OrderRepository, CartFetcher } のみ）
 
 ### 検証
 
-- [ ] T010 [US1] 型チェックと単体テストを実行して基盤構築の完了を検証する（pnpm typecheck && pnpm test:unit）
+- [x] T010 [US1] 型チェックと単体テストを実行して基盤構築の完了を検証する（pnpm typecheck && pnpm test:unit）
 
 **チェックポイント**: src/infrastructure/repositories/ 配下に @/samples/ への直接 import が0件であること。既存テストがすべて通ること。
 
@@ -57,23 +57,23 @@
 
 ### API暫定スキャフォールドの作成
 
-- [ ] T011 [P] [US2] src/domains/catalog/api/index.ts を作成し、@/samples/domains/catalog/api から getProducts, getProductById, createProduct, updateProduct, deleteProduct, NotFoundError を名前付き再エクスポートする
-- [ ] T012 [P] [US2] src/domains/cart/api/index.ts を作成し、@/samples/domains/cart/api から getCart, addToCart, updateCartItem, removeFromCart, NotFoundError, CartItemNotFoundError を名前付き再エクスポートする
-- [ ] T013 [P] [US2] src/domains/orders/api/index.ts を作成し、@/samples/domains/orders/api から getOrders, getOrderById, createOrder, updateOrderStatus, NotFoundError, EmptyCartError, InvalidStatusTransitionError を名前付き再エクスポートする
+- [x] T011 [P] [US2] src/domains/catalog/api/index.ts を作成し、@/samples/domains/catalog/api から getProducts, getProductById, createProduct, updateProduct, deleteProduct, NotFoundError を名前付き再エクスポートする
+- [x] T012 [P] [US2] src/domains/cart/api/index.ts を作成し、@/samples/domains/cart/api から getCart, addToCart, updateCartItem, removeFromCart, NotFoundError, CartItemNotFoundError を名前付き再エクスポートする
+- [x] T013 [P] [US2] src/domains/orders/api/index.ts を作成し、@/samples/domains/orders/api から getOrders, getOrderById, createOrder, updateOrderStatus, NotFoundError, EmptyCartError, InvalidStatusTransitionError を名前付き再エクスポートする
 
 ### APIルートの import 先変更
 
-- [ ] T014 [P] [US2] src/app/api/catalog/products/route.ts の import を @/samples/domains/catalog/api から @/domains/catalog/api に変更する
-- [ ] T015 [P] [US2] src/app/api/catalog/products/[id]/route.ts の import を @/samples/domains/catalog/api から @/domains/catalog/api に変更する
-- [ ] T016 [P] [US2] src/app/api/cart/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
-- [ ] T017 [P] [US2] src/app/api/cart/items/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
-- [ ] T018 [P] [US2] src/app/api/cart/items/[productId]/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
-- [ ] T019 [P] [US2] src/app/api/orders/route.ts の import を @/samples/domains/orders/api から @/domains/orders/api に変更する
-- [ ] T020 [P] [US2] src/app/api/orders/[id]/route.ts の import を @/samples/domains/orders/api から @/domains/orders/api に変更する
+- [x] T014 [P] [US2] src/app/api/catalog/products/route.ts の import を @/samples/domains/catalog/api から @/domains/catalog/api に変更する
+- [x] T015 [P] [US2] src/app/api/catalog/products/[id]/route.ts の import を @/samples/domains/catalog/api から @/domains/catalog/api に変更する
+- [x] T016 [P] [US2] src/app/api/cart/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
+- [x] T017 [P] [US2] src/app/api/cart/items/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
+- [x] T018 [P] [US2] src/app/api/cart/items/[productId]/route.ts の import を @/samples/domains/cart/api から @/domains/cart/api に変更する
+- [x] T019 [P] [US2] src/app/api/orders/route.ts の import を @/samples/domains/orders/api から @/domains/orders/api に変更する
+- [x] T020 [P] [US2] src/app/api/orders/[id]/route.ts の import を @/samples/domains/orders/api から @/domains/orders/api に変更する
 
 ### 検証
 
-- [ ] T021 [US2] 型チェック・単体テスト・統合テストを実行してAPIルート分離の完了を検証する（pnpm typecheck && pnpm test:unit && pnpm test:integration）
+- [x] T021 [US2] 型チェック・単体テスト・統合テストを実行してAPIルート分離の完了を検証する（pnpm typecheck && pnpm test:unit && pnpm test:integration）
 
 **チェックポイント**: src/app/api/ 配下に @/samples/ への直接 import が0件であること。既存のAPI動作が維持されていること。
 
@@ -87,21 +87,21 @@
 
 ### UI暫定スキャフォールドの作成
 
-- [ ] T022 [P] [US3] src/domains/catalog/ui/index.ts を作成し、@/samples/domains/catalog/ui/ProductList から ProductList を、@/samples/domains/catalog/ui/ProductDetail から ProductDetail を名前付き再エクスポートする
-- [ ] T023 [P] [US3] src/domains/cart/ui/index.ts を作成し、@/samples/domains/cart/ui/CartView から CartView を名前付き再エクスポートする
-- [ ] T024 [P] [US3] src/domains/orders/ui/index.ts を作成し、@/samples/domains/orders/ui/OrderList から OrderList を、@/samples/domains/orders/ui/OrderDetail から OrderDetail を名前付き再エクスポートする
+- [x] T022 [P] [US3] src/domains/catalog/ui/index.ts を作成し、@/samples/domains/catalog/ui/ProductList から ProductList を、@/samples/domains/catalog/ui/ProductDetail から ProductDetail を名前付き再エクスポートする
+- [x] T023 [P] [US3] src/domains/cart/ui/index.ts を作成し、@/samples/domains/cart/ui/CartView から CartView を名前付き再エクスポートする
+- [x] T024 [P] [US3] src/domains/orders/ui/index.ts を作成し、@/samples/domains/orders/ui/OrderList から OrderList を、@/samples/domains/orders/ui/OrderDetail から OrderDetail を名前付き再エクスポートする
 
 ### ページの import 先変更
 
-- [ ] T025 [P] [US3] src/app/(buyer)/catalog/page.tsx の import を @/samples/domains/catalog/ui/ProductList から @/domains/catalog/ui に変更する
-- [ ] T026 [P] [US3] src/app/(buyer)/catalog/[id]/page.tsx の import を @/samples/domains/catalog/ui/ProductDetail から @/domains/catalog/ui に変更する
-- [ ] T027 [P] [US3] src/app/(buyer)/cart/page.tsx の import を @/samples/domains/cart/ui/CartView から @/domains/cart/ui に変更する
-- [ ] T028 [P] [US3] src/app/(buyer)/orders/page.tsx の import を @/samples/domains/orders/ui/OrderList から @/domains/orders/ui に変更する
-- [ ] T029 [P] [US3] src/app/(buyer)/orders/[id]/page.tsx の import を @/samples/domains/orders/ui/OrderDetail から @/domains/orders/ui に変更する
+- [x] T025 [P] [US3] src/app/(buyer)/catalog/page.tsx の import を @/samples/domains/catalog/ui/ProductList から @/domains/catalog/ui に変更する
+- [x] T026 [P] [US3] src/app/(buyer)/catalog/[id]/page.tsx の import を @/samples/domains/catalog/ui/ProductDetail から @/domains/catalog/ui に変更する
+- [x] T027 [P] [US3] src/app/(buyer)/cart/page.tsx の import を @/samples/domains/cart/ui/CartView から @/domains/cart/ui に変更する
+- [x] T028 [P] [US3] src/app/(buyer)/orders/page.tsx の import を @/samples/domains/orders/ui/OrderList から @/domains/orders/ui に変更する
+- [x] T029 [P] [US3] src/app/(buyer)/orders/[id]/page.tsx の import を @/samples/domains/orders/ui/OrderDetail から @/domains/orders/ui に変更する
 
 ### 検証
 
-- [ ] T030 [US3] 型チェックとE2Eテストを実行してページ分離の完了を検証する（pnpm typecheck && pnpm test:e2e）
+- [x] T030 [US3] 型チェックとE2Eテストを実行してページ分離の完了を検証する（pnpm typecheck && pnpm test:e2e）
 
 **チェックポイント**: src/app/(buyer)/ 配下に @/samples/ への直接 import が0件であること。既存の画面表示が維持されていること。
 
@@ -113,8 +113,8 @@
 
 **独立テスト**: 生成されたZIPにtests/e2e/arch/のファイルが含まれ、playwright.arch.config.tsが含まれていないことを確認する
 
-- [ ] T031 [US4] scripts/create-release-zip.ps1 の $excludeDirs リストから 'tests\e2e\arch' と 'tests/e2e/arch' の2エントリを削除する（playwright.arch.config.ts は $excludeFiles に残す）
-- [ ] T032 [US4] リリースZIPを生成し、tests/e2e/arch/ のテストファイルが含まれていること、playwright.arch.config.ts が含まれていないことを確認する
+- [x] T031 [US4] scripts/create-release-zip.ps1 の $excludeDirs リストから 'tests\e2e\arch' と 'tests/e2e/arch' の2エントリを削除する（playwright.arch.config.ts は $excludeFiles に残す）
+- [x] T032 [US4] リリースZIPを生成し、tests/e2e/arch/ のテストファイルが含まれていること、playwright.arch.config.ts が含まれていないことを確認する
 
 **チェックポイント**: ZIPに含まれるテストファイルが参照専用であること（playwright.arch.config.ts の不在によりCIで実行されない）。
 
@@ -128,21 +128,21 @@
 
 ### プロジェクトドキュメントの更新
 
-- [ ] T033 [P] [US5] README.md のプロジェクト構成図・依存関係の説明を新構造（@/domains/ 起点、共有契約層の活用）に合わせて更新する
-- [ ] T034 [P] [US5] docs/GETTING_STARTED.md の開発手順の参照先を @/domains/ ベースに変更する
-- [ ] T035 [P] [US5] docs/SPECKIT_INTEGRATION.md の Speckit ワークフローの説明を新構造に合わせて更新する
-- [ ] T036 [P] [US5] src/domains/README.md を更新し、暫定スキャフォールドの存在と本番実装への置き換え手順を記述する
-- [ ] T037 [P] [US5] src/samples/README.md を更新し、サンプルが独立した参照専用である旨を明記する
-- [ ] T038 [P] [US5] scripts/README.md を更新し、リリースZIPの同梱内容の変更（tests/e2e/arch/ の追加）を反映する
-- [ ] T039 [P] [US5] specs/001-ec-arch-foundation/quickstart.md のクイックスタートの参照パスを @/domains/ ベースに更新する
+- [x] T033 [P] [US5] README.md のプロジェクト構成図・依存関係の説明を新構造（@/domains/ 起点、共有契約層の活用）に合わせて更新する
+- [x] T034 [P] [US5] docs/GETTING_STARTED.md の開発手順の参照先を @/domains/ ベースに変更する
+- [x] T035 [P] [US5] docs/SPECKIT_INTEGRATION.md の Speckit ワークフローの説明を新構造に合わせて更新する
+- [x] T036 [P] [US5] src/domains/README.md を更新し、暫定スキャフォールドの存在と本番実装への置き換え手順を記述する
+- [x] T037 [P] [US5] src/samples/README.md を更新し、サンプルが独立した参照専用である旨を明記する
+- [x] T038 [P] [US5] scripts/README.md を更新し、リリースZIPの同梱内容の変更（tests/e2e/arch/ の追加）を反映する
+- [x] T039 [P] [US5] specs/001-ec-arch-foundation/quickstart.md のクイックスタートの参照パスを @/domains/ ベースに更新する
 
 ### 機能入力例の更新
 
-- [ ] T040 [P] [US5] docs/examples/constitution-example.md の実装ワークフローの説明を新構造に合わせて更新する
-- [ ] T041 [P] [US5] docs/examples/spec-catalog-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
-- [ ] T042 [P] [US5] docs/examples/spec-cart-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
-- [ ] T043 [P] [US5] docs/examples/spec-order-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
-- [ ] T044 [P] [US5] docs/examples/spec-product-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
+- [x] T040 [P] [US5] docs/examples/constitution-example.md の実装ワークフローの説明を新構造に合わせて更新する
+- [x] T041 [P] [US5] docs/examples/spec-catalog-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
+- [x] T042 [P] [US5] docs/examples/spec-cart-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
+- [x] T043 [P] [US5] docs/examples/spec-order-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
+- [x] T044 [P] [US5] docs/examples/spec-product-example.md の plan 入力の参照先を @/domains/ の暫定スキャフォールドをベースにした本番実装に変更する
 
 **チェックポイント**: 全ドキュメント・入力例が新構造を反映していること。
 
@@ -152,8 +152,8 @@
 
 **目的**: 全ユーザーストーリーの統合検証と成功基準の達成確認
 
-- [ ] T045 全テストスイートを実行して回帰がないことを確認する（pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm test:e2e）
-- [ ] T046 src/app/ と src/infrastructure/ 配下の全ファイルで @/samples/ への直接 import が0件であることを grep で確認する（SC-001）
+- [x] T045 全テストスイートを実行して回帰がないことを確認する（pnpm typecheck && pnpm test:unit && pnpm test:integration && pnpm test:e2e）
+- [x] T046 src/app/ と src/infrastructure/ 配下の全ファイルで @/samples/ への直接 import が0件であることを grep で確認する（SC-001）
 
 ---
 

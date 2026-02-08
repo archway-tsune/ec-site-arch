@@ -139,3 +139,25 @@ export const DeleteProductOutputSchema = z.object({
   success: z.literal(true),
 });
 export type DeleteProductOutput = z.infer<typeof DeleteProductOutputSchema>;
+
+// ─────────────────────────────────────────────────────────────────
+// リポジトリインターフェース
+// ─────────────────────────────────────────────────────────────────
+
+export interface ProductRepository {
+  findAll(params: {
+    status?: Product['status'];
+    offset: number;
+    limit: number;
+  }): Promise<Product[]>;
+  findById(id: string): Promise<Product | null>;
+  create(
+    data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Product>;
+  update(
+    id: string,
+    data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>
+  ): Promise<Product>;
+  delete(id: string): Promise<void>;
+  count(status?: Product['status']): Promise<number>;
+}

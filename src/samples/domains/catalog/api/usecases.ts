@@ -22,24 +22,11 @@ import {
   type UpdateProductOutput,
   type DeleteProductInput,
   type DeleteProductOutput,
+  type ProductRepository,
 } from '@/contracts/catalog';
 
-// ─────────────────────────────────────────────────────────────────
-// リポジトリインターフェース
-// ─────────────────────────────────────────────────────────────────
-
-export interface ProductRepository {
-  findAll(params: {
-    status?: Product['status'];
-    offset: number;
-    limit: number;
-  }): Promise<Product[]>;
-  findById(id: string): Promise<Product | null>;
-  create(data: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product>;
-  update(id: string, data: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Product>;
-  delete(id: string): Promise<void>;
-  count(status?: Product['status']): Promise<number>;
-}
+// 既存の外部参照を維持するための再エクスポート
+export type { ProductRepository } from '@/contracts/catalog';
 
 // ─────────────────────────────────────────────────────────────────
 // コンテキスト

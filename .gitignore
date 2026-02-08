@@ -52,3 +52,4 @@ yarn.lock
 *.zip
 nul
 .claude/settings.local.json
+.claude/settings.local.json

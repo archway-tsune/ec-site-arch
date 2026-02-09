@@ -6,29 +6,29 @@ import { test, expect } from '@playwright/test';
 
 // 管理者ログインヘルパー
 async function loginAsAdmin(page: import('@playwright/test').Page) {
-  await page.goto('/admin/login');
+  await page.goto('/sample/admin/login');
   await page.waitForLoadState('networkidle');
   await page.locator('#email').fill('admin@example.com');
   await page.locator('#password').fill('demo');
   await page.getByRole('button', { name: /ログイン/i }).click();
-  await page.waitForURL(/\/admin(?!\/login)/);
+  await page.waitForURL(/\/sample\/admin(?!\/login)/);
   await page.waitForLoadState('networkidle');
 }
 
 // 購入者ログインヘルパー
 async function loginAsBuyer(page: import('@playwright/test').Page) {
-  await page.goto('/login');
+  await page.goto('/sample/login');
   await page.locator('#email').fill('buyer@example.com');
   await page.locator('#password').fill('demo');
   await page.getByRole('button', { name: /ログイン/i }).click();
-  await page.waitForURL(/\/catalog/);
+  await page.waitForURL(/\/sample\/catalog/);
   await page.waitForLoadState('networkidle');
 }
 
 test.describe('管理者導線 - カタログ', () => {
   test.beforeEach(async ({ page, request }) => {
     // テスト前に状態をリセット
-    await request.post('/api/test/reset');
+    await request.post('/sample/api/test/reset');
 
     // 管理者としてログイン
     await loginAsAdmin(page);
@@ -36,7 +36,7 @@ test.describe('管理者導線 - カタログ', () => {
 
   test.describe('商品管理', () => {
     test('商品一覧が表示される', async ({ page }) => {
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
 
       // 商品一覧テーブル
       await expect(page.locator('table')).toBeVisible();
@@ -46,7 +46,7 @@ test.describe('管理者導線 - カタログ', () => {
     });
 
     test('商品を新規登録できる', async ({ page }) => {
-      await page.goto('/admin/products/new');
+      await page.goto('/sample/admin/products/new');
 
       // フォーム入力（id属性を使用）
       await page.locator('#name').fill('テスト商品');
@@ -57,17 +57,17 @@ test.describe('管理者導線 - カタログ', () => {
       await page.getByRole('button', { name: /登録/i }).click();
 
       // 成功メッセージまたはリダイレクト
-      await expect(page).toHaveURL(/\/admin\/products/);
+      await expect(page).toHaveURL(/\/sample\/admin\/products/);
     });
 
     test('商品を編集できる', async ({ page }) => {
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
 
       // 編集ボタンをクリック
       await page.locator('[data-testid="edit-button"]').first().click();
 
       // 編集ページに遷移を待つ
-      await expect(page).toHaveURL(/\/admin\/products\/.*\/edit/);
+      await expect(page).toHaveURL(/\/sample\/admin\/products\/.*\/edit/);
 
       // 編集フォームが読み込まれるのを待つ
       await expect(page.locator('#name')).toBeVisible({ timeout: 10000 });
@@ -80,11 +80,11 @@ test.describe('管理者導線 - カタログ', () => {
       await page.getByRole('button', { name: /保存/i }).click();
 
       // 成功
-      await expect(page).toHaveURL(/\/admin\/products$/);
+      await expect(page).toHaveURL(/\/sample\/admin\/products$/);
     });
 
     test('商品を削除できる', async ({ page }) => {
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
 
       // 商品一覧が読み込まれるのを待つ
       await expect(page.locator('[data-testid="product-row"]').first()).toBeVisible({ timeout: 10000 });
@@ -103,7 +103,7 @@ test.describe('管理者導線 - カタログ', () => {
     });
 
     test('商品ステータスを変更できる', async ({ page }) => {
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
 
       // 商品一覧が読み込まれるのを待つ
       await expect(page.locator('[data-testid="product-row"]').first()).toBeVisible({ timeout: 10000 });
@@ -119,13 +119,13 @@ test.describe('管理者導線 - カタログ', () => {
   test.describe('一連の管理フロー', () => {
     test('商品登録 → 公開', async ({ page }) => {
       // 1. 商品登録
-      await page.goto('/admin/products/new');
+      await page.goto('/sample/admin/products/new');
       await page.locator('#name').fill('管理フローテスト商品');
       await page.locator('#price').fill('5000');
       await page.getByRole('button', { name: /登録/i }).click();
 
       // 2. 商品一覧で確認
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
       await expect(page.locator('text=管理フローテスト商品').first()).toBeVisible();
 
       // 3. ステータスを公開に変更
@@ -145,10 +145,10 @@ test.describe('管理者導線 - カタログ', () => {
       const newContext = await browser.newContext();
       const newPage = await newContext.newPage();
 
-      await newPage.goto('/admin/products');
+      await newPage.goto('/sample/admin/products');
 
       // ログインページにリダイレクト
-      await expect(newPage).toHaveURL(/\/admin\/login/);
+      await expect(newPage).toHaveURL(/\/sample\/admin\/login/);
 
       await newContext.close();
     });
@@ -165,7 +165,7 @@ test.describe('管理者導線 - カタログ', () => {
       await expect(page.locator('text=購入者テスト')).toBeVisible({ timeout: 10000 });
 
       // 管理画面にアクセス
-      await page.goto('/admin/products');
+      await page.goto('/sample/admin/products');
 
       // 権限なしメッセージ
       await expect(page.locator('text=権限がありません')).toBeVisible();

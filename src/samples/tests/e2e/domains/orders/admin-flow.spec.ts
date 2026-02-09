@@ -6,22 +6,22 @@ import { test, expect } from '@playwright/test';
 
 // 管理者ログインヘルパー
 async function loginAsAdmin(page: import('@playwright/test').Page) {
-  await page.goto('/admin/login');
+  await page.goto('/sample/admin/login');
   await page.waitForLoadState('networkidle');
   await page.locator('#email').fill('admin@example.com');
   await page.locator('#password').fill('demo');
   await page.getByRole('button', { name: /ログイン/i }).click();
-  await page.waitForURL(/\/admin(?!\/login)/);
+  await page.waitForURL(/\/sample\/admin(?!\/login)/);
   await page.waitForLoadState('networkidle');
 }
 
 // 購入者ログインヘルパー
 async function loginAsBuyer(page: import('@playwright/test').Page) {
-  await page.goto('/login');
+  await page.goto('/sample/login');
   await page.locator('#email').fill('buyer@example.com');
   await page.locator('#password').fill('demo');
   await page.getByRole('button', { name: /ログイン/i }).click();
-  await page.waitForURL(/\/catalog/);
+  await page.waitForURL(/\/sample\/catalog/);
   await page.waitForLoadState('networkidle');
 }
 
@@ -31,26 +31,26 @@ async function createOrderAsBuyer(page: import('@playwright/test').Page) {
   await loginAsBuyer(page);
 
   // 商品をカートに追加して注文
-  await page.goto('/catalog');
+  await page.goto('/sample/catalog');
   await expect(page.locator('h1')).toContainText('商品');
   await page.locator('[data-testid="product-card"]').first().click();
-  await expect(page).toHaveURL(/\/catalog\/[a-f0-9-]+/);
+  await expect(page).toHaveURL(/\/sample\/catalog\/[a-f0-9-]+/);
   await page.getByRole('button', { name: /カートに追加/i }).click();
   await expect(page.locator('[data-testid="cart-count"]')).toBeVisible();
-  await page.goto('/cart');
+  await page.goto('/sample/cart');
   await expect(page.locator('h1')).toContainText('カート');
   // カートに商品があることを確認
   await expect(page.locator('[data-testid="cart-subtotal"]')).toBeVisible({ timeout: 10000 });
   await page.getByRole('button', { name: /注文手続きへ/i }).click();
-  await expect(page).toHaveURL(/\/checkout/);
+  await expect(page).toHaveURL(/\/sample\/checkout/);
   await page.getByRole('button', { name: /注文を確定/i }).click();
-  await expect(page).toHaveURL(/\/orders\//);
+  await expect(page).toHaveURL(/\/sample\/orders\//);
 }
 
 test.describe('管理者導線 - 注文', () => {
   test.beforeEach(async ({ page, request }) => {
     // テスト前に状態をリセット
-    await request.post('/api/test/reset');
+    await request.post('/sample/api/test/reset');
 
     // 管理者としてログイン
     await loginAsAdmin(page);
@@ -64,7 +64,7 @@ test.describe('管理者導線 - 注文', () => {
       // 再度adminとしてログイン
       await loginAsAdmin(page);
 
-      await page.goto('/admin/orders');
+      await page.goto('/sample/admin/orders');
 
       // 注文一覧テーブル
       await expect(page.locator('table')).toBeVisible();
@@ -78,7 +78,7 @@ test.describe('管理者導線 - 注文', () => {
       // 再度adminとしてログイン
       await loginAsAdmin(page);
 
-      await page.goto('/admin/orders');
+      await page.goto('/sample/admin/orders');
 
       // 注文行をクリック
       await page.locator('[data-testid="order-row"]').first().click();
@@ -100,7 +100,7 @@ test.describe('管理者導線 - 注文', () => {
       // 再度adminとしてログイン
       await loginAsAdmin(page);
 
-      await page.goto('/admin/orders');
+      await page.goto('/sample/admin/orders');
 
       // 注文詳細へ
       await page.locator('[data-testid="order-row"]').first().click();
@@ -122,7 +122,7 @@ test.describe('管理者導線 - 注文', () => {
       // 再度adminとしてログイン
       await loginAsAdmin(page);
 
-      await page.goto('/admin/orders');
+      await page.goto('/sample/admin/orders');
 
       // フィルタ選択
       await page.locator('[data-testid="status-filter"]').selectOption('pending');

@@ -2,7 +2,7 @@
  * 商品一覧・登録API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getProducts, createProduct } from '@/domains/catalog/api';
+import { getProducts, createProduct, NotImplementedError } from '@/domains/catalog/api';
 import { productRepository } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';
@@ -30,6 +30,12 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(success(result));
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     console.error('GET /api/catalog/products error:', err);
     return NextResponse.json(
       error(ErrorCode.INTERNAL_ERROR, 'システムエラーが発生しました'),
@@ -56,6 +62,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(success(result), { status: 201 });
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     if (err instanceof ForbiddenError) {
       return NextResponse.json(
         error(ErrorCode.FORBIDDEN, err.message),

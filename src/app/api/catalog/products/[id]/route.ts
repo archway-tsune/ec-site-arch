@@ -2,7 +2,7 @@
  * 商品詳細・更新・削除API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { getProductById, updateProduct, deleteProduct, NotFoundError } from '@/domains/catalog/api';
+import { getProductById, updateProduct, deleteProduct, NotFoundError, NotImplementedError } from '@/domains/catalog/api';
 import { productRepository } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';
@@ -25,6 +25,12 @@ export async function GET(request: NextRequest, { params }: Params) {
 
     return NextResponse.json(success(result));
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     if (err instanceof NotFoundError) {
       return NextResponse.json(
         error(ErrorCode.NOT_FOUND, err.message),
@@ -58,6 +64,12 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     return NextResponse.json(success(result));
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     if (err instanceof ForbiddenError) {
       return NextResponse.json(
         error(ErrorCode.FORBIDDEN, err.message),
@@ -102,6 +114,12 @@ export async function DELETE(request: NextRequest, { params }: Params) {
 
     return NextResponse.json(success(result));
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     if (err instanceof ForbiddenError) {
       return NextResponse.json(
         error(ErrorCode.FORBIDDEN, err.message),

@@ -15,6 +15,15 @@ Auto-generated from all feature plans. Last updated: 2026-02-07
 
 ```text
 src/
+  app/                    # 本番ページ・API Routes（@/domains/ 経由）
+    (samples)/sample/     # サンプルページ・API Routes（/sample/* URL）
+  contracts/              # 共有インターフェース
+  domains/                # ドメインスタブ（NotImplementedError）
+  foundation/             # 共通基盤（認証・エラー・バリデーション）
+  infrastructure/         # リポジトリ実装
+  samples/domains/        # サンプルドメイン実装
+  samples/tests/          # サンプルテスト（unit/integration/e2e）
+  templates/              # UIテンプレート
 tests/
 ```
 

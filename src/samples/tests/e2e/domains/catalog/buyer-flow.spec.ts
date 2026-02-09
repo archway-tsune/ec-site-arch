@@ -6,25 +6,25 @@ import { test, expect } from '@playwright/test';
 
 // ログインヘルパー
 async function loginAsBuyer(page: import('@playwright/test').Page) {
-  await page.goto('/login');
+  await page.goto('/sample/login');
   await page.locator('#email').fill('buyer@example.com');
   await page.locator('#password').fill('demo');
   await page.getByRole('button', { name: /ログイン/i }).click();
-  await page.waitForURL(/\/catalog/);
+  await page.waitForURL(/\/sample\/catalog/);
   await page.waitForLoadState('networkidle');
 }
 
 test.describe('購入者導線 - カタログ', () => {
   test.beforeEach(async ({ page, request }) => {
     // テスト前に状態をリセット
-    await request.post('/api/test/reset');
+    await request.post('/sample/api/test/reset');
     // 購入者としてログイン
     await loginAsBuyer(page);
   });
 
   test.describe('商品一覧', () => {
     test('商品一覧ページが表示される', async ({ page }) => {
-      await page.goto('/catalog');
+      await page.goto('/sample/catalog');
 
       // ページタイトルを確認
       await expect(page.locator('h1')).toContainText('商品');
@@ -34,20 +34,20 @@ test.describe('購入者導線 - カタログ', () => {
     });
 
     test('商品をクリックすると詳細ページに遷移する', async ({ page }) => {
-      await page.goto('/catalog');
+      await page.goto('/sample/catalog');
 
       // 最初の商品カードをクリック
       await page.locator('[data-testid="product-card"]').first().click();
 
       // 詳細ページに遷移
-      await expect(page).toHaveURL(/\/catalog\/[a-f0-9-]+/);
+      await expect(page).toHaveURL(/\/sample\/catalog\/[a-f0-9-]+/);
     });
   });
 
   test.describe('商品詳細', () => {
     test('商品詳細が表示される', async ({ page }) => {
       // デモ商品IDでアクセス（実際のIDに置き換え）
-      await page.goto('/catalog/550e8400-e29b-41d4-a716-446655440000');
+      await page.goto('/sample/catalog/550e8400-e29b-41d4-a716-446655440000');
 
       // 商品名が表示される
       await expect(page.locator('h1')).toBeVisible();
@@ -60,7 +60,7 @@ test.describe('購入者導線 - カタログ', () => {
     });
 
     test('カートに追加できる', async ({ page }) => {
-      await page.goto('/catalog/550e8400-e29b-41d4-a716-446655440000');
+      await page.goto('/sample/catalog/550e8400-e29b-41d4-a716-446655440000');
 
       // カートに追加
       await page.getByRole('button', { name: /カートに追加/i }).click();
@@ -77,13 +77,13 @@ test.describe('購入者導線 - カタログ', () => {
       const page = await newContext.newPage();
 
       // 商品詳細ページへ
-      await page.goto('/catalog/550e8400-e29b-41d4-a716-446655440000');
+      await page.goto('/sample/catalog/550e8400-e29b-41d4-a716-446655440000');
 
       // カートに追加
       await page.getByRole('button', { name: /カートに追加/i }).click();
 
       // ログインページにリダイレクト
-      await expect(page).toHaveURL(/\/login/);
+      await expect(page).toHaveURL(/\/sample\/login/);
 
       await newContext.close();
     });

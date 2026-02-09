@@ -35,7 +35,6 @@
 カート機能とセッション認証が実装済み。購入者（buyer）と管理者（admin）ロールが存在する。
 注文金額にはカートの税抜小計を使用する。注文のキャンセルは管理者のみ。
 決済処理と配送先住所の入力は本スコープ外とする。
-仕様書は、見出し・本文ともにすべて日本語で作成すること。
 ```
 
 → spec.md が自動生成される（User Stories, Requirements, Success Criteria）
@@ -48,16 +47,10 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 
 ```text
 /speckit.plan
-テスト駆動開発を徹底する。
-src/domains/orders/ のスタブ（NotImplementedError / プレースホルダー）を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
-本番ページ（src/app/(buyer)/orders/, src/app/admin/orders/）と API Routes（src/app/api/orders/）は配置済み。@/domains/ のスタブ置換後に自動的に動作する。
 ステータス遷移はステートマシンパターンで厳密に管理する。
-購入者レイアウト（src/app/(buyer)/layout.tsx）の navLinks コメントを解除して注文履歴リンクを有効化する。
-管理者レイアウト（src/app/admin/layout.tsx）の navLinks コメントを解除して注文管理リンクを有効化する。
-計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md の内容だけで plan.md を生成）。
+機能固有の設計指示のみ記述。TDD、スタブ置換、contracts 準拠、navLinks 有効化、日本語記述などの共通指示は constitution に定義済みのため省略可能。
 
 → plan.md, research.md, data-model.md, contracts/ 等が自動生成される
 
@@ -69,11 +62,8 @@ spec.md + plan.md は自動で読み込まれるため、追加の指示があ�
 
 ```text
 /speckit.tasks
-TDDアプローチで、各ユースケースにテストタスクを含める。
-ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする。
-各タスクのタイトルと説明、完了条件など、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md + plan.md の内容だけで tasks.md を生成）。
+引数なし。TDD、ユーザーストーリー単位のフェーズ分割などの共通指示は constitution に定義済みのため省略可能。
 
 → tasks.md が自動生成される（フェーズ別・ユーザーストーリー別のタスク一覧）

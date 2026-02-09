@@ -41,7 +41,6 @@
 カタログ機能が実装済み。消費税は一律10%（軽減税率対象外）。
 カート操作には購入者（buyer）としてのログインが必要。未ログイン時はログインページにリダイレクトし、ログイン後は元のページに戻る。
 カートの永続化はインメモリとし、DB永続化は将来フェーズとする。
-仕様書は、見出し・本文ともにすべて日本語で作成すること。
 ```
 
 → spec.md が自動生成される（User Stories, Requirements, Success Criteria）
@@ -54,14 +53,9 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 
 ```text
 /speckit.plan
-テスト駆動開発を徹底する。
-src/domains/cart/ のスタブ（NotImplementedError / プレースホルダー）を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
-本番ページ（src/app/(buyer)/cart/）と API Routes（src/app/api/cart/）は配置済み。@/domains/ のスタブ置換後に自動的に動作する。
-購入者レイアウト（src/app/(buyer)/layout.tsx）の navLinks コメントを解除してカートリンクを有効化する。
-計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md の内容だけで plan.md を生成）。
+引数なし。TDD、スタブ置換、contracts 準拠、navLinks 有効化、日本語記述などの共通指示は constitution に定義済みのため、カート固有の設計判断がなければ追加入力は不要。
 
 → plan.md, research.md, data-model.md, contracts/ 等が自動生成される
 
@@ -73,11 +67,8 @@ spec.md + plan.md は自動で読み込まれるため、追加の指示があ�
 
 ```text
 /speckit.tasks
-TDDアプローチで、各ユースケースにテストタスクを含める。
-ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする。
-各タスクのタイトルと説明、完了条件など、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md + plan.md の内容だけで tasks.md を生成）。
+引数なし。TDD、ユーザーストーリー単位のフェーズ分割などの共通指示は constitution に定義済みのため省略可能。
 
 → tasks.md が自動生成される（フェーズ別・ユーザーストーリー別のタスク一覧）

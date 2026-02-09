@@ -44,7 +44,6 @@
 各ドメインが独立してリリース可能な構成とする。
 セッション認証が実装済みで、admin/buyerのロール判定が可能。
 在庫引き当て（注文時の在庫減算）は対象外。画像アップロード機能は対象外（URL直接入力方式）。
-仕様書は、見出し・本文ともにすべて日本語で作成すること。
 ```
 
 → spec.md が自動生成される（User Stories, Requirements, Success Criteria）
@@ -57,18 +56,11 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 
 ```text
 /speckit.plan
-テスト駆動開発を徹底する。
-独立した product ドメインとして新規作成し、catalog ドメインとインフラ層も含め完全に分離する。
-新規ドメインのため src/domains/product/ 配下にディレクトリを新規作成する。
-src/contracts/ にインターフェースを追加し、src/infrastructure/repositories/ にリポジトリを追加する。
-管理者向けページ（src/app/admin/products/）と API Routes は配置済みだが、@/domains/ のスタブを本番実装に置き換える。
+独立した product ドメインとして新規作成し、catalog ドメインと完全に分離する。
 CQRS の考え方を適用し、既存 catalog のリポジトリは読み取り専用にリファクタリングする。
-src/contracts/ に準拠し、src/samples/ の CRUD 部分を参考に実装する。
-管理者レイアウト（src/app/admin/layout.tsx）の navLinks コメントを解除して商品管理リンクを有効化する。
-計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md の内容だけで plan.md を生成）。
+機能固有の設計指示のみ記述。TDD、スタブ置換、contracts 準拠、navLinks 有効化、日本語記述などの共通指示は constitution に定義済みのため省略可能。
 
 → plan.md, research.md, data-model.md, contracts/ 等が自動生成される
 
@@ -80,11 +72,8 @@ spec.md + plan.md は自動で読み込まれるため、追加の指示があ�
 
 ```text
 /speckit.tasks
-TDDアプローチで、各ユースケースにテストタスクを含める。
-ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする。
-各タスクのタイトルと説明、完了条件など、すべて日本語で記述すること。
 ```
 
-引数なしでも実行可能（spec.md + plan.md の内容だけで tasks.md を生成）。
+引数なし。TDD、ユーザーストーリー単位のフェーズ分割などの共通指示は constitution に定義済みのため省略可能。
 
 → tasks.md が自動生成される（フェーズ別・ユーザーストーリー別のタスク一覧）

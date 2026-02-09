@@ -10,6 +10,7 @@ import type { Product } from '@/contracts/catalog';
 
 export interface ProductCardProps {
   product: Product;
+  basePath?: string;
   onAddToCart?: (productId: string) => void;
 }
 
@@ -17,10 +18,10 @@ function formatPrice(price: number): string {
   return `¥${price.toLocaleString()}`;
 }
 
-export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export function ProductCard({ product, basePath = '', onAddToCart }: ProductCardProps) {
   return (
     <div className="rounded-lg border border-base-900/10 bg-white p-4 shadow-sm">
-      <Link href={`/catalog/${product.id}`} data-testid="product-card" className="block">
+      <Link href={`${basePath}/catalog/${product.id}`} data-testid="product-card" className="block">
         {product.imageUrl ? (
           <img
             src={product.imageUrl}

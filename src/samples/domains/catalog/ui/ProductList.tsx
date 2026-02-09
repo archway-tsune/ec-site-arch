@@ -23,6 +23,7 @@ export interface ProductListProps {
   isLoading: boolean;
   error?: string;
   pagination: Pagination | null;
+  basePath?: string;
   onRetry?: () => void;
   onPageChange?: (page: number) => void;
   onAddToCart?: (productId: string) => void;
@@ -33,6 +34,7 @@ export function ProductList({
   isLoading,
   error,
   pagination,
+  basePath = '',
   onRetry,
   onPageChange,
   onAddToCart,
@@ -57,7 +59,7 @@ export function ProductList({
       {/* 商品グリッド */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={onAddToCart} />
+          <ProductCard key={product.id} product={product} basePath={basePath} onAddToCart={onAddToCart} />
         ))}
       </div>
 

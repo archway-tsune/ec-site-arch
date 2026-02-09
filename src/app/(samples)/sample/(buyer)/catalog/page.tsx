@@ -101,6 +101,7 @@ export default function CatalogPage() {
         isLoading={isLoading}
         error={error}
         pagination={pagination}
+        basePath="/sample"
         onRetry={() => fetchProducts()}
         onPageChange={handlePageChange}
         onAddToCart={handleAddToCart}

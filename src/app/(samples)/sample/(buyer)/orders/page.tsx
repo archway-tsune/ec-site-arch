@@ -78,6 +78,7 @@ export default function OrdersPage() {
         isLoading={isLoading}
         error={error}
         pagination={pagination}
+        basePath="/sample"
         onPageChange={handlePageChange}
       />
     </div>

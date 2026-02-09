@@ -31,7 +31,20 @@
    - 各ユースケースにテストタスクを含める
    - カバレッジ80%以上を維持
 
-4. 実装ワークフロー
+4. 共通UIコンポーネントの利用
+   - ドメイン実装時は `@/templates/ui/components/` の共通コンポーネントを使用し、同等機能の独自実装を禁止する
+   - レイアウト: `Layout`, `Header`, `Footer` — ページレイアウトは必ずこれらを使用する
+   - 状態表示: `Loading`, `Error`, `Empty` — ローディング・エラー・データなし表示はこれらに統一する
+   - 認可エラー: `Forbidden` — 403表示はこのコンポーネントに統一する
+   - 確認ダイアログ: `ConfirmDialog` — 独自の確認ダイアログや window.confirm を使わず統一する
+   - フォーム: `FormField` — フォーム項目のラベル・バリデーション表示に使用する
+   - 数量入力: `QuantitySelector` — 数量の増減UIに使用する
+   - 検索: `SearchBar` — 検索UIに使用する
+   - ページネーション: `Pagination` — 一覧ページのページ送りに使用する
+   - ステータス表示: `StatusBadge` — 注文状態等のバッジ表示に使用する
+   - 画像プレースホルダー: `ImagePlaceholder` — 画像未設定時の代替表示に使用する
+
+5. 実装ワークフロー
    - src/domains/ のスタブ（API: NotImplementedError → 本番APIは501応答、UI: 「ドメイン未実装」プレースホルダー）を本番実装に置き換える
    - 既存ドメイン（catalog, cart, orders）の本番ページ（src/app/(buyer)/, src/app/admin/）と API Routes（src/app/api/）は配置済み。@/domains/ のスタブを置換すればページとAPIが自動的に動作する
    - src/contracts/ に準拠し、src/samples/ を参考に実装する

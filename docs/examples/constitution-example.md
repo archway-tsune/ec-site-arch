@@ -32,13 +32,15 @@
    - カバレッジ80%以上を維持
 
 4. 実装ワークフロー
-   - src/domains/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する
+   - src/domains/ のスタブ（API: NotImplementedError → 本番APIは501応答、UI: 「ドメイン未実装」プレースホルダー）を本番実装に置き換える
+   - 既存ドメイン（catalog, cart, orders）の本番ページ（src/app/(buyer)/, src/app/admin/）と API Routes（src/app/api/）は配置済み。@/domains/ のスタブを置換すればページとAPIが自動的に動作する
+   - src/contracts/ に準拠し、src/samples/ を参考に実装する
    - spec.md に定義されていない機能は実装しない。samples や他ドメインに含まれる機能であっても、現在の仕様のスコープ外であれば除外する
    - ユーザーストーリー単位でフェーズを分割し、各ストーリーを独立して実装・テスト可能にする
-   - ドメイン実装時にレイアウトファイルの navLinks にナビゲーションリンクを追加する
-     - 購入者向け: src/app/(buyer)/layout.tsx の navLinks に追加（例: { href: '/catalog', label: '商品一覧' }）
-     - 管理者向け: src/app/admin/layout.tsx の navLinks に追加（例: { href: '/admin/products', label: '商品管理' }）
-     - navLinks はデフォルトで空（購入者）またはダッシュボードのみ（管理者）。実装したドメインのリンクのみ追加する
+   - ドメイン実装時にレイアウトファイルの navLinks のコメントを解除してナビゲーションリンクを有効化する
+     - 購入者向け: src/app/(buyer)/layout.tsx の navLinks のコメントを解除（例: { href: '/catalog', label: '商品一覧' }）
+     - 管理者向け: src/app/admin/layout.tsx の navLinks のコメントを解除（例: { href: '/admin/products', label: '商品管理' }）
+     - navLinks はデフォルトで空（購入者）またはダッシュボードのみ（管理者）。実装したドメインのリンクのみ有効化する
 
 # 品質基準
 - TypeScript: strictモード、エラー0件
@@ -60,6 +62,7 @@
 - 型: PascalCase (例: ProductType)
 
 # E2Eテスト作成時の注意事項
+- 本番E2Eテストは `tests/e2e/` 直下に配置する（サンプルテストの `src/samples/tests/e2e/` とは分離）
 - テスト作成時は `src/samples/tests/e2e/domains/` 配下のサンプルE2Eテストを参照すること
 
 # E2Eテスト実行時の注意事項

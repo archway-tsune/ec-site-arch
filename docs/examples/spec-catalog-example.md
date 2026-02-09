@@ -46,8 +46,9 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 ```text
 /speckit.plan
 テスト駆動開発を徹底する。
-src/domains/catalog/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
-購入者レイアウトの navLinks に商品一覧リンクを追加する。
+src/domains/catalog/ のスタブ（NotImplementedError / プレースホルダー）を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
+本番ページ（src/app/(buyer)/catalog/）と API Routes（src/app/api/catalog/）は配置済み。@/domains/ のスタブ置換後に自動的に動作する。
+購入者レイアウト（src/app/(buyer)/layout.tsx）の navLinks コメントを解除して商品一覧リンクを有効化する。
 商品画像には Unsplash の高品質な画像を使用する。画像は URL で指定する（ローカルファイルは使用しない）。
 計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```

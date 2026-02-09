@@ -42,7 +42,7 @@
 │   ├── foundation/         # 共通基盤
 │   ├── templates/          # 再利用テンプレート
 │   ├── contracts/          # 共有インターフェース（DTO・リポジトリ契約）
-│   ├── domains/            # ドメイン実装（暫定スキャフォールド → 本番置換）
+│   ├── domains/            # ドメイン実装（NotImplementedError スタブ → 本番置換）
 │   ├── samples/            # サンプル実装（独立した参照コード）
 │   ├── infrastructure/     # インフラ層（@/contracts/ に依存）
 │   └── app/                # Next.js App Router（@/domains/ に依存）
@@ -125,35 +125,59 @@
 
 ## 4. タスク生成の指針
 
-`/speckit.tasks` で生成されるタスクは以下の構成になります：
+既存ドメイン（catalog, cart, orders）には本番ページ・API Routes が配置済みで、`@/domains/` のスタブを置換すれば動作します。
+新規ドメインの場合はページ・API Routes の新規作成が必要です。
+
+### 既存ドメインの置き換え例（catalog, cart, orders）
+
+```markdown
+# Tasks: カタログ閲覧機能
+
+## フェーズ1: ドメイン実装
+
+### Task 1-1: Catalogドメインスタブの置き換え
+- [ ] T001 APIスタブを本番実装に置換 `src/domains/catalog/api/index.ts`（NotImplementedError → usecases）
+- [ ] T002 [P] UIスタブを本番実装に置換 `src/domains/catalog/ui/index.tsx`（プレースホルダー → コンポーネント）
+- [ ] T003 [P] ユースケースを実装 `src/domains/catalog/api/usecases.ts`
+- [ ] T004 UIコンポーネントを実装 `src/domains/catalog/ui/ProductList.tsx` 等
+
+### Task 1-2: インフラ・ナビゲーション
+- [ ] T005 リポジトリを実装する `src/infrastructure/repositories/product.ts`（`@/contracts/` のインターフェースを実装）
+- [ ] T006 購入者レイアウトの navLinks コメントを解除 `src/app/(buyer)/layout.tsx`
+
+> **ポイント**: 本番ページ（`src/app/(buyer)/catalog/page.tsx` 等）と API Routes（`src/app/api/catalog/products/route.ts` 等）は
+> 既に `@/domains/` をインポートしているため、スタブ置換後は自動的に動作します。
+
+### Task 1-3: テスト実装
+- [ ] T007 [P] 単体テストを実装する `tests/unit/domains/catalog/`
+- [ ] T008 E2Eテストを実装する `tests/e2e/catalog.spec.ts`
+
+> **注意**: 本番E2Eテストは `tests/e2e/` 直下に配置します。
+> `src/samples/tests/e2e/` のサンプルテストは参照用として活用してください。
+```
+
+### 新規ドメインの追加例（profile 等）
 
 ```markdown
 # Tasks: ユーザープロフィール
 
 ## フェーズ1: ドメイン実装
 
-### Task 1-1: Profileドメイン実装
-- [ ] T001 型定義を実装する `src/domains/profile/types/index.ts`
+### Task 1-1: Profileドメイン新規実装
+- [ ] T001 型定義を実装する `src/contracts/profile.ts`
 - [ ] T002 [P] UIコンポーネントを実装する `src/domains/profile/ui/`
 - [ ] T003 [P] APIユースケースを実装する `src/domains/profile/api/usecases.ts`
-- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/profile.ts`（`@/contracts/` のインターフェースを実装）
+- [ ] T004 リポジトリを実装する `src/infrastructure/repositories/profile.ts`
 
-### Task 1-2: ページ実装
-- [ ] T005 プロフィールページを実装する `src/app/(buyer)/profile/page.tsx`
-- [ ] T006 編集ページを実装する `src/app/(buyer)/profile/edit/page.tsx`
-- [ ] T007 [P] APIルートを実装する `src/app/api/profile/route.ts`
+### Task 1-2: ページ・APIルート新規作成
+- [ ] T005 プロフィールページを作成 `src/app/(buyer)/profile/page.tsx`（`@/domains/profile/ui` をインポート）
+- [ ] T006 編集ページを作成 `src/app/(buyer)/profile/edit/page.tsx`
+- [ ] T007 [P] APIルートを作成 `src/app/api/profile/route.ts`（`@/domains/profile/api` をインポート）
+- [ ] T008 購入者レイアウトの navLinks にリンクを追加 `src/app/(buyer)/layout.tsx`
 
 ### Task 1-3: テスト実装
-- [ ] T008 [P] 単体テストを実装する `tests/unit/domains/profile/`
-- [ ] T009 E2Eテストを実装する `tests/e2e/profile.spec.ts`
-
-> **注意**: ドメインのE2Eテストは `tests/e2e/` 直下に配置します。
-> `src/samples/tests/` はサンプル実装用のため、ドメイン実装には使用しません。
-
-## 依存関係
-- T001 → T002, T003, T004
-- T004 → T007
-- T002, T003 → T005, T006
+- [ ] T009 [P] 単体テストを実装する `tests/unit/domains/profile/`
+- [ ] T010 E2Eテストを実装する `tests/e2e/profile.spec.ts`
 ```
 
 ---
@@ -186,10 +210,12 @@ speckitで実装する際は、独立した参照コードであるサンプル�
 
 ### 本番実装のパス
 
-実装は `src/domains/` に配置します。`src/app/` は `@/domains/` 経由でインポートし、
-`src/infrastructure/` は `@/contracts/` の共有インターフェースに依存します。
-初期状態の暫定スキャフォールド（`src/domains/*/api/index.ts`, `src/domains/*/ui/index.ts`）を
-独自実装に置き換えてください。
+実装は `src/domains/` に配置します。既存ドメイン（catalog, cart, orders）の場合：
+
+- **本番ページ**（`src/app/(buyer)/`, `src/app/admin/`）は配置済みで `@/domains/` をインポート
+- **本番 API Routes**（`src/app/api/`）も配置済みで `@/domains/` をインポート（スタブ状態では 501 応答）
+- **スタブ**（`src/domains/*/api/index.ts`, `src/domains/*/ui/index.tsx`）を本番実装に置き換えてください
+- **レイアウト**の navLinks コメントを解除してナビゲーションを有効化してください
 
 ---
 

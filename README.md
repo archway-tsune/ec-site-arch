@@ -55,7 +55,7 @@ src/
 ├── foundation/          # 共通基盤（認証・エラー・ログ・バリデーション）
 ├── templates/           # 再利用テンプレート（UI・API・インフラ・テスト）
 ├── contracts/           # 共有インターフェース（DTO・リポジトリ契約）
-├── domains/             # ドメイン実装（暫定スキャフォールド → 本番実装に置換）
+├── domains/             # ドメイン実装（NotImplementedError スタブ → 本番実装に置換）
 ├── samples/             # サンプル実装（独立した参照コード）
 │   ├── domains/         # ドメインサンプル（catalog, cart, orders）
 │   └── tests/           # サンプルテスト（本番テストから分離）
@@ -63,10 +63,16 @@ src/
 │       ├── integration/ # サンプル統合テスト
 │       └── e2e/         # サンプルE2Eテスト
 ├── infrastructure/      # インフラ層実装（@/contracts/ に依存）
-└── app/                 # Next.js App Router（@/domains/ に依存）
+└── app/                 # Next.js App Router
+    ├── (buyer)/         # 購入者画面（@/domains/ に依存、スタブ状態）
+    ├── admin/           # 管理者画面（@/domains/ に依存、スタブ状態）
+    ├── api/             # 本番 API Routes（@/domains/ に依存、501 応答）
+    ├── (samples)/sample/  # サンプル画面・API（@/samples/ に依存）
+    ├── login/           # ログイン画面（基盤機能）
+    └── layout.tsx       # ルートレイアウト
 
 tests/
-├── e2e/                 # E2Eテスト（Playwright）
+├── e2e/                 # 本番 E2Eテスト（Playwright）
 ├── integration/         # 統合テスト
 │   ├── domains/         # ドメイン実装の統合テスト
 │   ├── foundation/      # 共通基盤の統合テスト
@@ -80,18 +86,67 @@ tests/
 ### 依存関係
 
 ```
-app/ ──→ @/domains/ ──→ （暫定: @/samples/ を再エクスポート）
-                        （本番: 独自実装に置換）
-
-infrastructure/ ──→ @/contracts/ （共有インターフェースのみに依存）
-
-samples/ ──→ @/contracts/ （独立した参照実装）
+本番:     src/app/(buyer)/, admin/, api/  ──→ @/domains/ （スタブ → 本番実装に置換）
+サンプル: src/app/(samples)/sample/       ──→ @/samples/domains/ （独立した参照実装）
+インフラ: src/infrastructure/             ──→ @/contracts/ （共有インターフェースのみ）
+サンプル: src/samples/                    ──→ @/contracts/ （独立した参照コード）
 ```
 
-- `src/app/` は `@/domains/` 経由でドメインロジックをインポートします
+- `src/app/(buyer)/` と `src/app/admin/` のページは `@/domains/` 経由でドメインロジックをインポートします
+- `src/app/api/` の API Routes も `@/domains/` をインポートし、スタブ状態では 501 を返します
+- `src/app/(samples)/sample/` のサンプル画面は `@/samples/domains/` を直接インポートします
 - `src/infrastructure/` は `@/contracts/` の共有インターフェースのみに依存します
-- `src/samples/` は独立した参照コードであり、`@/contracts/` のみに依存します
-- `src/domains/` の暫定スキャフォールドは `@/samples/` を再エクスポートしていますが、本番実装で置き換えてください
+- `src/domains/` は NotImplementedError スタブです（`@/samples/` への依存はありません）。本番実装で置き換えてください
+
+---
+
+## 本番実装への移行
+
+本番ページ・API Routes は既に配置済みです。`src/domains/` のスタブを置き換えるだけで動作します。
+
+### 1. ドメインスタブの置き換え
+
+```typescript
+// 置き換え前（スタブ）: src/domains/catalog/api/index.ts
+export function getProducts(..._args: unknown[]): never {
+  throw new NotImplementedError('catalog', 'getProducts');
+}
+
+// 置き換え後（本番実装）: src/domains/catalog/api/index.ts
+export { getProducts, getProductById, ... } from './usecases';
+```
+
+- API スタブ（`src/domains/*/api/index.ts`）: NotImplementedError → ユースケースに置換
+- UI スタブ（`src/domains/*/ui/index.tsx`）: プレースホルダー → コンポーネントに置換
+
+### 2. ナビゲーションの有効化
+
+レイアウトの `navLinks` のコメントを解除します。
+
+```typescript
+// src/app/(buyer)/layout.tsx
+const navLinks: NavLink[] = [
+  { href: '/catalog', label: '商品一覧' },  // コメント解除
+  { href: '/cart', label: 'カート' },        // コメント解除
+  { href: '/orders', label: '注文履歴' },    // コメント解除
+];
+```
+
+### 3. テストの配置
+
+```
+tests/e2e/           ← 本番 E2Eテスト
+tests/unit/domains/  ← 本番 単体テスト
+tests/integration/domains/ ← 本番 統合テスト
+```
+
+### 4. サンプルの削除（任意）
+
+```bash
+rm -rf src/samples/ src/app/\(samples\)/
+```
+
+詳細は [GETTING_STARTED.md](docs/GETTING_STARTED.md) を参照してください。
 
 ---
 

@@ -59,9 +59,12 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 /speckit.plan
 テスト駆動開発を徹底する。
 独立した product ドメインとして新規作成し、catalog ドメインとインフラ層も含め完全に分離する。
+新規ドメインのため src/domains/product/ 配下にディレクトリを新規作成する。
+src/contracts/ にインターフェースを追加し、src/infrastructure/repositories/ にリポジトリを追加する。
+管理者向けページ（src/app/admin/products/）と API Routes は配置済みだが、@/domains/ のスタブを本番実装に置き換える。
 CQRS の考え方を適用し、既存 catalog のリポジトリは読み取り専用にリファクタリングする。
 src/contracts/ に準拠し、src/samples/ の CRUD 部分を参考に実装する。
-管理者レイアウトの navLinks に商品管理リンクを追加する。
+管理者レイアウト（src/app/admin/layout.tsx）の navLinks コメントを解除して商品管理リンクを有効化する。
 計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 

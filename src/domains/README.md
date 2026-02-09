@@ -29,7 +29,7 @@ src/domains/
 **置き換え前**（スタブ）:
 ```typescript
 // src/domains/catalog/api/index.ts
-export function getProducts(): never {
+export function getProducts(..._args: unknown[]): never {
   throw new NotImplementedError('catalog', 'getProducts');
 }
 ```
@@ -101,4 +101,4 @@ import { createInMemoryStore, createCrudRepository } from '@/templates/infrastru
 7. テストを `tests/` に実装
 8. ルーティングを `src/app/` に追加（`@/domains/` 経由でインポート）
 
-詳細は `specs/001-ec-arch-foundation/quickstart.md` を参照してください。
+詳細は `docs/GETTING_STARTED.md` を参照してください。

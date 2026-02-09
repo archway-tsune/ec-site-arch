@@ -49,9 +49,11 @@ spec.md は自動で読み込まれるため、追加の設計指示がある場
 ```text
 /speckit.plan
 テスト駆動開発を徹底する。
-src/domains/orders/ を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
+src/domains/orders/ のスタブ（NotImplementedError / プレースホルダー）を本番実装に置き換える。src/contracts/ に準拠し、src/samples/ を参考に実装する。
+本番ページ（src/app/(buyer)/orders/, src/app/admin/orders/）と API Routes（src/app/api/orders/）は配置済み。@/domains/ のスタブ置換後に自動的に動作する。
 ステータス遷移はステートマシンパターンで厳密に管理する。
-購入者レイアウトの navLinks に注文履歴リンク、管理者レイアウトの navLinks に注文管理リンクを追加する。
+購入者レイアウト（src/app/(buyer)/layout.tsx）の navLinks コメントを解除して注文履歴リンクを有効化する。
+管理者レイアウト（src/app/admin/layout.tsx）の navLinks コメントを解除して注文管理リンクを有効化する。
 計画書の見出し・本文・箇条書きなど、すべて日本語で記述すること。
 ```
 

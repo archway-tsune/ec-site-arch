@@ -84,10 +84,11 @@ Claude Codeで以下を実行：
 本テンプレートでは、本番コードとサンプル実装を完全に分離しています：
 
 ```
-src/app/                  → @/domains/ をインポート（本番パス: /, /catalog, /admin 等）
-src/app/(samples)/sample/ → @/samples/domains/ を直接インポート（サンプルパス: /sample/*)
-src/infrastructure/       → @/contracts/ をインポート（共有インターフェース）
-src/samples/              → @/contracts/ をインポート（独立した参照コード）
+本番ページ:   src/app/(buyer)/, admin/        → @/domains/ をインポート（スタブ → 本番実装に置換）
+本番API:      src/app/api/                     → @/domains/ をインポート（スタブ状態では 501 応答）
+サンプル画面: src/app/(samples)/sample/        → @/samples/domains/ を直接インポート
+インフラ:     src/infrastructure/              → @/contracts/ をインポート（共有インターフェース）
+サンプル:     src/samples/                     → @/contracts/ をインポート（独立した参照コード）
 ```
 
 ### src/domains/ - スタブ実装
@@ -115,14 +116,70 @@ DTO（Zodスキーマ）が定義されています。`src/infrastructure/` と 
 
 ### 本番実装への移行
 
-```bash
-# 1. src/domains/{domain}/api/index.ts のスタブを独自実装に置換
-# 2. src/domains/{domain}/ui/index.tsx のプレースホルダーを独自実装に置換
-# 3. src/app/(buyer)/layout.tsx, src/app/admin/layout.tsx のナビゲーションリンクを有効化
-# 4. 不要になったら src/samples/ と src/app/(samples)/ を削除
+本番ページ（`src/app/(buyer)/`, `src/app/admin/`）と API Routes（`src/app/api/`）は既に配置済みです。
+`src/domains/` のスタブを置き換えるだけでページと API が動作します。
+
+#### Step 1: ドメイン API の置き換え
+
+`src/domains/{domain}/api/index.ts` の NotImplementedError スタブをユースケース実装に置換します。
+
+```typescript
+// 置き換え前（スタブ）
+export function getProducts(..._args: unknown[]): never {
+  throw new NotImplementedError('catalog', 'getProducts');
+}
+
+// 置き換え後（本番実装）
+export { getProducts, getProductById, createProduct, ... } from './usecases';
 ```
 
-詳細は `specs/007-separate-sample-production/quickstart.md` を参照してください。
+本番 API Routes（`src/app/api/catalog/products/route.ts` 等）は `@/domains/` をインポートしているため、
+スタブ置換後は自動的に 501 応答から正常応答に変わります。
+
+#### Step 2: ドメイン UI の置き換え
+
+`src/domains/{domain}/ui/index.tsx` の「ドメイン未実装」プレースホルダーを実コンポーネントに置換します。
+
+```typescript
+// 置き換え前（プレースホルダー）
+export function ProductList() {
+  return <div>ドメイン未実装</div>;
+}
+
+// 置き換え後（本番実装）
+export { ProductList } from './ProductList';
+export { ProductDetail } from './ProductDetail';
+```
+
+本番ページ（`src/app/(buyer)/catalog/page.tsx` 等）は `@/domains/` の UI をインポートしているため、
+スタブ置換後は自動的にプレースホルダーから実画面に変わります。
+
+#### Step 3: ナビゲーションの有効化
+
+レイアウトファイルの `navLinks` のコメントを解除して、ドメインのナビゲーションリンクを追加します。
+
+- 購入者: `src/app/(buyer)/layout.tsx` の `navLinks`（例: `{ href: '/catalog', label: '商品一覧' }`）
+- 管理者: `src/app/admin/layout.tsx` の `navLinks`（例: `{ href: '/admin/products', label: '商品管理' }`）
+
+#### Step 4: テストの配置
+
+本番テストは `tests/` 配下に配置します（サンプルテストの `src/samples/tests/` とは分離）。
+
+```
+tests/e2e/                  ← 本番 E2Eテスト（pnpm test:e2e で実行）
+tests/unit/domains/         ← 本番 単体テスト（pnpm test:unit で実行）
+tests/integration/domains/  ← 本番 統合テスト（pnpm test:integration で実行）
+```
+
+E2Eテスト作成時は `src/samples/tests/e2e/domains/` のサンプルテストを参考にしてください。
+
+#### Step 5: サンプルの削除（任意）
+
+本番実装が完了したら、サンプルを安全に削除できます。
+
+```bash
+rm -rf src/samples/ src/app/\(samples\)/
+```
 
 ---
 

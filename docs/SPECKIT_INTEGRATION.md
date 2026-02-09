@@ -39,15 +39,35 @@
 │   └── templates/
 │
 ├── src/                    ← zip から展開
-│   ├── foundation/         # 共通基盤
-│   ├── templates/          # 再利用テンプレート
+│   ├── foundation/         # 共通基盤（認証・エラー・ログ・バリデーション）
+│   ├── templates/          # 再利用テンプレート（UI・API・インフラ・テスト）
 │   ├── contracts/          # 共有インターフェース（DTO・リポジトリ契約）
 │   ├── domains/            # ドメイン実装（NotImplementedError スタブ → 本番置換）
+│   │   ├── catalog/        #   api/index.ts（スタブ）, ui/index.tsx（プレースホルダー）
+│   │   ├── cart/           #   同上
+│   │   └── orders/         #   同上
 │   ├── samples/            # サンプル実装（独立した参照コード）
+│   │   ├── domains/        #   catalog, cart, orders のサンプル実装
+│   │   └── tests/          #   サンプルテスト（unit, integration, e2e）
 │   ├── infrastructure/     # インフラ層（@/contracts/ に依存）
-│   └── app/                # Next.js App Router（@/domains/ に依存）
+│   │   ├── auth/           #   セッション管理
+│   │   └── repositories/   #   リポジトリ実装（cart, order, product）
+│   └── app/                # Next.js App Router
+│       ├── (buyer)/        #   購入者画面（@/domains/ に依存、スタブ状態）
+│       ├── admin/          #   管理者画面（@/domains/ に依存、スタブ状態）
+│       ├── api/            #   本番 API Routes（@/domains/ に依存、501 応答）
+│       ├── (samples)/      #   サンプル画面・API（@/samples/ に依存）
+│       │   └── sample/     #     /sample/* URL でアクセス
+│       ├── login/          #   ログイン画面（基盤機能）
+│       ├── page.tsx        #   ホームページ（スタブ状態）
+│       ├── layout.tsx      #   ルートレイアウト
+│       └── middleware.ts   #   認証ミドルウェア
 │
 ├── tests/                  ← zip から展開
+│   ├── e2e/                #   本番 E2Eテスト（Playwright）
+│   ├── integration/        #   統合テスト（domains, foundation, templates）
+│   └── unit/               #   単体テスト（domains, foundation, templates）
+│
 ├── docs/                   ← zip から展開
 └── package.json            ← zip から展開
 ```

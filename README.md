@@ -69,7 +69,9 @@ src/
     ├── api/             # 本番 API Routes（@/domains/ に依存、501 応答）
     ├── (samples)/sample/  # サンプル画面・API（@/samples/ に依存）
     ├── login/           # ログイン画面（基盤機能）
-    └── layout.tsx       # ルートレイアウト
+    ├── page.tsx         # ホームページ（スタブ状態）
+    ├── layout.tsx       # ルートレイアウト
+    └── middleware.ts    # 認証ミドルウェア
 
 tests/
 ├── e2e/                 # 本番 E2Eテスト（Playwright）

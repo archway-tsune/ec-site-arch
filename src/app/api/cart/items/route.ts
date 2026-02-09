@@ -2,7 +2,7 @@
  * カート追加API
  */
 import { NextRequest, NextResponse } from 'next/server';
-import { addToCart, NotFoundError } from '@/domains/cart/api';
+import { addToCart, NotFoundError, NotImplementedError } from '@/domains/cart/api';
 import { cartRepository, productFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';
@@ -28,6 +28,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(success(result), { status: 201 });
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     if (err instanceof NotFoundError) {
       return NextResponse.json(
         error(ErrorCode.NOT_FOUND, err.message),

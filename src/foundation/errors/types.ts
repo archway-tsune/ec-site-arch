@@ -19,6 +19,8 @@ export const ErrorCode = {
   CONFLICT: 'CONFLICT',
   /** 内部エラー */
   INTERNAL_ERROR: 'INTERNAL_ERROR',
+  /** ドメイン未実装 */
+  NOT_IMPLEMENTED: 'NOT_IMPLEMENTED',
 } as const;
 
 export type ErrorCode = (typeof ErrorCode)[keyof typeof ErrorCode];
@@ -55,6 +57,7 @@ export const ErrorCodeToHttpStatus: Record<ErrorCode, number> = {
   [ErrorCode.NOT_FOUND]: 404,
   [ErrorCode.CONFLICT]: 409,
   [ErrorCode.INTERNAL_ERROR]: 500,
+  [ErrorCode.NOT_IMPLEMENTED]: 501,
 };
 
 /**
@@ -67,4 +70,5 @@ export const DefaultErrorMessages: Record<ErrorCode, string> = {
   [ErrorCode.NOT_FOUND]: '指定されたリソースが見つかりません',
   [ErrorCode.CONFLICT]: '操作が競合しました。再度お試しください',
   [ErrorCode.INTERNAL_ERROR]: 'システムエラーが発生しました',
+  [ErrorCode.NOT_IMPLEMENTED]: 'ドメイン未実装です',
 };

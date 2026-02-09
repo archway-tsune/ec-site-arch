@@ -81,18 +81,20 @@ Claude Codeで以下を実行：
 
 ## アーキテクチャの依存構造
 
-本テンプレートでは、本番コードとサンプル実装を分離しています：
+本テンプレートでは、本番コードとサンプル実装を完全に分離しています：
 
 ```
-src/app/        → @/domains/ をインポート
-src/infrastructure/ → @/contracts/ をインポート（共有インターフェース）
-src/samples/    → @/contracts/ をインポート（独立した参照コード）
+src/app/                  → @/domains/ をインポート（本番パス: /, /catalog, /admin 等）
+src/app/(samples)/sample/ → @/samples/domains/ を直接インポート（サンプルパス: /sample/*)
+src/infrastructure/       → @/contracts/ をインポート（共有インターフェース）
+src/samples/              → @/contracts/ をインポート（独立した参照コード）
 ```
 
-### src/domains/ - 暫定スキャフォールド
+### src/domains/ - スタブ実装
 
-`src/domains/` には暫定スキャフォールドが配置されており、初期状態では `@/samples/` を再エクスポートしています。
-本番実装時にはこの再エクスポートを独自の実装に置き換えてください。
+`src/domains/` にはスタブ実装が配置されています。
+API は `NotImplementedError` をスロー（本番 API Routes は 501 を返す）、UI は「ドメイン未実装」プレースホルダーを表示します。
+`@/samples/` への依存はありません。本番実装で置き換えてください。
 
 ### src/contracts/ - 共有インターフェース
 
@@ -109,15 +111,18 @@ DTO（Zodスキーマ）が定義されています。`src/infrastructure/` と 
 | Cart | 商品追加・削除、数量変更 |
 | Orders | 注文作成、注文履歴 |
 
-サンプルは独立した参照コードです。本番実装は `src/domains/` に作成してください。
+サンプルは独立した参照コードです。サンプル画面は `/sample/` URL配下（`src/app/(samples)/sample/`）でアクセスできます。
 
 ### 本番実装への移行
 
 ```bash
-# 1. src/domains/{domain}/api/index.ts の再エクスポートを独自実装に置換
-# 2. src/domains/{domain}/ui/index.ts の再エクスポートを独自実装に置換
-# 3. 不要になったら src/samples/ を削除 → rm -rf src/samples/
+# 1. src/domains/{domain}/api/index.ts のスタブを独自実装に置換
+# 2. src/domains/{domain}/ui/index.tsx のプレースホルダーを独自実装に置換
+# 3. src/app/(buyer)/layout.tsx, src/app/admin/layout.tsx のナビゲーションリンクを有効化
+# 4. 不要になったら src/samples/ と src/app/(samples)/ を削除
 ```
+
+詳細は `specs/007-separate-sample-production/quickstart.md` を参照してください。
 
 ---
 

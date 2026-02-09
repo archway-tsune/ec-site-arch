@@ -23,6 +23,7 @@ export interface OrderListProps {
   isLoading: boolean;
   error?: string;
   pagination: Pagination | null;
+  basePath?: string;
   onPageChange?: (page: number) => void;
 }
 
@@ -54,10 +55,10 @@ function formatDate(date: Date): string {
   }).format(date);
 }
 
-function OrderRow({ order }: { order: Order }) {
+function OrderRow({ order, basePath = '' }: { order: Order; basePath?: string }) {
   return (
     <Link
-      href={`/orders/${order.id}`}
+      href={`${basePath}/orders/${order.id}`}
       data-testid="order-row"
       className="block rounded-lg border border-base-900/10 bg-white p-4 hover:bg-base-50"
     >
@@ -91,6 +92,7 @@ export function OrderList({
   isLoading,
   error,
   pagination,
+  basePath = '',
   onPageChange,
 }: OrderListProps) {
   // ローディング状態
@@ -112,7 +114,7 @@ export function OrderList({
     <div>
       <div className="space-y-4">
         {orders.map((order) => (
-          <OrderRow key={order.id} order={order} />
+          <OrderRow key={order.id} order={order} basePath={basePath} />
         ))}
       </div>
 

@@ -2,7 +2,7 @@
  * カート取得API
  */
 import { NextResponse } from 'next/server';
-import { getCart } from '@/domains/cart/api';
+import { getCart, NotImplementedError } from '@/domains/cart/api';
 import { cartRepository, productFetcher } from '@/infrastructure/repositories';
 import { getServerSession } from '@/infrastructure/auth';
 import { success, error } from '@/foundation/errors/response';
@@ -26,6 +26,12 @@ export async function GET() {
 
     return NextResponse.json(success(result));
   } catch (err) {
+    if (err instanceof NotImplementedError) {
+      return NextResponse.json(
+        error(ErrorCode.NOT_IMPLEMENTED, err.message),
+        { status: 501 }
+      );
+    }
     console.error('GET /api/cart error:', err);
     return NextResponse.json(
       error(ErrorCode.INTERNAL_ERROR, 'システムエラーが発生しました'),

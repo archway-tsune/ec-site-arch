@@ -46,7 +46,7 @@ export default function BuyerLayout({
         }
       }
     } catch {
-      // カートなし
+      setCartCount(0);
     }
   }, []);
 
@@ -94,6 +94,8 @@ export default function BuyerLayout({
           siteName: 'EC Site',
           navLinks,
           cartCount: 0,
+          cartUrl: '/',
+          homeUrl: '/',
           isLoggedIn: false,
           loginHref: '/login',
         }}
@@ -115,6 +117,8 @@ export default function BuyerLayout({
         siteName: 'EC Site',
         navLinks,
         cartCount,
+        cartUrl: '/',
+        homeUrl: '/',
         isLoggedIn: !!session,
         userName: session?.name,
         loginHref: '/login',

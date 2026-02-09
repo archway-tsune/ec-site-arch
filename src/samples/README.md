@@ -18,9 +18,9 @@ src/samples/ ──→ @/foundation/ （共通基盤）
 ```
 
 - サンプルは `@/contracts/` の共有インターフェース（DTO・リポジトリ契約）のみに依存します
-- `src/app/` や `src/infrastructure/` からサンプルを直接インポートしません
-- 初期状態では `src/domains/` の暫定スキャフォールドが `@/samples/` を再エクスポートしていますが、
-  本番実装時に置き換えられる前提です
+- 本番 `src/app/` や `src/infrastructure/` からサンプルを直接インポートしません
+- サンプル画面は `src/app/(samples)/sample/` に配置され、`/sample/` URLプレフィックスでアクセスします
+- `src/domains/` はスタブ実装（NotImplementedError）であり、`@/samples/` への依存はありません
 
 ## ディレクトリ構成
 
@@ -39,19 +39,31 @@ src/samples/
 └── tests/            # サンプルテスト（本番テストから分離）
     ├── unit/         # 単体テスト
     │   └── domains/
-    │       ├── catalog/
-    │       ├── cart/
-    │       └── orders/
     ├── integration/  # 統合テスト
     │   └── domains/
-    │       ├── catalog/
-    │       ├── cart/
-    │       └── orders/
-    └── e2e/          # E2Eテスト（Playwright）
+    └── e2e/          # E2Eテスト（Playwright、/sample/ パス対象）
         └── domains/
-            ├── catalog/
-            ├── cart/
-            └── orders/
+
+src/app/(samples)/sample/   # サンプル画面（/sample/ URLプレフィックス）
+├── page.tsx               # サンプルホーム
+├── login/page.tsx         # サンプルログイン
+├── (buyer)/               # 購入者画面
+│   ├── layout.tsx
+│   ├── catalog/           # /sample/catalog
+│   ├── cart/              # /sample/cart
+│   ├── checkout/          # /sample/checkout
+│   └── orders/            # /sample/orders
+├── admin/                 # 管理者画面
+│   ├── layout.tsx
+│   ├── login/page.tsx     # /sample/admin/login
+│   ├── products/          # /sample/admin/products
+│   └── orders/            # /sample/admin/orders
+└── api/                   # サンプルAPI Routes（/sample/api/）
+    ├── auth/              # 認証API
+    ├── test/reset/        # テストリセットAPI
+    ├── catalog/products/  # カタログAPI
+    ├── cart/              # カートAPI
+    └── orders/            # 注文API
 ```
 
 ## 本番実装との関係

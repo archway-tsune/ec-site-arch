@@ -7,12 +7,19 @@ import { NextResponse, type NextRequest } from 'next/server';
 /**
  * 認証が不要なパス
  */
-const PUBLIC_PATHS = ['/login', '/api/auth/login', '/_next', '/favicon.ico'];
+const PUBLIC_PATHS = [
+  '/login',
+  '/api/auth/login',
+  '/sample/login',
+  '/sample/api/auth/login',
+  '/_next',
+  '/favicon.ico',
+];
 
 /**
  * 管理者のみアクセス可能なパス
  */
-const ADMIN_PATHS = ['/admin'];
+const ADMIN_PATHS = ['/admin', '/sample/admin'];
 
 /**
  * パスが公開パスかどうかをチェック
@@ -26,6 +33,13 @@ function isPublicPath(pathname: string): boolean {
  */
 function isAdminPath(pathname: string): boolean {
   return ADMIN_PATHS.some((path) => pathname.startsWith(path));
+}
+
+/**
+ * パスがサンプルパスかどうかをチェック
+ */
+function isSamplePath(pathname: string): boolean {
+  return pathname.startsWith('/sample/');
 }
 
 /**
@@ -66,7 +80,8 @@ export async function middleware(request: NextRequest) {
 
   // 未認証の場合はログインページへリダイレクト
   if (!role) {
-    const loginUrl = new URL('/login', request.url);
+    const loginPath = isSamplePath(pathname) ? '/sample/login' : '/login';
+    const loginUrl = new URL(loginPath, request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }

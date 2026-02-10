@@ -50,5 +50,6 @@ yarn.lock
 
 # Distribution
 *.zip
+
+# Windows reserved device names (created by 2>/dev/null on PowerShell)
 nul
-.claude/settings.local.json

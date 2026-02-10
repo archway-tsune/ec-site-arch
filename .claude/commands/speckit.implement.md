@@ -60,7 +60,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Check if the following command succeeds to determine if the repository is a git repo (create/verify .gitignore if so):
 
      ```sh
-     git rev-parse --git-dir 2>/dev/null
+     git rev-parse --git-dir
      ```
 
    - Check if Dockerfile* exists or Docker in plan.md → create/verify .dockerignore

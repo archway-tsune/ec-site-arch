@@ -35,7 +35,9 @@
       "Bash(pnpm test:unit:samples:*)",
       "Bash(pnpm test:integration:samples:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nサンプルテストを src/samples/tests/ に集約し、E2Eをドメイン別に分解\n\n- 単体・統合テスト9ファイルを src/samples/tests/{unit,integration}/domains/ に移動\n- E2Eテスト2ファイルをドメイン別5ファイルに分解（catalog/cart/orders）\n- vitest.config.ts の exclude でサンプルテストをデフォルト除外\n- vitest.samples.config.ts を新規作成（:samples コマンド用）\n- playwright.arch.config.ts の testDir を src/samples/tests/e2e に変更\n- package.json に test:{unit,integration,e2e}:samples コマンドを追加\n- ドキュメント更新（README, samples/README, scripts/README, SPECKIT_INTEGRATION, docs/examples）\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git pull:*)",
+      "Bash(python:*)"
     ]
   }
 }

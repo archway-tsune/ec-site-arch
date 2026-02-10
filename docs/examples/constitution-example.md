@@ -64,6 +64,12 @@
 - 定数: UPPER_SNAKE_CASE (例: MAX_ITEMS)
 - 型: PascalCase (例: ProductType)
 
+# 単体・統合テスト作成時の注意事項
+- 本番ドメインの単体テストは `tests/unit/domains/[domain]/` に配置する（例: `tests/unit/domains/catalog/usecase.test.ts`）
+- 本番ドメインの統合テストは `tests/integration/domains/[domain]/` に配置する（例: `tests/integration/domains/catalog/api.test.ts`）
+- `src/samples/tests/` 配下はサンプル実装専用のテストであり、本番ドメインのテストを追加してはならない
+- テスト作成時は `src/samples/tests/unit/domains/` および `src/samples/tests/integration/domains/` 配下のサンプルテストを参照すること
+
 # E2Eテスト作成時の注意事項
 - 本番E2Eテストは `tests/e2e/` 直下に配置する（サンプルテストの `src/samples/tests/e2e/` とは分離）
 - テスト作成時は `src/samples/tests/e2e/domains/` 配下のサンプルE2Eテストを参照すること

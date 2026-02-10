@@ -48,10 +48,20 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# Bump patch version for next development cycle
+node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json','utf8'));const v=p.version.split('.');v[2]=String(Number(v[2])+1);p.version=v.join('.');fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\n')"
+$nextVersion = node -e "console.log(JSON.parse(require('fs').readFileSync('package.json','utf8')).version)"
+
+Write-Host "次期バージョン $nextVersion にバンプ中..."
+git add $packageJsonPath
+git commit -m "chore: bump version to $nextVersion [skip ci]"
+git push origin main
+
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "リリースタグの作成が完了しました" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host "タグ: $tagName"
+Write-Host "次期バージョン: $nextVersion"
 Write-Host "GitHub Actions が自動的にリリースを作成します。"
 Write-Host ""

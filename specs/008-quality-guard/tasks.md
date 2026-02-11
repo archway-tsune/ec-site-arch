@@ -151,11 +151,11 @@
 
 **Purpose**: テンプレートを ZIP に含める設定と、セットアップ手順ドキュメントの更新
 
-- [x] T036 release.yml を修正して .specify/templates/ を ZIP に含める: `.github/workflows/release.yml` の ZIP 作成ステップで `-x ".specify/*"` を `-x ".specify/memory/*"` と `-x ".specify/scripts/*"` に分割する。これにより `.specify/templates/` が ZIP に含まれる（plan.md D1, R1, FR-016 参照）
+- [x] T036 release.yml を修正して .specify/templates/tasks-template.md のみを ZIP に含める: `.github/workflows/release.yml` の ZIP 作成ステップで、他のテンプレート（spec/plan/checklist/agent-file）を個別に除外する。これにより `tasks-template.md` のみが ZIP に含まれる（plan.md D1, FR-016 参照）
 - [x] T037 [P] SPECKIT_INTEGRATION.md のセットアップ手順を更新する: `docs/SPECKIT_INTEGRATION.md` の `1. セットアップフロー` セクションの手順を `specify init` → ZIP 展開（テンプレート上書き）→ `/speckit.constitution` の順序に更新する。ディレクトリ構成の説明に `.specify/templates/` が ZIP から展開されることを追記する（FR-017 参照）
-- [x] T038 release.yml の ZIP 除外設定を検証する: `.github/workflows/release.yml` に `.specify/memory/*` と `.specify/scripts/*` が除外対象として記載されていること、`.specify/templates/*` が除外されていないことを確認する
+- [x] T038 release.yml の ZIP 除外設定を検証する: `.github/workflows/release.yml` に `.specify/memory/*`・`.specify/scripts/*`・他テンプレート4件が除外対象として記載されていること、`tasks-template.md` のみが含まれることを確認する
 
-**Checkpoint**: リリース ZIP にテンプレートが含まれ、ドキュメントが最新化。
+**Checkpoint**: リリース ZIP に tasks-template.md のみ含まれ、ドキュメントが最新化。
 
 ---
 
@@ -251,6 +251,13 @@ Task: T023 - フィールド追加耐性検証
 4. US4 完了 → 外部 URL 検証実効性
 5. Phase 6 完了 → ZIP 配信モデル更新
 6. Phase 7 完了 → 最終検証
+
+---
+
+## Post-release 修正 (2026-02-11)
+
+- [x] T043 [skip ci] によるリリースワークフロー未実行を修正: `create-release-tag.ps1` のバンプコミットから `[skip ci]` を削除し、`ci.yml` の quality ジョブに `if: "!startsWith(github.event.head_commit.message, 'chore: bump version')"` を追加。v1.0.16 タグをマージコミット (198b2b2) に付け直しリリース完了
+- [x] T044 リリース ZIP に tasks-template.md のみ含める: `release.yml` で spec/plan/checklist/agent-file テンプレートを個別に除外し、tasks-template.md のみ ZIP に含める構成に変更。未修正テンプレートによる展開先カスタマイズ上書きリスクを解消
 
 ---
 

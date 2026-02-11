@@ -114,6 +114,11 @@ ec-site-arch の constitution に詳細手順（HTTP リクエスト検証・pla
 
 - Q: テンプレート（`.specify/templates/`）と constitution-example の間で品質ガード内容が重複する場合、どう整理するか？ → A: C — constitution-example を簡略化し、品質ガード詳細をテンプレートに委譲する。constitution は概要のみ保持。テンプレートをリリース ZIP に含め、`specify init` 後の ZIP 展開でテンプレートが上書きされる構成とする。
 
+### Post-release 修正 (2026-02-11)
+
+- **[skip ci] によるリリースワークフロー未実行**: `create-release-tag.ps1` のバンプコミットに `[skip ci]` が付与されていたため、そのコミットにタグが付いた場合に GitHub Actions のリリースワークフローがスキップされた。対応: (1) バンプコミットから `[skip ci]` を削除、(2) `ci.yml` の quality ジョブに `if: "!startsWith(github.event.head_commit.message, 'chore: bump version')"` を追加し、CI のみバンプコミットでスキップする構成に変更
+- **ZIP に全テンプレート含めていた問題**: 008-quality-guard で修正したのは `tasks-template.md` のみであるため、他のテンプレート（spec/plan/checklist/agent-file）を ZIP に含めると展開先のカスタマイズを上書きするリスクがある。対応: `release.yml` で他テンプレート4件を個別に除外し、`tasks-template.md` のみ ZIP に含める構成に変更
+
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
@@ -147,7 +152,7 @@ ec-site-arch の constitution に詳細手順（HTTP リクエスト検証・pla
 
 #### リリース ZIP・ドキュメント整備
 
-- **FR-016**: リリース ZIP のパッケージング設定（release.yml）を修正し、`.specify/templates/` を ZIP に含めなければならない。`.specify/memory/` および `.specify/scripts/` は引き続き除外する（MUST）
+- **FR-016**: リリース ZIP のパッケージング設定（release.yml）を修正し、`.specify/templates/tasks-template.md` のみを ZIP に含めなければならない。他のテンプレート（spec/plan/checklist/agent-file）は `specify init` で配置されるため除外する。`.specify/memory/` および `.specify/scripts/` は引き続き除外する（MUST）
 - **FR-017**: SPECKIT_INTEGRATION.md のセットアップ手順を「`specify init` → ZIP 展開（テンプレート上書き）→ `/speckit.constitution`」の順序に更新しなければならない（MUST）
 
 ### Key Entities
@@ -159,8 +164,8 @@ ec-site-arch の constitution に詳細手順（HTTP リクエスト検証・pla
 
 ### Assumptions
 
-- ZIP 展開先プロジェクトのセットアップ手順は `specify init` → ZIP 展開（`.specify/templates/` が上書きされる）→ `/speckit.constitution` の順序で行う
-- `.specify/templates/` はリリース ZIP に含める。`.specify/memory/`・`.specify/scripts/` は ZIP に含めない
+- ZIP 展開先プロジェクトのセットアップ手順は `specify init` → ZIP 展開（`tasks-template.md` が上書きされる）→ `/speckit.constitution` の順序で行う
+- `.specify/templates/tasks-template.md` のみリリース ZIP に含める。他のテンプレート・`.specify/memory/`・`.specify/scripts/` は ZIP に含めない
 - 品質ガードの詳細（TDD ステップ構成・テスト種別・カバレッジ基準等）はテンプレートで直接制御し、constitution-example は概要のみを記載する
 - constitution-example は `/speckit.constitution` 実行時の入力ガイドとしての役割に集中し、テンプレートと重複する詳細は記載しない
 - サンプルテストのリグレッションチェックは CI の quality ジョブ内で実行し、E2E ジョブとは別に扱う
@@ -176,4 +181,4 @@ ec-site-arch の constitution に詳細手順（HTTP リクエスト検証・pla
 - **SC-004**: CI パイプラインの quality ジョブでサンプルテストのリグレッションチェックが毎回実行される
 - **SC-005**: ZIP 展開後の `.specify/templates/` にタスクテンプレートが配置され、`/speckit.tasks` で Red-Green-Refactor-検証 構成のタスクが生成される
 - **SC-006**: タスクテンプレートと constitution の TDD 関連記述に矛盾が 0 件である
-- **SC-007**: リリース ZIP に `.specify/templates/` が含まれ、`.specify/memory/` が含まれない
+- **SC-007**: リリース ZIP に `.specify/templates/tasks-template.md` のみが含まれ、他のテンプレート・`.specify/memory/` が含まれない

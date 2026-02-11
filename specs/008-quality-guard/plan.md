@@ -18,7 +18,7 @@ speckit の開発ワークフロー品質を強化する。5 つの問題（TDD 
 **Target Platform**: Node.js 20 / GitHub Actions Ubuntu
 **Project Type**: Web application（Next.js App Router）
 **Performance Goals**: N/A（プロセス改善機能）
-**Constraints**: リリース ZIP は `zip -r` で作成（GitHub Actions）。`.specify/templates/` を選択的に含め、`.specify/memory/` と `.specify/scripts/` は除外する
+**Constraints**: リリース ZIP は `zip -r` で作成（GitHub Actions）。`.specify/templates/tasks-template.md` のみを含め、他のテンプレート・`.specify/memory/`・`.specify/scripts/` は除外する
 **Scale/Scope**: 変更ファイル数: 約 15 ファイル。新規ファイル: 0。新規ディレクトリ: 0
 
 ## Constitution Check
@@ -104,16 +104,20 @@ src/
 
 ### D1: テンプレート配信モデル
 
-**決定**: `.specify/templates/` をリリース ZIP に含める。`specify init` → ZIP 展開の順序で、テンプレートが上書きされる。
+**決定**: `.specify/templates/tasks-template.md` のみをリリース ZIP に含める。`specify init` → ZIP 展開の順序で、タスクテンプレートが上書きされる。他のテンプレート（spec/plan/checklist/agent-file）は `specify init` で配置されるため ZIP には含めない。
 
-**根拠**: テンプレートは speckit のタスク生成構造を直接制御するため、constitution-example（テキストガイド）より確実に品質ガードを実施できる。`/speckit.clarify` での Q1 回答（選択肢 C）で確定。
+**根拠**: 008-quality-guard で修正したのは `tasks-template.md`（TDD 4ステップ構成、MANDATORY化）のみ。未修正のテンプレートを ZIP に含めると、展開先でユーザーがカスタマイズしたテンプレートを上書きするリスクがある。
 
-**release.yml 変更**: `-x ".specify/*"` を以下に変更:
+**release.yml 変更**: 不要なテンプレートを個別に除外:
 ```yaml
 -x ".specify/memory/*" \
 -x ".specify/scripts/*" \
+-x ".specify/templates/spec-template.md" \
+-x ".specify/templates/plan-template.md" \
+-x ".specify/templates/checklist-template.md" \
+-x ".specify/templates/agent-file-template.md" \
 ```
-これにより `.specify/templates/` が ZIP に含まれる。
+これにより `.specify/templates/tasks-template.md` のみが ZIP に含まれる。
 
 ### D2: シードデータ分離パターン
 

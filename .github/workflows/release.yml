@@ -43,7 +43,8 @@ jobs:
             -x "pnpm-lock.yaml" \
             -x "*.zip" \
             -x "playwright.samples.config.ts" \
-            -x ".github/workflows/release.yml"
+            -x ".github/workflows/release.yml" \
+            -x "nul"
 
       - name: Create GitHub Release
         run: |

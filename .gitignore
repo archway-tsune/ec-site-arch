@@ -51,5 +51,5 @@ yarn.lock
 # Distribution
 *.zip
 
-# Windows reserved device names (created by 2>/dev/null on PowerShell)
+# Windows reserved device names (Win11 26200+ no longer treats nul as device)
 nul

@@ -79,7 +79,7 @@ function Get-HighestNumberFromBranches {
     
     $highest = 0
     try {
-        $branches = git branch -a 2>$null
+        $branches = git branch -a 2>&1 | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] }
         if ($LASTEXITCODE -eq 0) {
             foreach ($branch in $branches) {
                 # Clean branch name: remove leading markers and remote prefixes
@@ -106,7 +106,7 @@ function Get-NextBranchNumber {
 
     # Fetch all remotes to get latest branch info (suppress errors if no remotes)
     try {
-        git fetch --all --prune 2>$null | Out-Null
+        git fetch --all --prune 2>&1 | Out-Null
     } catch {
         # Ignore fetch errors
     }
@@ -136,7 +136,7 @@ if (-not $fallbackRoot) {
 }
 
 try {
-    $repoRoot = git rev-parse --show-toplevel 2>$null
+    $repoRoot = git rev-parse --show-toplevel 2>&1 | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] }
     if ($LASTEXITCODE -eq 0) {
         $hasGit = $true
     } else {

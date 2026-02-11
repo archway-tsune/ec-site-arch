@@ -3,9 +3,9 @@
 
 function Get-RepoRoot {
     try {
-        $result = git rev-parse --show-toplevel 2>$null
+        $result = git rev-parse --show-toplevel 2>&1
         if ($LASTEXITCODE -eq 0) {
-            return $result
+            return ($result | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
         }
     } catch {
         # Git command failed
@@ -23,9 +23,9 @@ function Get-CurrentBranch {
     
     # Then check git if available
     try {
-        $result = git rev-parse --abbrev-ref HEAD 2>$null
+        $result = git rev-parse --abbrev-ref HEAD 2>&1
         if ($LASTEXITCODE -eq 0) {
-            return $result
+            return ($result | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
         }
     } catch {
         # Git command failed
@@ -60,7 +60,7 @@ function Get-CurrentBranch {
 
 function Test-HasGit {
     try {
-        git rev-parse --show-toplevel 2>$null | Out-Null
+        git rev-parse --show-toplevel 2>&1 | Out-Null
         return ($LASTEXITCODE -eq 0)
     } catch {
         return $false

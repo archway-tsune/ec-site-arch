@@ -8,14 +8,14 @@ import userEvent from '@testing-library/user-event';
 import { ProductList } from '@/samples/domains/catalog/ui/ProductList';
 import { ProductDetail } from '@/samples/domains/catalog/ui/ProductDetail';
 import { ProductCard } from '@/samples/domains/catalog/ui/ProductCard';
-import type { Product } from '@/contracts/catalog';
+import { ProductSchema, type Product } from '@/contracts/catalog';
 
 // ─────────────────────────────────────────────────────────────────
 // テストヘルパー
 // ─────────────────────────────────────────────────────────────────
 
 function createMockProduct(overrides: Partial<Product> = {}): Product {
-  return {
+  return ProductSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'テスト商品',
     price: 1000,
@@ -25,7 +25,7 @@ function createMockProduct(overrides: Partial<Product> = {}): Product {
     createdAt: new Date('2024-01-15T10:00:00Z'),
     updatedAt: new Date('2024-01-15T10:00:00Z'),
     ...overrides,
-  };
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -145,9 +145,9 @@ describe('ProductList', () => {
     describe('When: リストを表示する', () => {
       it('Then: 商品カードを一覧表示する', () => {
         const products = [
-          createMockProduct({ id: '1', name: '商品A' }),
-          createMockProduct({ id: '2', name: '商品B' }),
-          createMockProduct({ id: '3', name: '商品C' }),
+          createMockProduct({ id: '550e8400-e29b-41d4-a716-446655440001', name: '商品A' }),
+          createMockProduct({ id: '550e8400-e29b-41d4-a716-446655440002', name: '商品B' }),
+          createMockProduct({ id: '550e8400-e29b-41d4-a716-446655440003', name: '商品C' }),
         ];
         const pagination = { page: 1, limit: 20, total: 3, totalPages: 1 };
 

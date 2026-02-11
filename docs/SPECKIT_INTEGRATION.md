@@ -16,10 +16,12 @@
 1. git clone <your-repo-url>               # GitHubリポジトリをクローン
 2. cd <your-repo>                          # リポジトリのルートに移動
 3. specify init --here --ai claude         # speckit設定を初期化
-4. ec-site-arch.zip 解凍                    # アーキテクチャコードを展開
+4. ec-site-arch.zip 解凍                    # アーキテクチャコードを展開（.specify/templates/ を上書き）
 5. /speckit.constitution                   # プロジェクト憲法を作成（セットアップ手順を含む）
 6. 開発開始
 ```
+
+> **注意**: 手順 3 → 4 の順序が重要です。`specify init` で作成される `.specify/templates/` は ZIP 展開時に上書きされ、品質ガード付きのテンプレートが適用されます。
 
 ### ディレクトリ構成
 
@@ -33,10 +35,10 @@
 │       ├── speckit.implement.md
 │       └── ...
 │
-├── .specify/               ← specify init で作成
+├── .specify/               ← specify init で作成 → ZIP 展開で templates/ を上書き
 │   ├── memory/
 │   │   └── constitution.md ← /speckit.constitution で作成
-│   └── templates/
+│   └── templates/          ← ZIP から展開（品質ガード付きタスクテンプレート）
 │
 ├── src/                    ← zip から展開
 │   ├── foundation/         # 共通基盤（認証・エラー・ログ・バリデーション）
@@ -244,8 +246,11 @@ speckitで実装する際は、独立した参照コードであるサンプル�
 speckit仕様に以下の品質基準が適用されます：
 
 ### テスト
-- 単体テストカバレッジ: 80%以上
+- 単体テストカバレッジ: 80%以上（各ユーザーストーリー完了時に `pnpm test:unit --coverage` で確認）
 - E2Eテスト: 主要導線をカバー（本番: `tests/e2e/` 直下、サンプル: `src/samples/tests/e2e/`）
+  - テスト実行結果の出力を確認し、パス件数 0 件はエラーとする
+  - 実装のみで実行スキップは不可
+- サンプルリグレッション: CIでサンプルテスト（unit・integration）を自動実行
 
 ### コード品質
 - TypeScript: strictモード、エラー0件

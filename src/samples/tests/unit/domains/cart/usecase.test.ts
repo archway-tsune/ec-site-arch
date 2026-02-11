@@ -14,7 +14,7 @@ import {
   type CartRepository,
   type ProductFetcher,
 } from '@/samples/domains/cart/api/usecases';
-import type { Cart } from '@/contracts/cart';
+import { CartSchema, type Cart } from '@/contracts/cart';
 
 // ─────────────────────────────────────────────────────────────────
 // テストヘルパー
@@ -29,7 +29,7 @@ function createMockSession(role: 'buyer' | 'admin' = 'buyer'): Session {
 }
 
 function createMockCart(overrides: Partial<Cart> = {}): Cart {
-  return {
+  return CartSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440001',
     userId: '550e8400-e29b-41d4-a716-446655440000',
     items: [],
@@ -38,7 +38,7 @@ function createMockCart(overrides: Partial<Cart> = {}): Cart {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
-  };
+  });
 }
 
 function createMockRepository(): CartRepository {

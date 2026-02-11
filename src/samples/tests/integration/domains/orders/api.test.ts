@@ -12,9 +12,10 @@ import {
   CreateOrderOutputSchema,
   UpdateOrderStatusInputSchema,
   ValidStatusTransitions,
+  OrderSchema,
   type Order,
 } from '@/contracts/orders';
-import type { Cart } from '@/contracts/cart';
+import { CartSchema, type Cart } from '@/contracts/cart';
 import {
   getOrders,
   getOrderById,
@@ -37,7 +38,7 @@ function createMockSession(role: 'buyer' | 'admin' = 'buyer'): Session {
 }
 
 function createMockOrder(overrides: Partial<Order> = {}): Order {
-  return {
+  return OrderSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440001',
     userId: '550e8400-e29b-41d4-a716-446655440000',
     items: [
@@ -53,11 +54,11 @@ function createMockOrder(overrides: Partial<Order> = {}): Order {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
-  };
+  });
 }
 
 function createMockCart(): Cart {
-  return {
+  return CartSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440003',
     userId: '550e8400-e29b-41d4-a716-446655440000',
     items: [
@@ -73,7 +74,7 @@ function createMockCart(): Cart {
     itemCount: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
-  };
+  });
 }
 
 function createMockRepository(): OrderRepository {

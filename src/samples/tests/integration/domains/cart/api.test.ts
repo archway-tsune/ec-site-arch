@@ -9,6 +9,7 @@ import {
   AddToCartInputSchema,
   AddToCartOutputSchema,
   UpdateCartItemInputSchema,
+  CartSchema,
   type Cart,
 } from '@/contracts/cart';
 import {
@@ -33,7 +34,7 @@ function createMockSession(role: 'buyer' | 'admin' = 'buyer'): Session {
 }
 
 function createMockCart(overrides: Partial<Cart> = {}): Cart {
-  return {
+  return CartSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440001',
     userId: '550e8400-e29b-41d4-a716-446655440000',
     items: [],
@@ -42,7 +43,7 @@ function createMockCart(overrides: Partial<Cart> = {}): Cart {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
-  };
+  });
 }
 
 function createMockRepository(): CartRepository {

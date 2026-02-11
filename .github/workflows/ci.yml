@@ -60,6 +60,12 @@ jobs:
       - name: Integration Tests
         run: pnpm test:integration
 
+      - name: Sample Unit Tests (Regression)
+        run: pnpm test:unit:samples
+
+      - name: Sample Integration Tests (Regression)
+        run: pnpm test:integration:samples
+
   e2e:
     runs-on: ubuntu-latest
     needs: quality
@@ -85,7 +91,7 @@ jobs:
 
       # 本番ドメインのE2Eテスト
       - name: Run E2E tests
-        run: pnpm test:e2e --pass-with-no-tests
+        run: pnpm test:e2e
 
       # サンプルE2Eテスト（アーキテクチャリポジトリのみ。ZIP展開プロジェクトには含まれない）
       - name: Check if sample E2E tests exist

@@ -5,25 +5,25 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CartView } from '@/samples/domains/cart/ui/CartView';
-import type { Cart, CartItem } from '@/contracts/cart';
+import { CartSchema, CartItemSchema, type Cart, type CartItem } from '@/contracts/cart';
 
 // ─────────────────────────────────────────────────────────────────
 // テストヘルパー
 // ─────────────────────────────────────────────────────────────────
 
 function createMockCartItem(overrides: Partial<CartItem> = {}): CartItem {
-  return {
+  return CartItemSchema.parse({
     productId: '550e8400-e29b-41d4-a716-446655440001',
     productName: 'テスト商品',
     price: 1000,
     quantity: 1,
     addedAt: new Date(),
     ...overrides,
-  };
+  });
 }
 
 function createMockCart(overrides: Partial<Cart> = {}): Cart {
-  return {
+  return CartSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440000',
     userId: '550e8400-e29b-41d4-a716-446655440099',
     items: [],
@@ -32,7 +32,7 @@ function createMockCart(overrides: Partial<Cart> = {}): Cart {
     createdAt: new Date(),
     updatedAt: new Date(),
     ...overrides,
-  };
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────

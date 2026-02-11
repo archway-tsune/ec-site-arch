@@ -6,14 +6,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { OrderList } from '@/samples/domains/orders/ui/OrderList';
 import { OrderDetail } from '@/samples/domains/orders/ui/OrderDetail';
-import type { Order } from '@/contracts/orders';
+import { OrderSchema, type Order } from '@/contracts/orders';
 
 // ─────────────────────────────────────────────────────────────────
 // テストヘルパー
 // ─────────────────────────────────────────────────────────────────
 
 function createMockOrder(overrides: Partial<Order> = {}): Order {
-  return {
+  return OrderSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440001',
     userId: '550e8400-e29b-41d4-a716-446655440000',
     items: [
@@ -29,7 +29,7 @@ function createMockOrder(overrides: Partial<Order> = {}): Order {
     createdAt: new Date('2024-01-15T10:00:00Z'),
     updatedAt: new Date('2024-01-15T10:00:00Z'),
     ...overrides,
-  };
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -165,8 +165,8 @@ describe('OrderDetail', () => {
       it('Then: 注文情報を全て表示する', () => {
         const order = createMockOrder({
           items: [
-            { productId: '1', productName: '商品A', price: 1000, quantity: 2 },
-            { productId: '2', productName: '商品B', price: 500, quantity: 1 },
+            { productId: '550e8400-e29b-41d4-a716-446655440010', productName: '商品A', price: 1000, quantity: 2 },
+            { productId: '550e8400-e29b-41d4-a716-446655440011', productName: '商品B', price: 500, quantity: 1 },
           ],
           totalAmount: 2500,
           status: 'confirmed',

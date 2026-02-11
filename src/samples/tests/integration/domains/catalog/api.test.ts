@@ -10,6 +10,7 @@ import {
   GetProductByIdOutputSchema,
   CreateProductInputSchema,
   CreateProductOutputSchema,
+  ProductSchema,
   type Product,
 } from '@/contracts/catalog';
 import {
@@ -32,7 +33,7 @@ function createMockSession(role: 'buyer' | 'admin' = 'buyer'): Session {
 }
 
 function createMockProduct(overrides: Partial<Product> = {}): Product {
-  return {
+  return ProductSchema.parse({
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'テスト商品',
     price: 1000,
@@ -42,7 +43,7 @@ function createMockProduct(overrides: Partial<Product> = {}): Product {
     createdAt: new Date('2024-01-15T10:00:00Z'),
     updatedAt: new Date('2024-01-15T10:00:00Z'),
     ...overrides,
-  };
+  });
 }
 
 function createMockRepository(): ProductRepository {

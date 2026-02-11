@@ -31,7 +31,8 @@ jobs:
             -x "playwright-report/*" \
             -x ".git/*" \
             -x ".claude/*" \
-            -x ".specify/*" \
+            -x ".specify/memory/*" \
+            -x ".specify/scripts/*" \
             -x "scripts/*" \
             -x "specs/*" \
             -x "*.tsbuildinfo" \

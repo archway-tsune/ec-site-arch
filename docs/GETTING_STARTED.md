@@ -167,11 +167,12 @@ export { ProductDetail } from './ProductDetail';
 
 ```
 tests/e2e/                  ← 本番 E2Eテスト（pnpm test:e2e で実行）
+tests/e2e/smoke.spec.ts     ← 基盤スモークテスト（初期同梱・常時パス）
 tests/unit/domains/         ← 本番 単体テスト（pnpm test:unit で実行）
 tests/integration/domains/  ← 本番 統合テスト（pnpm test:integration で実行）
 ```
 
-E2Eテスト作成時は `src/samples/tests/e2e/domains/` のサンプルテストを参考にしてください。
+`tests/e2e/smoke.spec.ts` はホームページ・ログインの疎通確認テストで、ドメイン未実装でもCIが通るように初期同梱されています。ドメイン実装のE2Eテストは同ディレクトリに追加してください。テスト作成時は `src/samples/tests/e2e/domains/` のサンプルテストを参考にしてください。
 
 #### Step 5: サンプルの削除（任意）
 
@@ -194,12 +195,11 @@ pnpm test:unit
 # 統合テスト
 pnpm test:integration
 
-# E2Eテスト（ドメイン実装のテスト）
+# E2Eテスト（基盤スモークテスト + ドメイン実装テスト）
 pnpm test:e2e
 ```
 
-ドメイン実装のE2Eテストは `tests/e2e/` 直下に配置してください。
-`tests/e2e/arch/` 以下のアーキテクチャ基盤用E2Eテストは `pnpm test:e2e` の実行対象から自動的に除外されます。
+`tests/e2e/smoke.spec.ts`（基盤スモークテスト）は初期同梱されており、ドメイン未実装でもパスします。ドメイン実装のE2Eテストは `tests/e2e/` 直下に追加してください。
 
 ---
 

@@ -8,8 +8,12 @@
 import type { Product } from '@/contracts/catalog';
 import type { ProductRepository } from '@/contracts/catalog';
 
-// サンプル商品データ
-const sampleProducts: Product[] = [
+/**
+ * ベースデータ（サンプル互換・不変）
+ * サンプルテストが依存するデータセット。変更禁止。
+ * 本番機能追加時は EXTENSION_PRODUCTS に追加すること。
+ */
+export const BASE_PRODUCTS: Product[] = [
   {
     id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'E2Eテスト商品',
@@ -72,6 +76,13 @@ const sampleProducts: Product[] = [
   },
 ];
 
+/**
+ * 拡張データ（本番追加分）
+ * 本番機能実装時にここにデータを追加する。
+ * ベースデータとの ID 重複を避けること。
+ */
+export const EXTENSION_PRODUCTS: Product[] = [];
+
 // グローバル変数の型定義（HMR対策）
 declare global {
   // eslint-disable-next-line no-var
@@ -84,7 +95,8 @@ function initializeProductStore(): Map<string, Product> {
   if (globalThis.__productStore) {
     return globalThis.__productStore;
   }
-  const store = new Map<string, Product>(sampleProducts.map((p) => [p.id, p]));
+  const allProducts = [...BASE_PRODUCTS, ...EXTENSION_PRODUCTS];
+  const store = new Map<string, Product>(allProducts.map((p) => [p.id, p]));
   globalThis.__productStore = store;
   return store;
 }
@@ -161,5 +173,6 @@ export const productRepository: ProductRepository = {
 // テスト用：商品ストアをリセット（サンプルデータを再投入）
 export function resetProductStore(): void {
   products.clear();
-  sampleProducts.forEach((p) => products.set(p.id, { ...p }));
+  const allProducts = [...BASE_PRODUCTS, ...EXTENSION_PRODUCTS];
+  allProducts.forEach((p) => products.set(p.id, { ...p }));
 }

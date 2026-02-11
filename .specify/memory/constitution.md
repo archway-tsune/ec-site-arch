@@ -1,19 +1,18 @@
 <!--
 Sync Impact Report
 ==================
-Version change: N/A → 1.0.0 (初回作成)
-Modified principles: N/A (新規作成)
+Version change: 1.0.0 → 1.1.0
+Modified principles: N/A（既存原則の変更なし）
 Added sections:
-  - Core Principles (6原則)
-  - 共通アーキテクチャ基盤
-  - ドメイン別テンプレート
-  - 品質基準とゲート
-  - Governance
+  - 品質基準とゲート/E2E テスト証跡義務
+  - 品質基準とゲート/ローカルカバレッジ確認
+  - 品質基準とゲート/外部リソース URL 検証
+  - 品質基準とゲート/サンプルコード保護原則
 Removed sections: N/A
 Templates requiring updates:
   - .specify/templates/plan-template.md: ✅ 整合性確認済み（Constitution Check セクション対応）
   - .specify/templates/spec-template.md: ✅ 整合性確認済み（ユーザーストーリー・要件形式対応）
-  - .specify/templates/tasks-template.md: ✅ 整合性確認済み（TDD・フェーズ構成対応）
+  - .specify/templates/tasks-template.md: ✅ 整合性確認済み（OPTIONAL→MANDATORY 修正、Red-Green-Refactor-検証 4ステップ構成、テスト4種別明記）
 Follow-up TODOs: なし
 -->
 
@@ -78,7 +77,12 @@ UIはコンポーネント単位で設計・実装する。
 
 テスト駆動開発を必須とする。テストを書かない実装は許可しない。
 
-- Red-Green-Refactor サイクルを厳格に遵守する
+- Red-Green-Refactor-検証 サイクルを厳格に遵守する
+- Red フェーズで以下の 4 種別のテストを作成する
+  - ユースケース単体テスト（ドメインロジック）
+  - UI コンポーネント単体テスト（表示・インタラクション）
+  - API 統合テスト（入力バリデーション・認可・レスポンス）
+  - E2E テスト（ユーザー導線の主要フロー）
 - テストテンプレートは UI/API テンプレートと同格の成果物とする
 - 新ドメイン追加時は、必ずテストテンプレートを利用する
 - Given-When-Then を基本構造とし、正常系・異常系・認可条件を必ず含める
@@ -140,6 +144,30 @@ UIはコンポーネント単位で設計・実装する。
 | CI | 自動テスト必須 |
 | 品質ゲート | 通過しない成果物は統合しない |
 
+### E2E テスト証跡義務
+
+- E2E テスト実行結果の出力を確認し、パス件数 0 件の場合はエラーとする
+- 「テストを実行した」と報告するだけでは不十分。実行結果の出力（パス/失敗件数）を証跡として提示すること
+- 実装のみで E2E テストの実行をスキップすることは禁止する
+
+### ローカルカバレッジ確認
+
+- 各ユーザーストーリー完了時に `pnpm test:unit --coverage` を実施し、カバレッジ 80% 以上を確認する
+- CI での失敗を待たず、ローカルで事前に検証する
+- カバレッジが不足する場合は、不足テストを追加してからストーリーを完了とする
+
+### 外部リソース URL 検証
+
+- 実装時に各 URL に HTTP リクエスト（WebFetch 等）を送信し、200 応答を確認する
+- 失敗した URL は代替 URL に置換する
+- plan 時点では「検証予定」とし、「検証済み」としない（LLM が生成した URL は実在しない可能性がある）
+
+### サンプルコード保護原則
+
+- contracts の新規フィールドは `.default()` または `.optional()` を付与する（必須フィールド追加はサンプルテストを破損させるため禁止）
+- シードデータはベース（サンプル互換・不変）と拡張（本番追加分）に分離する
+- リポジトリインターフェースの検索パラメータ追加はオプショナルとする
+
 ## Governance
 
 ### 改訂手続き
@@ -162,4 +190,4 @@ UIはコンポーネント単位で設計・実装する。
 - テンプレート: `.specify/templates/` 配下
 - 仕様書・計画・タスク: `specs/[feature]/` 配下
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-05
+**Version**: 1.1.0 | **Ratified**: 2026-02-05 | **Last Amended**: 2026-02-11

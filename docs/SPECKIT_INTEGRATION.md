@@ -66,7 +66,7 @@
 │       └── middleware.ts   #   認証ミドルウェア
 │
 ├── tests/                  ← zip から展開
-│   ├── e2e/                #   本番 E2Eテスト（Playwright）
+│   ├── e2e/                #   本番 E2Eテスト（Playwright）— smoke.spec.ts 初期同梱
 │   ├── integration/        #   統合テスト（domains, foundation, templates）
 │   └── unit/               #   単体テスト（domains, foundation, templates）
 │
@@ -247,7 +247,7 @@ speckit仕様に以下の品質基準が適用されます：
 
 ### テスト
 - 単体テストカバレッジ: 80%以上（各ユーザーストーリー完了時に `pnpm test:unit --coverage` で確認）
-- E2Eテスト: 主要導線をカバー（本番: `tests/e2e/` 直下、サンプル: `src/samples/tests/e2e/`）
+- E2Eテスト: 主要導線をカバー（本番: `tests/e2e/` 直下、サンプル: `src/samples/tests/e2e/`）。基盤スモークテスト（`smoke.spec.ts`）が初期同梱済み
   - テスト実行結果の出力を確認し、パス件数 0 件はエラーとする
   - 実装のみで実行スキップは不可
 - サンプルリグレッション: CIでサンプルテスト（unit・integration）を自動実行

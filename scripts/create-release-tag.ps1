@@ -54,7 +54,7 @@ $nextVersion = node -e "console.log(JSON.parse(require('fs').readFileSync('packa
 
 Write-Host "次期バージョン $nextVersion にバンプ中..."
 git add $packageJsonPath
-git commit -m "chore: bump version to $nextVersion [skip ci]"
+git commit -m "chore: bump version to $nextVersion"
 git push origin main
 
 Write-Host ""

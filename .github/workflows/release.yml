@@ -33,6 +33,10 @@ jobs:
             -x ".claude/*" \
             -x ".specify/memory/*" \
             -x ".specify/scripts/*" \
+            -x ".specify/templates/spec-template.md" \
+            -x ".specify/templates/plan-template.md" \
+            -x ".specify/templates/checklist-template.md" \
+            -x ".specify/templates/agent-file-template.md" \
             -x "scripts/*" \
             -x "specs/*" \
             -x "*.tsbuildinfo" \
